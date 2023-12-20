@@ -1,0 +1,109 @@
+---
+title: "Econometria III"
+subtitle: |
+    | Questões - Equações Simultâneas
+author: "Rafael Bressan"
+date: "`r Sys.Date()`"
+format: 
+  html:
+    theme: cosmo
+lang: pt-BR
+# logo: "Figs/UdescEsag.jpeg"
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Questão 1
+
+São corretas as afirmativas. Em modelos de equações simultâneas:
+
+- ($\phantom{X}$) o problema da identificação precede o da estimação.
+
+- ($\phantom{X}$) os estimadores de mínimos quadrados indiretos e os de mínimos quadrados de dois estágios são não-tendenciosos e consistentes.
+
+- ($\phantom{X}$) se uma equação é exatamente identificada, os métodos de mínimos quadrados indiretos e de dois estágios produzem resultados idênticos.
+
+- ($\phantom{X}$) o método de mínimos quadrados indiretos pode ser aplicado tanto a equações exatamente identificados quanto a equações sobreidentificadas.
+
+
+# Questão 2
+
+Considere o seguinte modelo de equações simultâneas:
+
+Equação de Demanda: $Q_t = \alpha_0 + \alpha_1 P_t + \alpha_2 R_t + u_{1t}$
+Equação de oferta: $Q_t = \beta_0 + \beta_1 P_t + \beta_2 P_{t-1} + u_{2t}$
+
+em que no período $t$, $Q_t$ é a quantidade de produto, $P_t$, o preço (endógeno) do produto, $R_t$  a renda do consumidor e os erros idiossincráticos são $u_{1t}\perp u_{2t}$. A partir destas equações são obtidas as equações na forma reduzida: $P_t = \pi_0 + \pi_1 R_t + \pi_2 P_{t-1} + v_t$ e $Q_t = \pi_3 + \pi_4 R_t + \pi_5 P_{t-1} +w_t$.
+
+São corretas as afirmativas
+
+- ($\phantom{X}$) Assim sendo, $\pi_0=\frac{\beta_0-\alpha_0}{\alpha_1-\beta_1}$, $\pi_1=\frac{\alpha_2}{\alpha_1-\beta_1}$ e $\pi_2=\frac{\beta_2}{\alpha_1-\beta_1}$
+
+- ($\phantom{X}$) A condição de ordem sugere que a primeira e a segunda equações são identificadas
+
+- ($\phantom{X}$) Se multiplicarmos a equação de demanda por $\lambda (0 < \lambda < 1)$ e a equação de oferta por $(1- \lambda)$ e somá-las, desde que o resultado dessa soma seja diferente da equação de oferta e da equação de demanda, as duas serão identificadas.
+
+- ($\phantom{X}$) O método de mínimos quadrados ordinários produz estimadores consistentes e eficientes dos parâmetros da forma estrutural.
+
+- ($\phantom{X}$) Para verificar se qualquer equação do sistema é identificável, basta aplicar a condição de ordem.
+
+
+# Questão 3
+
+O exercício a seguir usa o conjunto de dados `truffles` do pacote "PoEdata", onde $q$ é a quantidade de trufas comercializadas, $p$ é o preço de mercado, $p_s$ é o preço de um substituto, $d_i$ é a renda e $p_f$ é uma medida dos custos de produção. As equações estruturais de demanda e oferta (Equações 1 e 2) são formuladas com base na teoria econômica. Quantidade e preço são endógenos, e todas as outras variáveis são consideradas exógenas.
+
+$$
+\begin{align}
+q&=\alpha_1+\alpha_2p+\alpha_3p_s+\alpha_4d_i+e_d\\
+q&=\beta_1+\beta_2p+\beta_3p_f+e_s
+\end{align}
+$$
+
+Instale o pacote "PoEdata" e carregue os dados com os seguintes comandos:
+
+```{r poe, echo=TRUE}
+# install.packages("remotes") # Se necessário
+# remotes::install_github("ccolonescu/PoEdata")
+library(PoEdata)
+data("truffles")
+```
+
+a) Qual a condição de ordem para a identificação de cada uma das equações do modelo? Classifique as equações em: não-identificada, exatamente identificada ou sobreidentificada.
+
+
+b) Estime as formas reduzidas para quantidade e preço. Apresente os resultados e interprete. Os coeficientes são estatisticamente diferentes de zero? O que isso significa em termos de relevância de instrumentos?
+
+
+c) Se estamos interessados em estimar a equação de demanda, qual é o instrumento adequado para o preço? Por quê?
+
+d) Estime apenas a equação 1 (demanda) utilizando MQ2E com o instrumento selecionado anteriormente. Apresente os resultados.
+
+e) Estime ambas as equações de forma conjunta através de MQ2E. O resultado da estimação da equação de demanda é igual ao anterior?
+
+
+# Questão 4
+
+Considere o modelo:
+
+$$
+\begin{equation}
+\begin{cases}
+Q_t^D=&\alpha_1+\beta_1P_t+u_t^D\\
+Q_t^O=&\alpha_2+\beta_2P_t+u_t^O\\
+Q_t^D\equiv& Q_t^O = Q_t
+\end{cases}
+\end{equation}
+$$
+
+em que $Q_t^D$ e $Q_t^O$ são quantidades demandadas e ofertadas, respectivamente, de maças no mercado brasileiro no ano $t$. $P_t$ é o preço de mercado da maçã e $u_t^D$ e  $u_t^O$ são termos de erro aleatório com média igual a zero e não correlacionados entre si.
+
+a) Encontre a forma reduzida para a expressão do preço $P_t$ em função dos parâmetros estruturais e termos de erro.
+
+b) Tome a equação de demanda e explique em detalhes porque não é possível estimar $\alpha_1$ e $\beta_1$ através de MQO.
+
+c) A serra catarinense é um grande produtor de maçãs para o mercado brasileiro. As macieiras são mais produtivas quanto maior o número de dias com temperatura abaixo de zero. Você tem acesso a informação de temperaturas mínimas diárias para esta região. Descreva como esta informação é útil para estimar o modelo acima. Quais parâmetros serão identificados? Qual método pode ser utilizado para a estimação? Considere que o consumo de maçãs não é afetado por dias frios.
+

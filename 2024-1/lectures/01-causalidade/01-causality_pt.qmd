@@ -1,0 +1,1249 @@
+---
+title: "Econometria III"
+subtitle: "Introdução a Causalidade"
+title-slide-attributes:
+  data-background-image: "img/UdescEsag.jpeg"
+  data-background-size: 50%
+  data-background-position: top left
+  # data-background-opacity: "0.7"
+center-title-slide: true
+author: "Rafael Bressan"
+logo: "img/UdescEsag.jpeg"
+format: 
+  revealjs:
+    theme: [default, ../udesc.scss] 
+    code-fold: true
+    chalkboard: true
+    incremental: true
+    width: 1600
+    height: 900
+from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
+fontsize: "2.2em"
+editor: source
+jupyter: python3
+---
+
+```{python}
+import pandas as pd
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+import numpy as np
+import networkx as nx
+```
+
+## Introdução a Inferência Causal
+
+* ***Causalidade*** versus ***Correlação***
+
+* _Framework_ de ***Resultados Potenciais*** a.k.a. Modelo Causal de Rubin
+
+* ***Experimentos Aleatorizados*** (Randomized Controlled Trials - RCTs)
+
+* Aplicação empírica. *Tamanho de turma* e *performance do estudante*
+
+## Por que Estudar Causalidade?
+
+[![](img/the_economist.png)](https://www.economist.com/business/2022/09/07/why-economists-are-flocking-to-silicon-valley)
+
+
+
+## Por que Estudar Causalidade?
+
+[![](img/hbr_economics.png)](https://hbr.org/2019/02/why-tech-companies-hire-so-many-economists)
+
+
+
+## Causalidade e Economia
+
+- Fazer inferência causal a partir de dados pode ser visto como a **vantagem comparativa** dos economistas!
+
+- Diversos campos fazem estatística. Mas poucos treinam seus estudantes para compreender causalidade.
+
+- Conhecimento de inferência causal é o que torna economistas úteis tanto no setor privado (e.g. empresas de tecnologia) e setor público (e.g. avaliação de políticas públicas)
+
+
+
+- Ok, chega de pregar causalidade. :smiley:
+
+
+
+
+## O Conceito de Causalidade
+
+__Causalidade__: do que estamos falando? 
+
+- Dizemos que `X` *causa* `Y`
+
+
+
+  - se nós **intervirmos** no valor de `X` ***sem mudar nada a mais*** ...
+  
+
+
+  - então `Y` também mudará ***como resultado***.
+  
+
+
+- O ponto pricipal é ***sem mudar nada a mais***, também referido por **ceteris paribus (*tudo o mais constante*)**.
+
+
+
+- :warning: Isto ***NÃO*** significa que `X` é o único fator que causa `Y`.
+
+
+
+## Correlação vs Causalidade
+
+***Correlação não é o mesmo que causalidade*** tornou-se um mantra, mas você consegue dizer porquê?
+
+
+
+Algumas correlações são obviamente espúrias e não tem nada a ver com causa e efeito ([e.g. spurious correlation website](https://www.tylervigen.com/spurious-correlations)).
+
+![](img/spurious.png)
+
+
+## Correlação vs Causalidade: Fumar e Câncer de Pulmão
+
+Mas nem todas as correlações são fáceis de diferenciar
+
+***Fumar causa câncer de pulmão?***
+
+::::{.columns}
+
+:::{.column width="50%"}
+- Hoje em dia, nós sabemos que a resposta é *SIM*! 
+
+- Mas, voltemos para 1950
+
+  - Início de um grande aumento no número de mortes por câncer de pulmão...
+  
+  - ... que ocorre após um rápido aumento no consumo de cigarros
+:::
+
+:::{.column width="50%"}
+
+![](img/Smoking_lung_cancer.png)
+
+:::
+
+::::
+
+- É tentador argumentar que fumar cigarros **causa** câncer de pulmão baseado neste gráfico.
+
+
+
+## Correlação vs Causalidade: Fumar e Câncer de Pulmão
+
+Na época, muitos eram céticos a esta hipótese, incluindo famosos estatísticos.
+
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+***Macro fatores de confusão***:  
+
+Outros fatores macro que podem causar câncer também mudaram entre  1900 e 1950:
+
+  - Asfaltamento de estradas,
+  
+  - Inalação de fumaça de motores (vapores de gasolina com chumbo),
+  
+  - Maior poluição atmosférica geral.
+:::
+
+:::{.column width="50%"}
+***Auto seleção***:
+
+Fumantes e não fumantes podem ser diferentes em primeiro lugar:
+  
+   - _Seleção de características observáveis_: idade, escolaridade, renda, etc.
+  
+   - _Seleção de características não observáveis_: genes (a hipotética teoria do genoma de [Fisher](https://en.wikipedia.org/wiki/Ronald_Aylmer_Fisher)). 
+:::
+
+::::
+
+
+
+## Correlação vs Causalidade: Outros Exemplos
+
+> Por que a correlação observada entre ***anos de estudo*** e ***renda*** não reflete o efeito causal da educação?
+
+
+
+*Indivíduos que optam por obter mais educação provavelmente diferem daqueles que não: talvez tenham maior habilidade inata, gostem de estudar e sejam bons nisso* $\rightarrow$ ***autosseleção***
+
+
+
+> ***Taxa de emprego*** e o nível do ***salário mínimo*** não reflete o efeito causal do salário mínimo?
+
+
+
+*Aumento de salário mínimo em momentos em que a taxa de emprego é alta* $\rightarrow$ ***causalidade reversa / simultaneidade***
+
+
+
+> ***Crescimento econômico*** e ***desenvolvimento financeiro*** não reflete o efeito causal do setor financeiro?
+
+
+
+*Talvez crescimento econômico leve ao desenvolvimento financeiro e não o contrário* $\rightarrow$ ***causalidade reversa / simultaneidade***
+
+
+
+## Link com a Teoria Econômica
+
+* A teoria econômica nos diz que os indivíduos se comportam para ***maximizar sua utilidade***
+
+* Assim, eles não escolhem agir de ***forma aleatória*** $\rightarrow$ dizemos que o comportamento do indivíduo é ***endógeno***
+
+* Devemos ser ***suspeitos*** de qualquer correlação encontrada nos dados
+
+
+
+- Como podemos fazer ***reivindicações causais*** então?
+
+- O framework de ***Resultados Potenciais*** será o nosso guia.
+
+
+
+## O framework de Resultados Potenciais
+
+Frequentemente chamado de **Modelo Causal de Rubin** em homenagem ao estatístico **Donald Rubin**, que generalizou e formalizou esse modelo na década de 1970.
+
+
+
+***Idéia-chave***: Cada indivíduo pode ser exposto a **vários estados alternativos de tratamento**.
+   - fumar cigarros, fumar charutos ou não fumar,
+   - crescendo em um bairro pobre versus um bairro de classe média versus um bairro rico,
+   - estar em uma turma pequena ou grande.
+  
+
+::::{.columns}
+
+:::{.column width="50%"}
+Por praticidade, deixe esta variável de tratamento $D_i$ ser uma variável binária:
+
+$$
+D_i = \begin{cases} 
+                    1 \textrm{ se indivíduo $i$ é tratado} \\\\ 
+                    0 \textrm{ se indivíduo $i$ não é tratado} 
+      \end{cases}
+$$
+:::
+
+
+
+:::{.column width="50%"}
+
+***Grupo de tratamento***
+todos os indivíduos tais que $D_i = 1$.
+
+***Grupo de controle***
+todos os indivíduos tais que $D_i = 0$.
+:::
+
+::::
+
+
+
+
+## O framework de Resultados Potenciais
+
+* Nessa estrutura, cada indivíduo tem dois ***resultados potenciais***, mas apenas um ***resultado observado*** $Y_i$:
+  
+   - $Y_i^1$: *resultado potencial se o indivíduo $i$ receber o tratamento*,
+  
+   - $Y_i^0$: *resultado potencial se o indivíduo $i$ não receber o tratamento*.
+
+
+
+* Na vida real, observamos apenas $Y_i$ que pode ser escrito como:
+
+$$Y_i = D_i \times Y_i^1 + (1- D_i) \times Y_i^0$$
+
+
+
+* ***Problema fundamental da inferência causal***: para qualquer indivíduo $i$, observamos apenas um dos resultados potenciais [(Holland, 1986)](http://people.umass.edu/~stanek/pdffiles /causal-holland.pdf).
+
+
+## O framework de Resultados Potenciais
+
+* O resultado potencial que não é observado existe em princípio, é chamado de ***resultado contrafactual***.
+
+
+
+Grupo | $Y_i^1$ | $Y_i^0$
+|::|::
+Tratamento $(D_i = 1)$ &nbsp; &nbsp; | &nbsp; &nbsp; Observável como $Y_i$ &nbsp; &nbsp; | Contrafactual
+Controle $(D_i = 0)$ | Contrafactual | &nbsp; &nbsp; Observável como $Y_i$ &nbsp; &nbsp;
+
+
+
+* A partir deles podemos definir o ***efeito de tratamento individual*** $\delta_i= Y_i^1 - Y_i^0$
+
+* $\delta_i$ mede o **efeito causal do tratamento** $D_i$ no resultado $Y_i$ do indivíduo
+
+
+
+* O efeito do tratamento ***não*** pode ser observado no nível individual (Por quê?), nossos estimandos serão médias populacionais.
+
+
+
+## Efeito Médio do Tratamento (ATE) {#sec-ate}
+
+Efeito médio mais amplo possível:
+
+$$
+\begin{aligned}
+ATE &= \mathop{\mathbb{E}}(\delta_i) \\
+     &= \mathop{\mathbb{E}}(Y_i^1 - Y_i^0) \\
+     &= \mathop{\mathbb{E}}(Y_i^1) - \mathop{\mathbb{E}}(Y_i^0)
+\end{aligned}
+$$
+
+* O ATE mede simplesmente a ***média dos efeitos individuais do tratamento sobre toda a população***.
+
+([*Apêndice:*](@sec-attandatu) Tratamento Médio nos Tratados e Tratamento Médio nos Não Tratados)
+
+
+## Exemplo: Classe Pequena vs. Grande
+
+Resultados potenciais para os alunos em turma pequena $(Y^1)$ ou grande $(Y^0)$:
+
+::::{.columns}
+
+:::{.column width="50%"}
+Aluno | &nbsp; &nbsp; $Y^1$ &nbsp; &nbsp; | &nbsp; &nbsp; $Y^0$ &nbsp; &nbsp; | &nbsp; &nbsp; $\delta$ &nbsp; &nbsp;
+|::|::|::|
+1 | 5 | 2 | 3
+2 | 6 | 4 | 2
+3 | 3 | 6 | -3
+4 | 5 | 4 | 1
+5 | 10 | 8 | 2
+6 | 2 | 4 | -2
+7 | 5 | 2 | 3
+8 | 6 | 4 | 2
+Média | 5.25 | 4.25 | 1.0
+
+:::
+
+
+
+:::{.column width="50%"}
+
+$$
+\begin{align}
+\color{#d90502}{\text{ATE}} &= \mathbb{E}(\delta) \\
+&=\mathbb{E}(Y^1) - \mathbb{E}(Y^0) \\
+&= 5.25 - 4.25 \\
+&= 1.0
+\end{align}
+$$
+
+- o efeito causal ***médio*** de estar na turma pequena em relação à grande nas notas é de 1 ponto.
+
+- :warning: nem todos os alunos se beneficiaram igualmente com o tratamento!
+
+:::
+
+::::
+
+
+## O problema da Inferência Causal
+
+* Na prática, temos o mesmo **problema de falta de dados** para calcular o ATE que tivemos para $\delta_i$. Falta $Y_i^1$ ou $Y_i^0$ para cada $i$.
+
+
+
+* A partir dos dados, podemos calcular a **D**iferença **S**imples nas médias dos **R**esultados (***DSR***) para ambos os grupos:
+
+$$
+\begin{aligned}
+DSR &= \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) \\
+&= \underbrace{\frac{1}{N_T}\sum_{i=1}^{N_T}(Y_i|D_i=1)}_{\text{resultado médio do grupo de tratamento}} - \underbrace{\frac {1}{N_C}\sum_{i=1}^{N_C}(Y_i|D_i=0)}_{\text{resultado médio do grupo de controle}}
+\end{aligned}
+$$
+
+
+
+## Diferença Simples nas médias dos Resultados: um exemplo
+
+::::{.columns}
+
+:::{.column width="50%"}
+Estudante | &nbsp; &nbsp; $Y$ &nbsp; &nbsp; | &nbsp; &nbsp; $D$ &nbsp; &nbsp; | &nbsp; &nbsp; $\delta$&nbsp; &nbsp;
+|::|::|::
+1 | 5 | 1 | 3
+2 | 6 | 1 | 2
+3 | 6 | 0 | -3
+4 | 4 | 0 | 1
+5 | 10 | 1 | 2
+6 | 4 | 0 | -2
+7 | 5 | 1 | 3
+8 | 6 | 1 | 2
+
+:::
+
+:::{.column width="50%"}
+
+A diferença simples na média dos resultados:
+
+$$
+\begin{aligned}
+DSR &= \frac{5+6+10+5+6}{5} - \frac{6+4+4}{3} \\
+&\approx 6.4 - 4.67 \approx 1.73
+\end{aligned}
+$$
+
+* A DSR é bem maior que o ATE!
+
+* A DSR **irá (quase sempre) falhar em capturar o efeito causal do tratamento**
+
+* Observe que esse tipo de comparação "ingênua" é frequentemente feita por jornalistas, políticos, cientistas mal treinados (mas você não mais! `r emo::ji("wink")`)
+:::
+
+::::
+
+
+## Problemas com comparações ingênuas {#sec-naive-comp}
+
+Reescrever a DSR para fazer o efeito de tratamento individual $(\delta_i)$ aparecer na equação.
+
+$$
+\begin{aligned}
+   DSR &= \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) \\ &= \mathop{\mathbb{ E}}(Y_i^0 + \delta_i | D_i = 1) - \mathop{\mathbb{E}}(Y_i^0 | D_i = 0)
+\end{aligned}
+$$
+
+
+Para simplificar, suponha que o **efeito do tratamento seja constante** entre as pessoas: para todo $i, \delta_i = \delta$.
+
+
+$$DSR = \delta + \underbrace{\mathop{\mathbb{E}}(Y_i^0 | D_i = 1) - \mathop{\mathbb{E}}(Y_i^0 | D_i = 0)}_\text{Viés de Seleção}$$
+
+E por hipótese: $ATE = \mathop{\mathbb{E}}(\delta_i) = \mathop{\mathbb{E}}(\delta) = \delta$ 
+
+
+([*Apêndice*](@sec-naive-comp-extended): quando a suposição de tratamento constante é relaxada, outro termo de viés aparece.)
+
+
+## Aleatorização resolve o problema da inferência causal!
+
+* ***Experimentos aleatorizados***: você atribui ***aleatoriamente*** pessoas a um tratamento e a um grupo de controle.
+
+* Nesse caso, a atribuição do tratamento é **independente** dos resultados potenciais. 
+
+
+* Em particular, não há razão para $\mathop{\mathbb{E}}(Y_i^0 | D_i = 1)$ ser diferente de $\mathop{\mathbb{E}}(Y_i^0 | D_i = 0)$
+
+   * Portanto, o ***viés de seleção é igual a 0***.
+
+
+* Com atribuição aleatória, temos:
+
+$$ DSR = \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) = ATE$$
+
+:point_right: Podemos estimar o ATE diretamente a partir dos dados!
+
+
+## Experimentos Aleatorizados
+
+- Frequentemente chamados de **R**andomized **C**ontrolled **T**rials (RCT).
+
+- Os primeiros RCTs foram realizados há muito tempo (séculos XVIII e XIX), principalmente em **Medicina**.
+
+- No início do século XX foram popularizados por estatísticos famosos como **J. Neyman** ou **R.A. Fisher**.
+
+- Desde então, eles tiveram uma influência crescente e se tornaram progressivamente uma confiável [ferramenta para avaliação de políticas públicas](https://www.povertyactionlab.org/fr).
+
+- Quanto à economia, o **Prêmio Nobel de Economia de 2019** foi concedido a três expoentes dos RCTs, [Abhijit Banerjee, Esther Duflo e Michael Kremer](https://www.economist.com/finance-and-economics/ 2019/10/17/a-nobel-economics-prêmio-vai-para-pioneiros-na-compreensão-da-pobreza), "por sua abordagem experimental para aliviar a pobreza global".
+
+
+## Tamanho da turma e desempenho dos alunos
+
+Suponha que regredimos as notas médias dos alunos em matemática ou leitura no tamanho da turma.
+
+$$\textrm{matemática}_i = b_0 + b_1 \textrm{tamanho}_i + e_i$$
+
+Sem maiores informações sobre a origem dos dados coletados, $b_1^{OLS}$ só poderá estabelecer uma ***associação*** e não uma ***relação causal***.
+
+
+
+* **Seleção de alunos**: seleção em escolas com turmas de tamanhos diferentes. Pais tenham a noção de que turmas menores são melhores, eles colocarão seus filhos nessas escolas.
+
+
+
+* **Seleção de professores**: os professores escolhem escolas com turmas menores porque é mais fácil ensinar nestas e, se houver competição, os professores melhores terão as vagas.
+
+
+
+Um RCT cuidaria de todos esses vieses!
+
+
+## O Experimento do Projeto STAR
+
+Tennessee **S**student/**T**eacher **A**chievement **R**atio Experiment (ver [Krueger (1999)](http://piketty.pse.ens.fr/files/Krueger1999.pdf))
+
+* Financiado pela legislatura do Tennesse por um custo total de aprox. $ 12 milhões.
+
+* A experiência começou no ano letivo de 1985-1986 e durou quatro anos.
+
+* 11.600 alunos e professores foram **distribuídos aleatoriamente** para um dos 3 grupos a seguir, do jardim de infância até a terceira série:
+
+   1. ***Turma pequena***: 13-17 alunos por professor,
+  
+   2. ***Aula regular***: 22-25 alunos,
+  
+   3. ***Classe regular/auxiliar***: 22-25 alunos com um *auxiliar* do professor em tempo integral.
+
+
+## O Experimento do Projeto STAR
+
+* A aleatorização ocorreu dentro das escolas.
+
+* As habilidades de matemática e leitura dos alunos foram testadas por volta de março de cada ano.
+
+* Houve um problema de ***atrito não aleatório***, mas vamos ignorá-lo.
+
+
+## O Experimento do Projeto STAR
+
+Acabamos de ver que em um RCT o Efeito Médio do Tratamento é obtido computando as diferenças nos resultados entre os grupos de tratamento e controle.
+
+Vamos nos concentrar apenas em:
+
+- Um grupo de tratamento: **pequenas turmas**,
+
+- Um grupo de controle: **aulas regulares**,
+
+- Uma série: **jardim de infância** (k).
+
+
+```{python}
+
+star_df = pd.read_csv("https://www.dropbox.com/s/bf1fog8yasw3wjj/star_data.csv?dl=1")
+star_df = star_df.dropna()
+
+diff_table = pd.DataFrame(
+    {
+        "grade": sorted(["1", "2", "3", "k"] * 2),
+        "test": ["math", "read"] * 4,
+        "mean_regular": star_df.loc[star_df["star"] == "regular"][
+            ["grade", "math", "read"]
+        ]
+        .groupby("grade")
+        .mean()
+        .stack()
+        .values,
+        "mean_small": star_df.loc[star_df["star"] == "small"][["grade", "math", "read"]]
+        .groupby("grade")
+        .mean()
+        .stack()
+        .values,
+        "mean_regular_aide": star_df.loc[star_df["star"] == "regular+aide"][
+            ["grade", "math", "read"]
+        ]
+        .groupby("grade")
+        .mean()
+        .stack()
+        .values,
+    }
+)
+
+diff_table["diff_small_regular"] = diff_table["mean_small"] - diff_table["mean_regular"]
+diff_table["diff_regular_aide_regular"] = (
+    diff_table["mean_regular_aide"] - diff_table["mean_regular"]
+)
+
+diff_table = diff_table.sort_values(by=["grade"], ascending=False).reset_index(drop=True)
+```
+
+```{python}
+#| output: asis
+#| 
+diff_table[diff_table['grade']=='k'][['grade', 'test', 'mean_regular', 'mean_small', 'diff_small_regular']].to_markdown(index=False)
+```
+
+
+Qual é a interpretação para esses ATEs?
+
+
+## RCT em forma de Regressão
+
+$$ Y_i = D_i Y_i^1 + (1 - D_i) Y_i^0 $$
+
+
+
+Fatorando por $D_i$ e substituindo $Y_i^1 - Y_i^0$ por $\delta_i$, obtemos:
+
+$$
+\begin{aligned} 
+Y_i &=Y_i^0 +D_i (Y_i^1 - Y_i^0) \\ &= Y_i^0 +D_i \delta_i 
+\end{aligned}
+$$
+
+
+
+Assumindo $\delta_i = \delta$, para todo $i$, então $Y_i = Y_i^0 + D_i \delta$
+
+
+
+Adicionando $\mathbb{E}[Y_i^0] - \mathbb{E}[Y_i^0] = 0$ ao lado direito:
+
+$$
+\begin{aligned} 
+Y_i &= \mathbb{E}[Y_i^0] + D_i \delta + Y_i^0 - \mathbb{E}[Y_i^0] \\ &= b_0 + \delta D_i + e_i 
+\end{aligned}
+$$
+
+onde $b_0 = \mathbb{E}[Y_i^0]$ e $e_i = Y_i^0 - \mathbb{E}[Y_i^0]$
+
+
+
+## O Experimento do Projeto STAR: Regressão
+
+A última equação se parece exatamente com o modelo de regressão simples! (com $\delta = b_1$)
+
+Vamos, portanto, estimar o ATE de ser designado para uma turma pequena em notas de matemática.
+
+
+
+Queremos estimar o seguinte modelo: $\text{math score}_i = b_0 + \delta \text{small}_i + e_i$, com
+
+$$
+\text{pequeno}_i = \begin{cases}
+                     1 \textrm{ se atribuído a uma turma pequena} \\\\
+                     0 \textrm{ se atribuído a uma turma regular}
+       \end{cases}
+$$
+
+
+```{python}
+star_df_k_small = star_df.loc[(star_df['star'].isin(['regular', 'small'])) & (star_df['grade'] == 'k')]
+star_df_k_small['small'] = star_df_k_small['star'] == 'small'
+
+star_df_k_small.groupby(['star'])['small'].count()
+```
+
+
+## O Experimento do Projeto STAR: Regressão
+
+Modelo de regressão que queremos estimar: $\text{math score}_i = b_0 + \delta \text{small}_i + e_i$
+
+
+```{python}
+#| output: asis
+lm_math = smf.ols(formula="math ~ small", data=star_df_k_small).fit()
+lm_math.summary()
+```
+
+## O Experimento do Projeto STAR: Regressão
+
+Lembre-se de que: $b_0 = \mathbb{E}[Y_i^0]$ e $\delta = \mathbb{E}[Y_i | D_i = 1] - \mathbb{E}[Y_i | D_i = 0]$
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+```{python}
+#| output: asis
+b_0 = star_df_k_small.loc[star_df_k_small['small'] == False, 'math'].mean()
+b_0
+```
+:::
+
+:::{.column width="50%"}
+
+```{python}
+delta = (
+    star_df_k_small.loc[star_df_k_small["small"] == True, "math"].mean()
+    - star_df_k_small.loc[star_df_k_small["small"] == False, "math"].mean()
+)
+delta
+```
+:::
+
+::::
+
+<!-- 
+## Regressão com uma Variável Dummy: Graficamente
+
+O regressor em nossa regressão é uma ***variável binária***, ou seja, uma variável que assume os valores VERDADEIRO ou FALSO (1 ou 0).
+
+```{r, echo = F, fig.height=4.75, fig.width = 8}
+baseline_graph <- star_df_k_small %>%
+    mutate(small = ifelse(small == "TRUE",1,0)) %>%
+    ggplot(aes(x = small, y = math)) +
+    geom_count(alpha = .7) +
+    labs(x = "Atribuído a uma turma pequena", y = "Nota Matemática", 
+         size = "Número estudantes") +
+    scale_x_continuous(lim = c(-.5,1.5), breaks = c(0,1), labels = c("0\nFALSE","1\nTRUE")) +
+    theme_bw(base_size = 20) +
+    theme(legend.position = c(0,1),
+          legend.justification = c(0,1),
+          legend.background = element_blank(),
+          legend.key=element_blank(),
+          legend.text = element_text(size = 12),
+          legend.title = element_text(size = 12, face = "italic")) 
+baseline_graph
+```
+
+
+
+# Regressão com uma Variável Dummy: Graficamente
+
+O regressor em nossa regressão é uma ***variável binária***, ou seja, uma variável que assume os valores VERDADEIRO ou FALSO (1 ou 0).
+
+```{r, echo = F, fig.height=4.75, fig.width = 8}
+baseline_graph_mean = baseline_graph + 
+    stat_summary(fun = mean, colour = c("#d90502","#DE9854"), size = .75, alpha = 0.9) +
+    annotate("text", x = 0.04, y = b_0 - 12, hjust = 0, label = "E(Y | small = 0)", size = 5, colour = "#d90502") +
+    annotate("text", x = 0.04 + 1, y = b_0 + delta + 16, hjust = 0, label = "E(Y | small = 1)", size = 5, colour = "#DE9854")
+baseline_graph_mean
+```
+
+
+
+# Regressão com uma Variável Dummy: Graficamente
+
+O regressor em nossa regressão é uma ***variável binária***, ou seja, uma variável que assume os valores VERDADEIRO ou FALSO (1 ou 0).
+
+```{r, echo = F, fig.height=4.75, fig.width = 9}
+baseline_graph_mean + 
+    geom_abline(slope = delta, intercept = b_0) +
+    geom_curve(aes(x = -0.3, xend = -0.2, 
+                   y = 425 , yend = b_0 - .5*delta - 5), 
+               size = .5, linetype = 1, colour = "black", 
+               arrow = arrow(length = unit(0.3, "cm"))) +
+    annotate("text", x = -0.5, y = 415, hjust = 0, 
+             label = "Reta de Regressão", size = 5)
+```
+
+ -->
+
+
+# Regressão com uma Variável Dummy: Graficamente
+
+O regressor em nossa regressão é uma ***variável binária***, ou seja, uma variável que assume os valores VERDADEIRO ou FALSO (1 ou 0).
+
+```{python}
+# Convert small variable to 0/1
+star_df_k_small.loc[:, "small"] = star_df_k_small["small"] * 1
+
+# Filter data
+filtered_data = star_df_k_small[
+    (star_df_k_small["math"] >= 475) & (star_df_k_small["math"] <= 500)
+]
+```
+
+```{python}
+#| echo: false
+# Create a Figure and Axes object
+fig, ax = plt.subplots()
+
+# Plot scatter plot
+ax.scatter(filtered_data["small"], filtered_data["math"], alpha=0.7, color="grey")
+
+# Plot mean lines
+ax.axhline(y=b_0, linestyle="--", color="grey")
+ax.axhline(y=b_0 + delta, linestyle="--", color="grey")
+
+# Plot mean points
+mean_small_0 = star_df_k_small[star_df_k_small["small"] == 0]["math"].mean()
+mean_small_1 = star_df_k_small[star_df_k_small["small"] == 1]["math"].mean()
+ax.plot([0], [mean_small_0], "ro", label="E(Y | small = 0)")
+ax.plot([1], [mean_small_1], "bo", label="E(Y | small = 1)")
+
+# Plot regression line
+ax.plot([0, 1], [b_0, b_0 + delta], "k-", label="Linha de Regressão")
+
+# Set labels and title
+ax.set_xlabel("Atribuído a uma turma pequena")
+ax.set_ylabel("Nota Matemática")
+ax.set_title("Regressão com uma Variável Dummy")
+
+# Set x_lim to fit annotations
+ax.set_xlim([-0.5, 1.3])
+# Add arrow and text for delta
+ax.annotate(
+    "",
+    xy=(1.1, b_0),
+    xytext=(1.1, b_0 + delta),
+    arrowprops=dict(arrowstyle="<->"),
+    # fontsize=8,
+)
+ax.annotate(
+    "$\delta$",
+    xy=(1.15, b_0 + delta / 2),
+    xytext=(1.15, b_0 + delta / 2),
+    fontsize=10,
+)
+
+# Set x-axis ticks and labels
+ax.set_xticks([0, 1])
+# ax.set_xticklabels(["0\nFALSE", "1\nTRUE"])
+
+# Set legend
+ax.legend()
+
+# Show the plot
+plt.show()
+```
+
+## Regressão com uma Variável Dummy: Formalmente
+
+Lembre-se do modelo de regressão: $\text{math score}_i = b_0 + \delta \text{small}_i + e_i$
+
+$$
+\begin{aligned} \mathbb{E}[\textrm{math score} | \text{small}_i = 0]&= \mathbb{E}[b_0 + \delta \text{small}_i + e_i | \text{small}_i = 0] \\ 
+&= b_0 + \delta \mathbb{E}[\text{small}_i| \text{small}_i = 0] + \mathbb{E}[e_i|\text{small}_i = 0] \\ 
+&= b_0 
+\end{aligned}
+$$
+
+
+
+$$
+\begin{aligned} \mathbb{E}[\textrm{math score} | \text{small}_i = 1]&= \mathbb{E}[b_0 + \delta \text{small}_i + e_i | \text{small}_i = 1] \\ 
+&= b_0 + \delta \mathbb{E}[\text{small}_i| \text{small}_i = 1] + \mathbb{E}[e_i|\text{small}_i = 1] \\ 
+&= b_0 + \delta 
+\end{aligned}
+$$
+
+
+
+$$\begin{aligned} ATE &= \mathbb{E}[\textrm{math score} | \text{small}_i = 1] - \mathbb{E}[\textrm{math score} | \text{small}_i = 0] \\ 
+&= b_0 + \delta - b_0 \\ 
+&= \delta 
+\end{aligned}
+$$
+
+
+
+Já sabíamos disso, mas agora entendemos por que é verdade :v:
+
+
+
+<!-- class:inverse
+
+# Tarefa: Sua Vez!
+
+
+Execute o código a seguir para filtrar o conjunto de dados para manter apenas os alunos da primeira série e os grupos de turmas pequenas e regulares:
+
+```{r, eval = FALSE}
+star_df_clean <- star_df %>%
+    filter(grade == "1" & star %in% c("small", "regular"))
+```
+
+1. Calcule a pontuação média em matemática para ambos os grupos e a diferença entre os dois.
+
+1. Crie uma variável binária `tratamento` igual a `VERDADEIRO` se o aluno estiver no grupo de tratamento (ou seja, turma pequena) e `FALSO` se no grupo de controle (ou seja, turma de tamanho normal). *Dica:* você pode criar a variável binária com `tratamento = (star == "small")`.
+
+1. Faça a regressão da pontuação em matemática na variável simulada de tratamento. Os resultados estão de acordo com a questão 2?
+
+1. Como você interpreta esses coeficientes?
+ -->
+
+## Deficiências dos RCTs
+
+Os RCTs têm uma ***validade interna*** muito forte, ou seja, eles podem estabelecer vínculos causais de forma convincente.
+
+No entanto, eles têm algumas deficiências:
+
+   * RCTs são **caros**,
+   * RCTs podem enfrentar alguns **problemas éticos**: alguns *tratamentos* simplesmente não podem ser administrados às pessoas,
+   * Os RCTs levam tempo e podemos ter **limitação de tempo**.
+
+
+
+* **Interpretação** dos resultados:
+
+   * ***Validade externa***: Resultados de um determinado RCT podem ser generalizados para outros contextos?
+  
+   * Desvendar os mecanismos que estão atuando pode ser difícil,
+  
+   * Aleatorização imperfeita, atrito, etc.
+
+
+
+## O que vem depois?
+
+* Portanto, se não podemos administrar um RCT, isso significa que temos que encontrar uma maneira de fazer inferência causal a partir de ***dados observacionais*** (em oposição a ***dados experimentais***).
+
+
+
+2 casos amplos:
+
+* ***seleção ocorre em características observáveis***: *regressão múltipla*
+
+* ***seleção ocorre em características não observáveis***: múltiplas abordagens (e.g., *variáveis instrumentais*, *diferença em diferenças*, etc.)
+
+
+
+## 
+
+![](img/correlation_funny.png)
+
+
+
+## Grafos Acíclicos Direcionados - DAG
+
+- Ferramenta gráfica para modelar relações causais
+
+- Composto de nós e arestas
+    + **Nó** representa uma variável
+    + **Aresta** é direcionada pela relação causal
+
+
+<center>
+
+```{python}
+# Create a directed graph
+G = nx.DiGraph()
+
+# Add nodes
+G.add_node("A")
+G.add_node("B")
+
+# Add edge from A to B
+G.add_edge("A", "B")
+
+# Draw the graph
+pos = nx.nx_agraph.graphviz_layout(G, prog="dot", args="-Grankdir=LR")
+nx.draw(
+    G,
+    pos,
+    with_labels=True,
+    node_color="green",
+    node_size=5000,
+    font_size=12,
+    edge_color="black",
+    width=2,
+)
+plt.show()
+```
+
+A causa B
+</center>
+
+
+## Grafos Acíclicos Direcionados - DAG
+
+- Causalidade corre em apenas uma direção (acíclico)
+
+- Causalidade reversa e simultaneidade são complicados de serem representados em um DAG
+
+- Cadeia de efeitos causais (mecanismos)
+
+- Ausência de aresta **significa ausência de efeito!**
+
+
+
+- Um DAG representa um modelo causal teórico ou o conhecimento de um especialista no assunto
+
+
+## Variável Omitida em um DAG
+
+Como representamos uma variável omitida (não observada) em um DAG?
+
+<center>
+
+```{python}
+# Create a directed graph
+G = nx.DiGraph()
+
+# Add nodes
+G.add_node("A")
+G.add_node("B")
+G.add_node("C")
+
+# Add edges
+G.add_edge("C", "A")
+G.add_edge("C", "B")
+G.add_edge("A", "B")
+
+# Draw the graph. Node C must be dashed and grey
+# pos = nx.nx_agraph.graphviz_layout(G, prog="dot", root="A", args="-Grankdir=LR")
+pos = nx.planar_layout(G)
+nx.draw(
+    G,
+    pos,
+    with_labels=True,
+    node_color=["green", "green", "grey"],
+    node_size=5000,
+    font_size=12,
+    edge_color="black",
+    linewidths=2,
+    width=2,
+)
+# Set margins for the axes so that nodes aren't clipped
+ax = plt.gca()
+ax.margins(0.20)
+
+plt.show()
+```
+
+</center>
+
+- A variável C é não observada e portanto, omitida
+
+
+- Entretanto, C é causa comum de A e B. Chamamos de variável de confusão
+- A e B estão correlacionados pelo caminho A <- C -> B, que **não é causal** (_backdoor_)
+
+
+- Efeito causal de A em B não está identificado
+
+:warning: **Viés de variável omitida!**
+
+
+
+## Identificação em um DAG
+
+- Suponha que observamos uma variável X
+
+
+::::{.columns}
+:::{.column width="50%"}
+- X ainda é uma variável de confusão.
+- Podemos **controlar** para X e identificar nosso efeito causal
+:::
+
+:::{.column width="50%"}
+
+```{python}
+G = nx.DiGraph()
+
+# Add nodes
+G.add_node("A")
+G.add_node("B")
+G.add_node("X")
+
+G.add_edge("X", "A")
+G.add_edge("X", "B")
+G.add_edge("A", "B")
+
+pos = nx.planar_layout(G)
+
+nx.draw(
+    G,
+    pos,
+    with_labels=True,
+    node_color=["green", "green", "green"],
+    node_size=5000,
+    font_size=12,
+    edge_color="black",
+    linewidths=2,
+    width=2,
+)
+
+ax = plt.gca()
+ax.margins(0.20)
+
+plt.show()
+```
+
+:::
+
+::::
+
+
+
+- Condicionar em uma variável ao longo de algum caminho _backdoor_, ***bloqueia*** este caminho
+
+- Efeito causal de A em B é **identificado condicional ao valor de X**
+
+
+
+## Identificação em um DAG
+
+::::{.columns}
+:::{.column width="50%"}
+- Considere este outro DAG
+
+```{python}
+G = nx.DiGraph()
+# Add nodes
+G.add_node("A")
+G.add_node("B")
+G.add_node("X")
+G.add_edge("A", "B")
+G.add_edge("A", "X")
+G.add_edge("B", "X")
+
+pos = nx.planar_layout(G)
+nx.draw(
+  G,
+  pos,
+  with_labels=True,
+  node_color=["green", "green", "green"],
+  node_size=5000,
+  font_size=12,
+  edge_color="black",
+  linewidths=2,
+  width=2,
+)
+ax = plt.gca()
+ax.margins(0.20)
+plt.show()
+```
+
+:::
+
+:::{.column width="50%"}
+- X agora é chamado de **colisor** (_collider_)
+
+- Tanto A quanto B afetam X
+
+- Os caminhos de A até B neste grafo
+  + A -> B
+  + A -> X <- B
+
+- Diferença crucial entre colisor e confusor
+
+- Caminho colisor é **automaticamente bloqueado** sem necessidade de condicionar! 
+
+:::
+
+:point_right: Efeito causal de A em B **já está identificado!**
+
+
+
+## Identificação em um DAG
+
+- Identifique o efeito de A em B no seguinte DAG
+
+<center>
+
+
+```{python}
+G = nx.DiGraph()
+G.add_node("A")
+G.add_node("B")
+G.add_node("X")
+G.add_node("Z")
+G.add_edge("A", "B")
+G.add_edge("A", "X")
+G.add_edge("B", "X")
+G.add_edge("Z", "A")
+G.add_edge("Z", "B")
+pos = nx.planar_layout(G)
+nx.draw(
+  G,
+  pos,
+  with_labels=True,
+  node_color=["green", "green", "green", "green"],
+  node_size=5000,
+  font_size=12,
+  edge_color="black",
+  linewidths=2,
+  width=2,
+)
+ax = plt.gca()
+ax.margins(0.20)
+plt.show()
+```
+
+</center>
+
+
+## Identificação em um DAG
+
+Passos quando utilizando DAGs
+
+1. Desenhe o grafo e qual efeito você quer identificar
+
+1. Escreva todos os caminhos entre os nós de causa e efeito
+
+1. Qual é o caminho direto?
+
+1. Quais são os caminhos _backdoor_? Estão (ou podem ser) bloqueados?
+
+
+
+Algumas ferramentas
+
+- [causalfusion.net](https://causalfusion.net/)
+- [DAGitty](http://dagitty.net/)
+
+
+## :books: Leitura Recomendada
+
+* CUNNINGHAM, Scott. Causal Inference: The Mixtape, New Haven: Yale University Press, 2021. URL: https://mixtape.scunning.com/
+
+* ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mastering'metrics: The path from cause to effect. Princeton university press, 2014. URL: http://www.masteringmetrics.com/
+
+* ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mostly harmless econometrics: An empiricist's companion. Princeton university press, 2009.
+
+
+
+## ATÉ A PRÓXIMA AULA!
+
+
+::: aside
+[1]: Este slides foram baseados nas aulas de econometria da [SciencesPo Department of Economics](https://github.com/ScPoEcon/ScPoEconometrics-Slides)
+:::
+
+
+# Appendix
+
+## Average Treatment on the Treated and on the Untreated{#sec-attandatu}
+
+Other ***conditional*** average treatment effects may be of interest:
+
+::::{.columns}
+:::{.column width="50%"}
+**A**verage **T**reatment on the **T**reated (***ATT***)
+
+\begin{align}
+ ATT &= \mathop{\mathbb{E}}(\delta_i | D_i = 1) \\
+     &= \mathop{\mathbb{E}}(Y_i^1 - Y_i^0 | D_i = 1) \\
+     &= \mathop{\mathbb{E}}(Y_i^1 | D_i = 1) - \mathop{\mathbb{E}}(Y_i^0 | D_i = 1)
+\end{align}
+
+The ATT measures the ***average treatment effect conditional on being in the treatment group***.
+
+*Example:* the effect of participating in a training program (*treatment*) for those who participated (*treatment group*).
+:::
+
+:::{.column width="50%"}
+**A**verage **T**reatment on the **U**ntreated (***ATU***)
+
+\begin{align}
+ ATU &= \mathop{\mathbb{E}}(\delta_i | D_i = 0) \\
+     &= \mathop{\mathbb{E}}(Y_i^1 - Y_i^0 | D_i = 0) \\
+     &= \mathop{\mathbb{E}}(Y_i^1 | D_i = 0) - \mathop{\mathbb{E}}(Y_i^0 | D_i = 0)
+\end{align}
+
+The ATU measures the ***average treatment effect conditional on being in the control group***.
+
+*Example:* the effect of attending a private school (*treatment*) for students from a public school (*control group*).
+:::
+
+::::
+
+*Note:* In the majority of cases, ATE $\neq$ ATT $\neq$ ATU! <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> @sec-ate
+
+
+
+## Problems with Naive Comparisons {#sec-naive-comp-extended}
+
+Let's now relax the assumption that the treatment effect is constant among all individuals.
+
+After [some tedious calculations](https://mixtape.scunning.com/potential-outcomes.html#simple-difference-in-means-decomposition) that we skip, the SDO can now be decomposed as: 
+
+\begin{align}
+  SDO &= ATE + \underbrace{\mathop{\mathbb{E}}(Y_i^0 | D_i = 1) - \mathop{\mathbb{E}}(Y_i^0 | D_i = 0)}_\text{Selection bias} \\
+  & \quad \quad  \quad \quad + \underbrace{(1-\pi)(ATT - ATU)}_\text{Heterogenous treatment effect bias}
+\end{align}
+
+where $1 - \pi$ denotes the share of people in the control group.
+
+So there is a novel source of bias that comes from the potential ***heterogeneity in the individual treatment effect*** $\delta_i$.
+
+* ***Selection bias***: those who attend university are likely to have higher baseline cognitive skills (regardless of whether they actually attend college).
+* ***Heterogeneous treatment effect bias***: those who attend university may improve their cognitive skills more at university because they are more motivated. <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> @sec-naive-comp

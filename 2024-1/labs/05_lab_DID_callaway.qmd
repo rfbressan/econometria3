@@ -1,0 +1,223 @@
+---
+title: Aula de laboratório - Diferenças em diferenças
+author: Rafael Bressan
+date: "2023-10-30"
+format: 
+  html:
+    theme: cosmo
+    embed-resources: true
+lang: "pt-BR"
+from: markdown+emoji
+bibliography: ../exams/references.bib
+---
+
+```{r}
+#| message: false
+#| warning: false
+
+library(wooldridge)
+library(bacondecomp)
+library(did)
+library(haven)
+library(ggplot2)
+library(tidyverse)
+library(modelsummary)
+library(fixest)
+library(lfe)
+```
+
+## Diferenças em diferenças (DID)
+
+Modelos DID são atualmente os mais utilizados em estudos observacionais
+para investigar os efeitos de alguma política em uma variável de interesse.
+Este tipo de _design_ faz uso das variações tanto entre grupo de indivíduos
+quanto no tempo para obter o **efeito médio do tratamento sobre os tratados**
+- ATT.
+
+$$
+\begin{align}
+DID &= \underbrace{\mathbb{E}[Y_{ist}|s = \text{NJ}, t = \text{Nov}] - \mathbb{E}[Y_{ist}|s = \text{NJ}, t = \text{Fev}]}_{\Delta_t^{GT}} \\
+&- \Big(\underbrace{\mathbb{E}[Y_{ist}|s = \text{PA},t = \text{Nov}] - \mathbb{E}[Y_{ist}| s = \text{PA},t = \text{Fev}]}_{\Delta_t^{GC}}\Big) \\
+\end{align}
+$$
+
+onde estamos fazendo uso do exemplo Card e Krueger (1994). Pensilvânia (PA) 
+é o estado de controle e Nova Jersey (NJ) o grupo tratado.
+
+Em um formato de regressão, o estimador DID é obtido regredindo a variável
+de interesse em uma _dummy_ para o grupo tratamento, uma outra _dummy_
+para o período após a intervenção e um termo de interação entre os dois, que 
+denota o efetivo tratamento.
+
+$$Y_{st} = \alpha + \beta TRAT_s + \gamma POS_t + \delta(TRAT_s \times POS_t) + \varepsilon_{st}$$
+
+Nesta especificação $\hat\delta = \text{DID}$ e a vantagem de fazer a 
+regressão é que podemos fazer inferência sobre o parâmetro estimado 
+diretamente.
+
+Vamos fazer um exemplo encontrado no livro-texto do Wooldridge, exemplo 13.3
+os efeitos de um incinerador de lixo no preço das moradias.
+
+```{r}
+data("kielmc")
+# DID manual
+tratados <- kielmc[kielmc$nearinc == 1, ]
+controles <- kielmc[kielmc$nearinc == 0, ]
+
+delta_t <- mean(tratados[tratados$year == 1981, "rprice"]) -
+    mean(tratados[tratados$year == 1978, "rprice"])
+delta_c <- mean(controles[controles$year == 1981, "rprice"]) -
+    mean(controles[controles$year == 1978, "rprice"])
+
+did_manual <- delta_t - delta_c
+```
+
+**Estime o efeito com um DID em forma de regressão**
+
+```{r}
+#| code-fold: true
+did_reg <- feols(price ~ nearinc * y81,
+    data = kielmc,
+    vcov = "HC1"
+)
+etable(did_reg)
+```
+
+Digamos que a hipótese de tendências paralelas seja válida somente após
+controlar pela idade do imóvel e idade ao quadrado, distância para uma 
+rodovia, área do terreno e da moradia, número de quartos e banheiros. 
+Gostaríamos também que o modelo fosse especificado em logarítimos, para ter
+uma ideia de variação percentual do preço da moradia em relação a presença 
+do incinerador.
+
+**Calcule o efeito no cenário acima descrito**
+
+```{r}
+#| code-fold: true
+did_ctr <- feols(log(rprice) ~ nearinc * y81 + sw0(age + agesq + lintst + log(land) + log(area) + rooms + baths),
+    data = kielmc,
+    vcov = "HC1"
+)
+
+etable(did_ctr)
+```
+
+
+
+## Diferenças em diferenças com adoção escalonada
+
+Uma literatura recente tem demonstrado que a especificação tradicional de TWFE pode ser viesda
+para o efeito do tratamento sobre os tratados, ou seja, TWFE com adocação 
+escalonada pode não ser equivalente ao estimador de DID. Vamos utilizar a
+mesma especificação, porém utilizando o estimador de Callaway & Sant'anna 
+encontrado no pacote [`did`](https://bcallaway11.github.io/did/index.html).
+
+O que é **adoção escalonada ao tratamento**? Casos em que há mais de dois períodos de tempo e unidades diferentes podem ser tratadas em diferentes momentos. Por exemplo, suponha que o tratamento seja a construção de uma rodovia e que a construção da rodovia ocorra em diferentes períodos de tempo para diferentes cidades. Neste caso, a adoção do tratamento é escalonada no tempo e o estimador TWFE tradicional pode ser viesado. Chamamos de coorte as unidades que são inicialmente tratadas no mesmo período de tempo. Outro ponto importante da adoção escalonada é a irreversibilidade do tratamento. Uma vez que uma unidade é tratada, ela não pode voltar a ser não tratada.
+
+**TWFE com múltiplos períodos de tratamento**
+
+$$
+\begin{equation}
+y_{it} =\alpha_i + \gamma_t +\sum_{h=-\infty}^\infty \mu_h \mathbb{I}\{t=g_i+h\} + \varepsilon_{it}, \\
+\end{equation}
+$$
+
+onde $g_i$ é o período de adoção inicial ao tratamento (data que define a coorte) da unidade $i$ e $h$ é o tempo relativo ao tratamento (valores negativos indicam períodos anteriores ao tratamento).
+
+Vamos criar uma base de dados fictícia para entender melhor o tratamento escalonado.
+
+```{r}
+dat4 <- data.frame(
+    id = rep(1:3, times = 10),
+    tt = rep(1:10, each = 3)
+) |>
+    within({
+        D <- (id == 2 & tt >= 5) | (id == 3 & tt >= 8)
+        btrue <- ifelse(D & id == 3, 4, ifelse(D & id == 2, 2, 0))
+        y <- id + 1 * tt + btrue * D
+    })
+```
+
+O gráfico deste conjunto de dados é o seguinte:
+
+```{r}
+ggplot(dat4, aes(x = tt, y = y, col = factor(id))) +
+    geom_point() +
+    geom_line() +
+    geom_vline(xintercept = c(4.5, 7.5), lty = 2) +
+    scale_x_continuous(breaks = scales::pretty_breaks()) +
+    labs(x = "Período", y = "Variável Dependente", col = "ID")
+```
+
+A decomposição de @GOODMANBACON2021254 é:
+
+```{r}
+(bgd <- bacon(y ~ D, dat4, id_var = "id", time_var = "tt"))
+```
+
+Podemos visualizar os quatro DID canônicos que o TWFE está estimando através do gráfico abaixo:
+
+```{r}
+rbind(
+    dat4 |> subset(id %in% c(1, 2)) |> transform(role = ifelse(id == 2, "Tratamento", "Controle"), comp = "1.1. Early vs Untreated"),
+    dat4 |> subset(id %in% c(1, 3)) |> transform(role = ifelse(id == 3, "Tratamento", "Controle"), comp = "1.2. Late vs Untreated"),
+    dat4 |> subset(id %in% c(2, 3) & tt < 8) |> transform(role = ifelse(id == 2, "Tratamento", "Controle"), comp = "2.1. Early vs Late"),
+    dat4 |> subset(id %in% c(2:3) & tt > 4) |> transform(role = ifelse(id == 3, "Tratamento", "Controle"), comp = "2.2. Late vs Early")
+) |>
+    ggplot(aes(tt, y, group = id, col = factor(id), lty = role)) +
+    geom_point() +
+    geom_line() +
+    facet_wrap(~comp) +
+    scale_x_continuous(breaks = scales::pretty_breaks()) +
+    scale_linetype_manual(values = c("Controle" = 5, "Tratamento" = 1)) +
+    labs(x = "Período", y = "Variável Dependente", col = "ID", lty = "Papel")
+```
+
+Vamos implementar o exemplo com dados reais encontrado na documentação do pacote [`did`](https://bcallaway11.github.io/did/articles/did-basics.html#an-example-with-real-data). Este é um conjunto de dados que contém as taxas de emprego de adolescentes ao nível do condado de 2003-2007.
+
+
+```{r}
+data(mpdta)
+head(mpdta)
+```
+
+Este é um painel balanceado com 2500 observações ao todo. As coortes $g$ são dadas pela coluna `first.treat` enquanto que o período é dado pela coluna `year` e o grupo tratamento está contido em `treat`. Primeiramente vamos estimar um modelo TWFE dinâmico.
+
+```{r}
+# Cria uma coluna com tempo relativo ao tratamento
+mpdta <- mpdta %>%
+    mutate(h_period = ifelse(treat == 1, year - first.treat, 0)) # Controles h=0
+
+twfe_reg <- feols(lemp ~ i(h_period, treat, ref = -1) | countyreal + year, data = mpdta)
+msummary(twfe_reg)
+```
+
+```{r}
+iplot(twfe_reg)
+```
+
+Agora, iremos estimar o modelo usando o estimador de @callaway2021difference.
+
+```{r}
+did_reg <- att_gt(
+    yname = "lemp",
+    gname = "first.treat",
+    idname = "countyreal",
+    tname = "year",
+    xformla = ~1,
+    data = mpdta,
+)
+
+did_dyn <- aggte(did_reg, type = "dynamic")
+summary(did_dyn)
+```
+
+```{r}
+ggdid(did_dyn)
+```
+
+Vejam que as estimativas mudaram ligeiramente apenas. Muito embora a 
+especificação TWFE deva ser viesada em teoria, este viés aparentemente é
+pequeno. 
+
+# Referências

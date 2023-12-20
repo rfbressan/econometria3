@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Rafael Bressan">
+
+<title>Econometria III</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="Questoes_causalidade_vi_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Questoes_causalidade_vi_files/libs/quarto-html/quarto.js"></script>
+<script src="Questoes_causalidade_vi_files/libs/quarto-html/popper.min.js"></script>
+<script src="Questoes_causalidade_vi_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Questoes_causalidade_vi_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Questoes_causalidade_vi_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Questoes_causalidade_vi_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Questoes_causalidade_vi_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Questoes_causalidade_vi_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Questoes_causalidade_vi_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Questoes_causalidade_vi_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="Questoes_causalidade_vi_files/libs/viz-1.8.2/viz.js"></script>
+<link href="Questoes_causalidade_vi_files/libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet">
+<script src="Questoes_causalidade_vi_files/libs/grViz-binding-1.0.10/grViz.js"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Econometria III</h1>
+<p class="subtitle lead"></p><p>Questões - Causalidade e Variáveis Instrumentais</p><p></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>Rafael Bressan </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 de julho de 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="causalidade" class="level1">
+<h1>Causalidade</h1>
+<section id="questão-1" class="level2">
+<h2 class="anchored" data-anchor-id="questão-1">Questão 1</h2>
+<p>Assinale <strong>V</strong>erdadeiro ou <strong>F</strong>also, com relação a Causalidade. Justifique as falsas:</p>
+<ul>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) A estrutura de resultados potenciais é uma estrutura estatística usada para estudar o efeito causal de uma intervenção.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) O problema fundamental da inferência causal é que só podemos observar um resultado potencial para cada unidade.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) O resultado contrafactual refere-se ao que teria acontecido a um indivíduo na ausência de uma intervenção.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Um experimento aleatorizado (RCT) é um tipo de estudo observacional que pode ajudar a estabelecer a causalidade.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) O efeito do tratamento para uma unidade de observação é a diferença entre os resultados potenciais nas condições de tratamento e controle.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Uma variável de confusão é uma variável que está relacionada tanto à atribuição do tratamento quanto aos resultados potenciais.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) DAGs são uma ferramenta gráfica usada para representar as relações causais entre variáveis em um sistema.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Em um DAG, as setas entre as variáveis representam relacionamentos causais, onde o início da seta indica a causa e a ponta da seta indica o efeito.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Um caminho <em>backdoor</em> em um DAG é um caminho que conecta a exposição (tratamento) ao resultado por meio de variáveis que não fazem parte do caminho causal.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Um colisor em um DAG é uma variável causada por duas ou mais outras variáveis em um caminho entre tratamento e resultado, e pode induzir associações espúrias entre essas variáveis.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Em um DAG, as setas entre as variáveis representam correlação em vez de causalidade.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) DAGs podem ser usados para provar causalidade entre variáveis.</p></li>
+</ul>
+</section>
+<section id="questão-2" class="level2">
+<h2 class="anchored" data-anchor-id="questão-2">Questão 2</h2>
+<p>Considere o seguinte DAG e responda aos itens abaixo:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e2e8d4c043722b83a271" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-e2e8d4c043722b83a271">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"X\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\"] \n  \"2\" [label = \"Z\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\"] \n  \"3\" [label = \"M\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\"] \n  \"4\" [label = \"W\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\"] \n  \"5\" [label = \"Y\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\"] \n  \"1\"->\"5\" \n  \"1\"->\"3\" \n  \"1\"->\"2\" \n  \"4\"->\"1\" \n  \"4\"->\"5\" \n  \"5\"->\"2\" \n  \"3\"->\"5\" \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<ol type="a">
+<li><p>Considerando que deseja-se estimar o efeito causal de X em Y, então descreva quem são as variáveis de confusão, os mecanismos e os colisores.</p></li>
+<li><p>Se desejamos o efeito total de X em Y, então devemos controlar para W somente. Explique porque.</p></li>
+<li><p>Explique por que a variável Z não pode ser utilizada como instrumento de X para recuperar o efeito causal de X em Y.</p></li>
+</ol>
+</section>
+</section>
+<section id="variáveis-instrumentais" class="level1">
+<h1>Variáveis Instrumentais</h1>
+<section id="questão-1-1" class="level2">
+<h2 class="anchored" data-anchor-id="questão-1-1">Questão 1</h2>
+<p>Assinale <strong>V</strong>erdadeiro ou <strong>F</strong>also, com relação a Variáveis Instrumentais. Justifique as falsas:</p>
+<ul>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Considere o modelo <span class="math inline">\(y = \alpha + \beta x + u\)</span>, onde <span class="math inline">\(x\)</span> é uma covariável endógena. Se <span class="math inline">\(z\)</span> é um instrumento válido para <span class="math inline">\(x\)</span>, deve ser que <span class="math inline">\(z\)</span> influencie <span class="math inline">\(x\)</span> e que também influencie <span class="math inline">\(y\)</span>, independentemente de <span class="math inline">\(x\)</span>.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Para calcular os erros padrão corretos para os coeficientes estimados através do MQ2E é altamente recomendado o uso das rotinas de estimativa do MQ2E disponíveis em pacotes estatísticos ao invés de produzir essas estimativas manualmente.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Quando todas as suposições de identificação são válidas, podemos confiar que o estimador de variáveis instrumentais (VI) será consistente.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Considere o modelo <span class="math inline">\(y = \alpha + \beta x + u\)</span>, onde <span class="math inline">\(x\)</span> é uma covariável endógena e <span class="math inline">\(z\)</span> é um candidato a instrumento para <span class="math inline">\(x\)</span>. Se houver correlação entre <span class="math inline">\(z\)</span> e <span class="math inline">\(u\)</span>, mas for menor que a correlação entre <span class="math inline">\(x\)</span> e <span class="math inline">\(u\)</span>, será sempre melhor usar a estimativa VI do que a estimativa OLS, porque VI deve ter menor viés.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Instrumentos fracos podem inflar os erros padrão produzidos por VI, mas não induzem viés de amostra finita.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) A regra de bolso para verificar se há instrumentos fracos é a seguinte: para o caso de um único regressor endógeno, a estatística F de primeiro estágio deve ser significativa para indicar um instrumento forte.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) A distinção entre variáveis endógenas e exógenas depende da distribuição das variáveis: quando são normalmente distribuídas, são exógenas, caso contrário são endógenas.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) O estimador MQ2E é consistente e tem uma distribuição normal em grandes amostras.</p></li>
+<li><p>(<span class="math inline">\(\phantom{X}\)</span>) Instrumentos fracos são um problema porque fazem com que os instrumentos não sejam exógenos.</p></li>
+</ul>
+</section>
+<section id="questão-2-1" class="level2">
+<h2 class="anchored" data-anchor-id="questão-2-1">Questão 2</h2>
+<p>No artigo de <span class="citation" data-cites="mattos2011">Mattos e França (<a href="#ref-mattos2011" role="doc-biblioref">2011</a>)</span>, os autores examinam a relação entre emprego público e redistribuição de renda nos municípios brasileiros. Eles utilizam os requisitos estabelecidos pela <strong>Lei de Responsabilidade Fiscal como instrumento</strong> para a variação do emprego público entre os municípios.</p>
+<p>A LRF estabelece limites máximos para dois grandes itens do orçamento público, um deles sendo as despesas com folha de pagamento, que não devem ultrapassar 60% da receita corrente líquida (RCL) do município. A LRF é uma variável <em>dummy</em> que equivale a um para governos cujo gasto com folha de pagamento ultrapassou 60% da RCL em pelo menos um ano entre 1997 e 1999 e estava dentro dos limites impostos pela LRF em 2000. Essa variável é igual a zero para todos os demais municípios.</p>
+<p>Este artigo propõe investigar o efeito do emprego público na distribuição de renda nos municípios brasileiros. A variável dependente é a desigualdade de renda (incineq), enquanto que as variáveis independentes são emprego público (publicemp) e outros controles. A <em>dummy</em> lrf1 servirá de instrumento para o emprego público.</p>
+<p><span class="math display">\[\text{incineq}_i=\eta + \delta \text{publicemp}_i + \lambda\text{controls}_i + \varepsilon_i\]</span></p>
+<ol type="a">
+<li><p>Por que o emprego público pode estar correlacionado com o termo de erro <span class="math inline">\(\varepsilon\)</span>? Qual o problema resultante? (1,0 ponto)</p></li>
+<li><p>Você acha que a LRF é um bom instrumento para o nível de emprego público local? Cite os dois critérios que uma variável instrumental deve atender e defenda ou critique a LRF com base nestes critérios. (1,5 pontos)</p></li>
+</ol>
+<p>Os resultados do primeiro estágio são apresentados abaixo:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Figs/mattos2011_stage1.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Com base nestes resultados, você imagina que LRF é um bom instrumento para publicemp? O que você faria de diferente nesta estimação de primeiro estágio? (1,5 pontos)</li>
+</ol>
+</section>
+<section id="questão-3" class="level2">
+<h2 class="anchored" data-anchor-id="questão-3">Questão 3</h2>
+<p>Considere um modelo para a saúde de um indivíduo:</p>
+<p><span class="math display">\[saude=\beta_0+\beta_1 idade+\beta_2 peso+\beta_3 altura+\beta_4 masculino+\beta_5 trabalho+\beta_6 exercicio+u_1\]</span></p>
+<p>onde <code>saude</code> é alguma medida quantitativa da saúde da pessoa; <code>idade</code>, <code>peso</code>, <code>altura</code> e <code>masculino</code> são autoexplicativos; <code>trabalho</code> é horas semanais trabalhadas; e <code>exercicio</code> são as horas de exercício por semana.</p>
+<ol type="a">
+<li><p>Por que você poderia se preocupar com o fato de o exercício estar correlacionado com o termo de erro <span class="math inline">\(u_1\)</span>? Que problema esta correlação provocaria no seu estimador de MQO?</p></li>
+<li><p>Suponha que você possa coletar dados sobre duas variáveis adicionais, <code>distcasa</code> e <code>distrab</code>, as distâncias de casa e do trabalho até a academia mais próxima. Discuta se estas variáveis seriam bons instrumentos para <code>exercicio</code>. Quais as condições que elas devem atender? Explique em detalhes.</p></li>
+<li><p>Agora suponha que <code>distcasa</code> e <code>distrab</code> não estejam de fato correlacionados com <span class="math inline">\(u_1\)</span>, assim como todas as variáveis na equação acima, com exceção de <code>exercicio</code>. Escreva a forma reduzida para <code>exercicio</code>.</p></li>
+<li><p>Como as hipóteses de identificação na parte b) pode ser testada?</p></li>
+</ol>
+</section>
+<section id="questão-4" class="level2">
+<h2 class="anchored" data-anchor-id="questão-4">Questão 4</h2>
+<p>Considere um modelo de estimação através de regressão de variáveis instrumentais</p>
+<p><span class="math display">\[y_i=\beta_0+\beta_1 x_i+\beta_2w_i+u_i\]</span> onde temos uma amostra independente das variáveis aleatórias Y, X, W e Z. Suponha que X é um regressor endógeno, equanto W é exógeno. Z é um instrumento válido para X.</p>
+<p>Escolha a alternativa correta para cada uma das questões abaixo.</p>
+<p>3.1) A regra de bolso para verificar se há instrumentos fracos é a seguinte: para o caso de um único regressor endógeno,</p>
+<ol type="a">
+<li>um primeiro estágio F deve ser estatisticamente significativo para indicar um instrumento forte.</li>
+<li>um primeiro estágio F &gt; 1,96 indica que os instrumentos são fracos.</li>
+<li>a estatística t em cada um dos instrumentos deve exceder pelo menos 1,64.</li>
+<li>um primeiro estágio F &lt; 10 indica que os instrumentos são fracos.</li>
+<li>tudo o que precede</li>
+</ol>
+<p>3.2) A distinção entre variáveis endógenas e exógenas é</p>
+<ol type="a">
+<li>que as variáveis exógenas são determinadas dentro do modelo e as variáveis endógenas são determinadas fora do modelo</li>
+<li>dependente do tamanho da amostra: para n &gt; 100, as variáveis endógenas tornam-se exógenas</li>
+<li>depende da distribuição das variáveis: quando são normalmente distribuídas, são exógenas, caso contrário são endógenas</li>
+<li>se as variáveis estão ou não correlacionadas com o termo de erro <span class="math inline">\(u\)</span></li>
+<li>tudo o que precede</li>
+</ol>
+<p>3.3) Quando observadas todas as suas hipóteses, o estimador MQ2E é:</p>
+<ol type="a">
+<li>consistente e tem uma distribuição normal em grandes amostras.</li>
+<li>imparcial</li>
+<li>eficiente em pequenas amostras</li>
+<li>F-distribuído.</li>
+<li>tudo o que precede</li>
+</ol>
+<p>3.4) Instrumentos fracos são um problema porque:</p>
+<ol type="a">
+<li>o estimador MQ2E pode não ser normalmente distribuído, mesmo em grandes amostras.</li>
+<li>fazem com que os instrumentos não sejam exógenos.</li>
+<li>o estimador MQ2E não pode ser calculado.</li>
+<li>você não pode mais prever as variáveis endógenas no primeiro estágio.</li>
+<li>tudo o que precede</li>
+</ol>
+<p>3.6) Sejam <span class="math inline">\(W\)</span> as variáveis exógenas incluídas em uma função de regressão que também tem regressores endógenos <span class="math inline">\(X\)</span>. As variáveis <span class="math inline">\(W\)</span> podem:</p>
+<ol type="a">
+<li>ser variáveis de controle</li>
+<li>tem a propriedade <span class="math inline">\(E(u_i|W_i) = 0\)</span></li>
+<li>fazer um instrumento exógeno para a sua regressão</li>
+<li>não ser incluídas na regressão de primeiro estágio</li>
+<li>tudo o que precede</li>
+</ol>
+<p>3.7) A lógica das variáveis de controle em regressões de VI:</p>
+<ol type="a">
+<li>é similar a lógica das variáveis de controle no MQO</li>
+<li>só se aplica no caso de erros homocedásticos no primeiro estágio do MQ2E</li>
+<li>é substancialmente diferente da lógica das variáveis de controle no MQO, uma vez que existem duas etapas na estimativa</li>
+<li>implica que o MQ2E é eficiente</li>
+<li>tudo o que precede</li>
+</ol>
+<p>3.8) Para que <span class="math inline">\(W\)</span> seja uma variável de controle efetiva na estimativa de VI, onde <span class="math inline">\(Z\)</span> é o instrumento, a seguinte condição deve valer</p>
+<ol type="a">
+<li><span class="math inline">\(E(u_i) = 0\)</span></li>
+<li><span class="math inline">\(E(u_i|Z_i, W_i) = E(u_i|W_i)\)</span></li>
+<li><span class="math inline">\(E(u_iu_j) \neq 0\)</span></li>
+<li>deve haver um intercepto na regressão</li>
+<li>tudo o que precede</li>
+</ol>
+<p>3.9) O estimador VI pode ser usado para eliminar potencialmente o viés resultante de</p>
+<ol type="a">
+<li>multicolinearidade</li>
+<li>correlação serial</li>
+<li>erros de medida nas variáveis</li>
+<li>heterocedasticidade</li>
+<li>tudo o que precede</li>
+</ol>
+<p>3.10) A regressão de variáveis instrumentais usa instrumentos para:</p>
+<ol type="a">
+<li>estabelecer o Efeito Mozart</li>
+<li>para aumentar o R2 da regressão</li>
+<li>para eliminar a correlação serial</li>
+<li>isolar movimentos em <span class="math inline">\(X\)</span> que não estão correlacionados com <span class="math inline">\(u\)</span></li>
+<li>tudo o que precede</li>
+</ol>
+</section>
+<section id="questão-5" class="level2">
+<h2 class="anchored" data-anchor-id="questão-5">Questão 5</h2>
+<p>Uma das consequências de uma crise econômica é que muitas famílias possam ter dificuldades para pagar suas hipotecas. Como resultado, muitas delas podem ser despejadas de suas casas sem ter uma alternativa segura de moradia, com todas as consequências negativas que isso pode levar. Como formulador de políticas, você decide implementar um programa que oferece mediação legal e de execução hipotecária como apoio a famílias com problemas para pagarem as suas hipotecas e tentar evitar que percam suas casas. No entanto, antes de expandir o programa para todo o país, primeiro você deseja verificar que o programa é eficaz para ajudar as pessoas a manter suas casas. Para fazer isso, você monta um experimento no qual, entre 1.000 famílias elegíveis, você aleatoriamente designa 500 delas para participar deste novo programa, deixando as 500 restantes com o apoio habitual dos serviços sociais (portanto, sem acesso a mediação de encerramento). Suponha que você tenha as seguintes informações para todas as 1.000 famílias elegíveis antes de o programa ser implementado:</p>
+<ul>
+<li><p><span class="math inline">\(Assign_i\)</span>: se a família foi designada para o programa de mediação (<span class="math inline">\(Assign_i= 1\)</span>) ou grupo controle (<span class="math inline">\(Assign_i = 0\)</span>)</p></li>
+<li><p><span class="math inline">\(Famsize_i\)</span>: número de membros da família</p></li>
+<li><p><span class="math inline">\(Kids_i\)</span>: se há crianças na casa (<span class="math inline">\(Kids_i= 1\)</span>) ou não (<span class="math inline">\(Kids_i= 0\)</span>)</p></li>
+<li><p><span class="math inline">\(Empl_i\)</span>: se há alguém empregado no domicílio (<span class="math inline">\(Empl_i= 1\)</span>) ou não (<span class="math inline">\(Empl_i= 0\)</span>)</p></li>
+<li><p><span class="math inline">\(Price_i\)</span>: o valor de mercado da casa</p></li>
+<li><p><span class="math inline">\(Debt_i\)</span>: a dívida hipotecária pendente</p></li>
+</ul>
+<p>E as seguintes informações referentes a um ano após a implantação do programa:</p>
+<ul>
+<li><p><span class="math inline">\(Particip_i\)</span>: se a família realmente participou do programa de mediação (<span class="math inline">\(Particip_i = 1\)</span>) ou não (<span class="math inline">\(Particip_i= 0\)</span>)</p></li>
+<li><p><span class="math inline">\(Home_i\)</span>: número de meses que a família conseguiu manter sua casa.</p></li>
+</ul>
+<ol type="a">
+<li>Usando as informações a disposição antes do início do programa, como você testaria se a aleatorização foi bem sucedida? Isto é, como você testaria que <span class="math inline">\(Assign_i\)</span> é independente das características observáveis? Descreva a regressão usada (se alguma), as hipóteses de teste e a estatística a ser utilizada.</li>
+</ol>
+<p>Se a aleatorização funcionou e todas as famílias designadas ao tratamento efetivamente participaram do programa de mediação, então em uma regressão da variável de interesse (<span class="math inline">\(Home_i\)</span>) na designação de tratamento (<span class="math inline">\(Assign_i\)</span>), esta designação de tratamento será exógena e, portanto, seu coeficiente pode ser interpretado causalmente.</p>
+<ol start="2" type="a">
+<li><p>Como você testaria se o novo programa de mediação foi eficaz em ajudar as famílias a manter suas casas por mais tempo? Escreva o modelo de regressão, o teste de hipótese e a estatística que você usaria para a inferência.</p></li>
+<li><p>Suponha agora que a atribuição inicial das famílias ao programa tenha sido de fato aleatória. Após serem convidadas a participar do novo programa de mediação, 20% das famílias do grupo tratamento decidiram não participar<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Isso significa que o tratamento efetivo para 20% das famílias do grupo do programa (<span class="math inline">\(Assign_i= 1\)</span>) foi zero (<span class="math inline">\(Particip_i= 0\)</span>). Explique por que, nessas circunstâncias, regredir apenas o número de meses que uma família manteve sua casa (<span class="math inline">\(Home_i\)</span>) no tratamento <strong>real</strong> da família (<span class="math inline">\(Particip_i\)</span>) pode não levar a uma estimativa consistente do efeito causal do programa no tempo em que uma família a mantém em casa.</p></li>
+</ol>
+<ol start="4" type="a">
+<li>Tendo em vista os dados de que dispõe, proponha uma estratégia de estimativa alternativa que, nas circunstâncias descritas na questão c), permita obter o efeito causal do programa (<span class="math inline">\(Particip_i\)</span>) no tempo que uma família mantém a sua casa (<span class="math inline">\(Home_i\)</span>). Explique porque esta estratégia seria não-viesada.</li>
+</ol>
+</section>
+<section id="questão-5-1" class="level2">
+<h2 class="anchored" data-anchor-id="questão-5-1">Questão 5</h2>
+<p>Suponha que temos um modelo <span class="math inline">\(y=\beta_0 + \beta_1 x + u\)</span>, onde <span class="math inline">\(E\left[x_i u_i\right]\neq 0\)</span>. Você obtém uma variável <span class="math inline">\(Z\)</span> tal que <span class="math inline">\(E\left[z_i u_i\right] = 0\)</span>.</p>
+<ol type="a">
+<li><p>Utilize a expressão <span class="math inline">\(Cov(z_i, u_i) = 0\)</span> para deduzir a forma do parâmetro <span class="math inline">\(\beta_1\)</span> nesse modelo.</p></li>
+<li><p>Na letra (a), uma das hipóteses necessárias é “há correlação entre as variáveis X e Z”. Como isso aparece na forma estimada acima? Explique, intuitivamente, o sentido econômico dessa hipótese. Procure usar exemplos de um problema real.</p></li>
+<li><p>Utilizando os análogos amostrais de (a), proponha um estimador para o parâmetro populacional. Chame esse estimador de <span class="math inline">\(\hat\beta_{1,IV}\)</span>.</p></li>
+<li><p>Outra forma de calcular <span class="math inline">\(\hat\beta_{1,IV}\)</span> é via MQ2E. Explique quais são os dois estágios da regressão.</p></li>
+<li><p>Assuma agora que <span class="math inline">\(y = X\beta + u\)</span>, onde <span class="math inline">\(E\left[X' u\right] \neq 0\)</span> e <span class="math inline">\(X\)</span> tenha dimensão <span class="math inline">\(k &gt; 1\)</span>. Você obtém um conjunto de <span class="math inline">\(g \leq k\)</span> variáveis <span class="math inline">\(Z\)</span> tal que <span class="math inline">\(E\left[Z'u\right] = 0\)</span>. Perceba que X pode conter, por exemplo, apenas uma variável tal que <span class="math inline">\(E\left[x_k u\right] \neq 0\)</span> (endógena), o que já tornaria o modelo inválido. Dê uma intuição para o motivo do número de variáveis instrumentais ser necessariamente maior ou igual ao número de variáveis explicativas em <span class="math inline">\(X\)</span> que são correlacionadas com o termo de erro. O que acontece quando o número de variáveis instrumentais é estritamente maior que o número de variáveis endógenas?</p></li>
+</ol>
+</section>
+<section id="questão-6" class="level2">
+<h2 class="anchored" data-anchor-id="questão-6">Questão 6</h2>
+<p>Um dos problemas mais simples de variáveis instrumentais é o caso onde <span class="math inline">\(y_i=\alpha+\beta x_i+u_i\)</span> , <span class="math inline">\(E\left[x_i u_i\right] \neq 0\)</span>, e você obtém um instrumento binário (dummy) <span class="math inline">\(z_i\)</span>, com <span class="math inline">\(E\left[z_i u_i\right] = 0\)</span></p>
+<ol type="a">
+<li><p>Mostre que o estimador de IV pode ser escrito como <span class="math display">\[
+b_{Wald}=\frac{\bar{y}_1 - \bar{y}_0}{\bar{x}_1 - \bar{x}_0}
+\]</span> Onde <span class="math inline">\(\bar{y}_0\)</span> e <span class="math inline">\(\bar{x}_0\)</span> são as médias amostrais de <span class="math inline">\(x_i\)</span> e <span class="math inline">\(y_i\)</span> considerando apenas a parte da amostra com <span class="math inline">\(z_i = 0\)</span>, e que <span class="math inline">\(\bar{y}_1\)</span> e <span class="math inline">\(\bar{x}_1\)</span> são as médias amostrais considerando apenas a amostra com <span class="math inline">\(z_i = 1\)</span>. Esse estimador, conhecido como estimador de Wald, foi proposto pelo próprio em 1940.</p></li>
+<li><p>Pense no caso onde <span class="math inline">\(x_i\)</span> é uma variável dummy indicando um tratamento (por exemplo, <span class="math inline">\(x_i = 1\)</span> se o indivı́duo aplicou para um programa de retreinamento fornecido pelo governo). Interprete intuitivamente o estimador acima, lembrando que a média de uma variável dummy é a proporção de observações cujo valor de <span class="math inline">\(x_i\)</span> é igual à 1. Para ajudar na resposta, note que o estimador da letra (a) requer que <span class="math inline">\(\bar{x}_1 - \bar{x}_0 \neq 0\)</span>.</p></li>
+</ol>
+</section>
+<section id="questão-7" class="level2">
+<h2 class="anchored" data-anchor-id="questão-7">Questão 7</h2>
+<p>Suponha que você está interessado em estimar <span class="math display">\[y_i = \alpha + \beta x_i + u_i\]</span> onde <span class="math inline">\(x_i\)</span> é um escalar e <span class="math inline">\(E\left[x_i u_i\right] \neq 0\)</span>. Você observa uma variável aleatória <span class="math inline">\(z_i\)</span>, relevante no sentido de que <span class="math inline">\(E\left[z_i x_i\right] \neq 0\)</span>, mas não não tem certeza se ela é válida como instrumento, ou seja, não é garantindo que <span class="math inline">\(E\left[z_i u_i\right] = 0\)</span>. Você decide estimar o modelo por OLS e IV, usando os estimadores</p>
+<p><span class="math display">\[b_{MQO}=\frac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum (x_i-\bar x)^2} \text{ e } b_{VI}=\frac{\sum(z_i-\bar z)(y_i-\bar y)}{\sum (z_i-\bar z)(x_i-\bar x)}\]</span> Nesse exercício, queremos deduzir condições para as quais o estimador de MQO é uma opção melhor que o estimador de VI.</p>
+<ol type="a">
+<li>Mostre que o viés assintótico do MQO é igual à</li>
+</ol>
+<p><span class="math display">\[plim(b_{MQO}) − \beta = \text{corr}(x_i, u_i)\frac{\sigma_u}{\sigma_x}\]</span></p>
+<ol start="2" type="a">
+<li>Mostre que o viés assintótico do IV é igual à</li>
+</ol>
+<p><span class="math display">\[plim(b_{VI}) − \beta = \frac{\text{corr}(z_i, u_i)}{\text{corr}(z_i, x_i)}\frac{\sigma_u}{\sigma_x}\]</span></p>
+<ol start="3" type="a">
+<li><p>Use os resultados acima para deduzir quando o estimador de MQO é preferı́ve ao de VI, em termos de viés.</p></li>
+<li><p>Você sabe o que são “instrumentos fracos”. Relacione a discussão sobre instrumentos fracos, isso é, um instrumento tal que <span class="math inline">\(E\left[x_i z_i\right]\)</span> tem um valor baixo, com o resultado da letra (c).</p></li>
+</ol>
+</section>
+<section id="questão-8" class="level2">
+<h2 class="anchored" data-anchor-id="questão-8">Questão 8</h2>
+<p>Neste problema você deve estabelecer a equivalência algébrica entre MQ2E, a razão entre estimativas MQO em forma reduzida e o estimador de VI. Considere um modelo com uma única (suspeito) variável endógena (variáveis já em desvio):</p>
+<p><span class="math display">\[\begin{align}
+y_1&amp;=\alpha_1 y_2 + u_1\\
+y_1&amp;=\pi_1 z + v_1\\
+y_2&amp;=\pi_2 z + v_2
+\end{align}\]</span></p>
+<p>Para maior clareza de notação, usamos <span class="math inline">\(y_2\)</span> como a variável endógena suspeita e <span class="math inline">\(z\)</span> como a variável exógena que serve como instrumento para <span class="math inline">\(y_2\)</span>. A segunda e terceira equações são a forma reduzida para <span class="math inline">\(y_1\)</span> e <span class="math inline">\(y_2\)</span>, respectivamente.</p>
+<p>Sabemos que um estimador de <span class="math inline">\(\alpha_1\)</span> é o estimador MQ2E usando o instrumento z. Considere um estimador alternativo de <span class="math inline">\(\alpha_1\)</span>: i) estimar a forma reduzida de <span class="math inline">\(y_1\)</span> e <span class="math inline">\(y_2\)</span> por MQO; ii) <span class="math inline">\(\hat\alpha_1^{alt}=\hat\pi_1/\hat\pi_2\)</span></p>
+<ol type="a">
+<li><p>Mostre a equivalência numérica entre <span class="math inline">\(\hat\alpha_1^{2E}\)</span> e <span class="math inline">\(\hat\alpha_1^{alt}\)</span></p></li>
+<li><p>Mostre a equivalência numérica entre <span class="math inline">\(\hat\alpha_1^{VI}\)</span> e <span class="math inline">\(\hat\alpha_1^{alt}\)</span></p></li>
+</ol>
+</section>
+<section id="questão-9" class="level2">
+<h2 class="anchored" data-anchor-id="questão-9">Questão 9</h2>
+<p>O objetivo deste exercı́cio é comparar as estimativas e erros padrão corretamente obtidos usando MQ2E com aqueles obtidos usando procedimentos inadequados. Use a base WAGE2.dta para esse exercı́cio.</p>
+<ol type="a">
+<li>Estime a equação abaixo usando MQ2E <span class="math display">\[\log(wage) = \beta_0 + \beta_1 educ + \beta_2 exper + \beta_3 tenure + \beta_4 black + u,\]</span></li>
+</ol>
+<p>onde <code>sibs</code> é uma variável instrumental para <code>educ</code>. Reporte os resultados.</p>
+<ol start="2" type="a">
+<li><p>Agora, execute manualmente o MQ2E. Ou seja, primeiro faça a regressão de <span class="math inline">\(educ_i\)</span> em <span class="math inline">\(sibs_i\)</span>, <span class="math inline">\(exper_i\)</span>, <span class="math inline">\(tenure_i\)</span> e <span class="math inline">\(black_i\)</span> e obtenha os valores ajustados, <span class="math inline">\(\widehat{educ}_i\)</span> <span class="math inline">\(i = 1, \ldots , n\)</span>. Em seguida, execute a regressão de segundo estágio <span class="math inline">\(\log(wage_i)\)</span> em <span class="math inline">\(\widehat{educ}_i\)</span>, <span class="math inline">\(exper_i\)</span>, <span class="math inline">\(tenure_i\)</span> e <span class="math inline">\(black_i\)</span>. Verifique se os <span class="math inline">\(\beta_j\)</span> são idênticos aos obtidos no item a) e os erros padrão são um pouco diferentes. Os erros padrão obtidos da regressão do segundo estágio ao realizar manualmente MQ2E são inadequados.</p></li>
+<li><p>Agora, use o seguinte procedimento de duas etapas, que geralmente produz estimativas inconsistentes de <span class="math inline">\(\beta_j\)</span>, e não apenas erros padrão incorretos. Na etapa um, regresse <span class="math inline">\(educ_i\)</span> em <span class="math inline">\(sibs_i\)</span> apenas e obtenha os valores ajustados, digamos <span class="math inline">\(\widetilde{educ}_i\)</span>. (Observe que esta é uma regressão de primeiro estágio incorreta). Em seguida, na segunda etapa, execute a regressão de <span class="math inline">\(\log(wage)\)</span> em <span class="math inline">\(\widetilde{educ}_i\)</span>, <span class="math inline">\(exper_i\)</span> , <span class="math inline">\(tenure_i\)</span> e <span class="math inline">\(black_i\)</span>. Como a estimativa desse procedimento incorreto de duas etapas se compara à estimativa correta de MQ2E do retorno à educação?</p></li>
+</ol>
+</section>
+<section id="referências" class="level2 unnumbered">
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Referências</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-mattos2011" class="csl-entry" role="listitem">
+Mattos, Enlinson, e Vitor França. 2011. <span>“Public employment and income redistribution: causal evidence for Brazilian municipalities”</span>. <em>Public Choice</em> 146 (1/2): 43–73. <a href="http://www.jstor.org/stable/41483617">http://www.jstor.org/stable/41483617</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Notas de rodapé</h2>
+
+<ol>
+<li id="fn1"><p>Este problema é conhecido como atrito (do inglês <em>attrition</em>), quando nem todos os indíduos designados ao tratamento efetivamente o recebem.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

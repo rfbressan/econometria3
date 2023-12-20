@@ -1,0 +1,71 @@
+---
+title: "Github Copilot"
+author: "Rafael Bressan"
+date: "2023-07-26"
+format:
+  html:
+    theme: cosmo
+    embed-resources: true
+lang: pt-BR
+from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
+---
+
+# Criando uma conta no GitHub
+
+Para criar uma conta no GitHub, basta acessar o site [GitHub](https://github.com/) e clicar em **Sign up**.
+Aparecerá uma tela para você preencher com seus dados pessoais como e-mail, password, username e outros.
+
+Verifique a conta e pronto! Você já tem uma conta no GitHub. Confira fazendo login no site (sign in). Você deve ver uma tela semelhante a esta.
+
+![GitHub](img/githubOpenPage.png)
+
+Dentro da sua conta no GitHub, você pode criar repositórios, adicionar colaboradores, criar issues, fazer controle de versão dos seus códigos entre outras coisas. Uma coisa para se ter em mente é que o GitHub é um site de **hospedagem de código-fonte** primordialmente. Grandes conjuntos de dados não devem ser armazenados no GitHub.
+
+# Cadastro no GitHub Education
+
+Agora que você já tem uma conta no GitHub, você pode se cadastrar no GitHub Education. Para isso, acesse o site [GitHub Education](https://education.github.com/) e clique em **Join Global Campus**.
+
+Na parte para estudantes, clique em **Sign up for Student Developer Pack** e em seguida em **Get Student Benefits**. Neste ponto você terá de preencher algumas informações e apresentar um documento que comprove a matrícula em uma instituição de ensino. É **obrigatório** que você tenha um email institucional para se cadastrar no GitHub Education. Você pode incluir este e-mail como secundário no seu perfil do GitHub.
+
+Depois de alguns dias, você receberá um e-mail confirmando que você foi aceito no GitHub Education. A partir daí, você terá acesso a diversos benefícios como o GitHub Pro, que permite criar repositórios privados, e o GitHub Copilot, que é o assunto deste tutorial.
+
+Um roteiro da própria Microsoft está disponível [neste link](https://techcommunity.microsoft.com/t5/desenvolvedores-br/como-obter-github-copilot-gratuito-para-estudantes-e-professores/ba-p/3828780).
+
+# GitHub Copilot
+
+O [GitHub Copilot](https://github.com/features/copilot/) é uma ferramenta de programação assistida por inteligência artificial. Ela foi desenvolvida pela OpenAI em parceria com o GitHub. O GitHub Copilot é capaz de sugerir linhas de código para o usuário, baseado no contexto do código que está sendo escrito. Para isso, ele utiliza uma rede neural treinada com milhões de linhas de código-fonte de projetos open source hospedados no GitHub. Além disso, o Copilot também é capaz de sugerir documentação para o código que está sendo escrito, conversão de código entre linguagens e até mesmo a criação de testes unitários.
+
+![GitHub Copilot](img/copilotPage.png)
+
+Para também utilizar o **Copilot Chat** é necessário se inscrever na [_waitlist_](https://github.com/github-copilot/chat_waitlist_signup/join)
+
+# Usando o VSCode com o GitHub Copilot
+
+Durante nossas aulas de laboratório faremos uso da linguagem R (e eventualmente Python). Para isso, utilizaremos o VSCode como IDE. O VSCode é uma IDE gratuita e open source desenvolvida pela Microsoft. Ela é muito utilizada por desenvolvedores de software e cientistas de dados. Para instalar o VSCode, acesse o site [VSCode](https://code.visualstudio.com/) e clique em **Download**. Siga as instruções de instalação^[Nos laboratórios da UDESC o VSCode já está instalado]. 
+
+![VSCode](img/vsCodePage.png)
+
+## Instalando Extensões
+
+Para utilizar as linguagens de programação R e Python no VSCode, além do próprio Copilot, é necessário instalar algumas extensões. Para isso, clique no ícone de extensões no menu lateral esquerdo do VSCode. ![](img/extensoes.png)
+
+Vamos instalar as seguintes extensões:
+- R
+- Python
+- GitHub Copilot
+- GitHub Copilot Chat
+
+Para a extensão **R** funcionar adequadamente é necessário instalar o pacote R chamado `languageserver`. Para isso, abra um console do R e execute o seguinte comando:
+
+```{r}
+#| eval: false
+install.packages("languageserver")
+```
+
+Para o **Copilot** ficar integrado ao VSCode é necessário que você logue com sua conta do GitHub no VSCode. Para isso, clique no ícone de contas no menu lateral esquerdo do VSCode. ![](img/contas.png)
+
+## Vídeo Tutoriais
+
+No canal do Youtube do VSCode existem alguns vídeos tutoriais sobre o GitHub Copilot. Segue o link do canal, procure pela _playlist_ **GitHub Copilot Series**.
+
+[VSCode - YouTube](https://www.youtube.com/@code)

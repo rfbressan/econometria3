@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Econometria III</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Rafael Bressan" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41584331-6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-41584331-6');
+    </script>
+
+    <link rel="stylesheet" href="../../css/scpo.css" type="text/css" />
+    <link rel="stylesheet" href="../../css/scpo-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Econometria III
+]
+.subtitle[
+## Modelos de Equações Simultâneas
+]
+.author[
+### Rafael Bressan
+]
+.date[
+### Esag </br> 2023-02-23
+]
+
+---
+
+
+layout: true
+
+&lt;div class="my-footer"&gt;&lt;img src="../../img/logo/UdescEsag.jpeg" style="height: 60px;"/&gt;&lt;/div&gt; 
+
+---
+
+
+
+layout: true
+
+&lt;div class="my-footer"&gt;&lt;img src="../../img/logo/UdescEsag.jpeg" style="height: 60px;"/&gt;&lt;/div&gt; 
+
+---
+
+# Introdução
+
+- Até agora nos preocupamos apenas com modelos de regressão com **uma única equação** 
+
+- Modelos em que há uma **única variável dependente** e uma ou mais variáveis
+explicativas
+
+- Nesses modelos, o foco foi a estimação do valor médio da variável resposta (dependente), condicionado aos valores das variáveis explicativas (regressores).
+
+- A relação de causa e efeito, nesses modelos, se existir, vai das variáveis explicativas para a variável resposta
+
+---
+
+# Introdução
+
+- Porém, existem casos onde essa relação unidirecional não faz sentido econômico
+
+- Isso ocorre quando a variável resposta é determinada por um grupo de variáveis explicativas onde algumas são, por sua vez, determinadas pela variável resposta.
+
+--
+
+- Temos ***determinação simultânea*** de variáveis econômicas 
+
+- Também pode ser entendida como ***causalidade reversa***
+
+---
+
+# Introdução
+
+- Há uma relação simultânea, entre a variável resposta e alguns regressores endógenos, o que torna a distinção entre variáveis dependentes e independentes duvidosa.
+
+- Agrupamos o conjunto de variáveis que possam ser determinadas simultaneamente exatamente como se faz em modelos de equações.
+
+--
+
+- Assim, nos ***modelos de equações simultâneas*** há mais de uma equação – uma para cada variável endógena.
+
+---
+
+# Exemplo
+## Oferta e Demanda
+
+- O preço **P** de um bem e a quantidade **Q** vendida são determinados pela intersecção das curvas de demanda e oferta desse bem.
+
+- Para simplificar, vamos supor que as curvas de oferta e demanda sejam lineares e, ainda, acrescentando os choques aleatórios, `\(u_1\)` e `\(u_2\)` , podemos escrever as equações de oferta e demanda empíricas como:
+
+--
+
+$$
+`\begin{align*}
+Q^d&amp;=\alpha_1+\alpha_2 P + u_1, &amp;\alpha_2&lt;0\\
+Q^o&amp;=\beta_1+\beta_2 P + u_2, &amp;\beta_2&gt;0\\
+Q^d&amp;=Q^o=Q
+\end{align*}`
+$$
+
+---
+
+# Exemplo
+## Oferta e Demanda
+
+.pull-left[
+&lt;img src="oferta_demanda.png" width="420" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+- Se a ***curva de oferta*** tiver inclinação positiva e houver um ***choque de demanda*** `\(u_1\)`, a curva da demanda se deslocará 
+
+- Entretanto, como mostra a figura ao lado, um deslocamento na demanda altera tanto a quantidade **Q** quanto o preço **P**
+
+- Ou seja, `\(u_1\)` e P não podem ser considerados independentes.
+]
+
+---
+
+# Exemplo
+## Oferta e Demanda
+
+`\(\underbrace{\alpha_1+\alpha_2 P + u_1}_{Q^d} = \underbrace{\beta_1+\beta_2 P + u_2}_{Q^o}\)` - Condição de equilíbrio
+
+`$$P=\underbrace{\frac{\alpha_1-\beta_1}{\beta_2-\alpha_2}}_{\pi_1}+\underbrace{\frac{u_1-u_2}{\beta_2-\alpha_2}}_{v_1}$$`
+
+--
+
+- Fica claro que **P** contém o termo de erro `\(u_1\)` (e `\(u_2\)`!), logo não pode ser exógeno em nenhuma das duas equações
+
+- O mesmo procedimento pode ser feito para **Q**
+
+---
+
+# Viés de Simultaneidade
+
+- ***Simultaneidade*** ocorre quando uma ou mais variáveis explicativas são determinadas conjuntamente com a variável dependente
+
+- Quando há simultaneidade, o método **MQO gera estimadores viesados** e inconsistentes.
+
+- Regressores não são exógenos! `\(E[u\mid X]\neq 0\)`
+
+---
+# Viés de Simultaneidade no MQO
+
+$$
+`\begin{align*}
+y_1&amp;=\alpha_1y_2+\beta_1z_1+u_1\\
+y_2&amp;=\alpha_2y_1+\beta_2z_2+u_2
+\end{align*}`
+$$
+
+- Vamos nos concentrar em estimar a primeira equação.
+
+- Para dar interpretação causal e estimar por MQO, `\(y_2\)` deve ser *não correlacionada* com `\(u_1\)`
+
+--
+
+`$$(1-\alpha_1\alpha_2)y_2=\alpha_2\beta_1z_1+\beta_2z_2+\alpha_2u_1+u_2,\qquad \text{ hipótese: }\alpha_1\alpha_2\neq 1$$`
+--
+
+- `\(y_2=\pi_{21}z_1+\pi_{22}z_2+v_2\)`
+
+- `\(v_2=(\alpha_2u_1+u_2)/((1-\alpha_1\alpha_2))\)`
+
+--
+
+- Ou seja, `\(y_2\)` contém em seu termo de erro `\(v_2\)` o erro `\(u_1\)`!!
+  + Exceção: `\(\alpha_2=0\)` quando `\(u_1\perp u_2\)`. Equações desacopladas
+
+---
+# Viés de Simultaneidade no MQO
+
+- Quando `\(y_2\)` for correlacionado com `\(u_1\)` em virtude das equações simultâneas, dizemos que **MQO sofre de viés de simultaneidade**
+
+- A direção do viés pode ser complicada em modelos mais complexos
+
+- Partimos da covariância de `\(y_2\)` com `\(u_1\)`
+
+--
+
+`\(Cov(y_2, u_1)=Cov(v_2, u_1)\)` Por quê?
+
+--
+
+`\(Cov(y_2, u_1)=\frac{\alpha_2}{(1-\alpha_1\alpha_2)}\sigma_1^2\)`
+
+
+---
+
+# Problema de Identificação
+
+Por ***problema de identificação*** entendemos a possibilidade de recuperar os parâmetros de uma **equação estrutural** a partir dos coeficientes estimados na **forma reduzida**.
+
+--
+
+- ***Equação estrutural*** é aquela que retrata a estrutura de uma economia ou o
+comportamento de um agente econômico. Exemplos: curva de oferta e demanda
+
+- ***Forma reduzida*** é a equação que expressa uma variável endógena apenas em termos das variáveis exógenas e dos termos de erros estocásticos.
+  + Exemplo anterior: `\(y_2=\pi_{21}z_1+\pi_{22}z_2+v_2\)`
+
+--
+
+- A equação estrutural é ***identificada*** quando a recuperação de todos os seus parâmetros puder ser feita com base nos parâmetros estimados da forma reduzida.
+
+---
+
+# Problema de Identificação
+
+- O problema de identificação surge pois uma equação na forma reduzida pode ser **compatível com diferentes equações estruturais** ou diferentes hipóteses (modelos)
+
+- Dessa forma, não é possível dizer qual modelo específico está sob investigação.
+
+- Maneira fácil de saber: forma reduzida possui menos parâmetros que as equações estruturais
+
+---
+
+# Exemplo de (Não) Identificação
+
+Voltamos ao nosso exemplo. As formas reduzidas são:
+
+$$
+`\begin{align*}
+P&amp;=\pi_1+v_1\\
+Q&amp;=\pi_2+v_2,
+\end{align*}`
+$$
+onde
+
+`\(\pi_1=\frac{\alpha_1-\beta_1}{\beta_2-\alpha_2}\)`, `\(v_1=\frac{u_1-u_2}{\beta_2-\alpha_2}\)`, `\(\pi_2=\frac{\alpha_1\beta_2-\alpha_2\beta_1}{\beta_2-\alpha_2}\)` e `\(v_2=\frac{\beta_2 u_1 - \alpha_2 u_2}{\beta_2-\alpha_2}\)`
+
+--
+
+- A forma reduzida provê apenas 2 parâmetros, `\(\pi_1\)` e `\(\pi_2\)`
+
+- Nossas equações estruturais possuem 4 parâmetros, `\(\alpha_1, \alpha_2, \beta_1, \beta_2\)`.
+
+--
+
+- Portanto, **não é possível** calcular os parâmetros estruturais a partir dos coeficientes estimados na forma reduzida
+
+---
+
+# Condição de Classificação
+
+A primeira equação em um modelo de equações simultâneas com duas equações será identificada se, e somente se, a segunda equação contiver **ao menos uma variável exógena** (com coeficiente diferente de zero) que esteja *excluída* da primeira equação.
+
+--
+
+$$
+`\begin{align*}
+Q^d&amp;=\alpha_1+\alpha_2 P + u_1, &amp;\alpha_2&lt;0\\
+Q^o&amp;=\beta_1+\beta_2 P + u_2, &amp;\beta_2&gt;0\\
+Q^d&amp;=Q^o=Q
+\end{align*}`
+$$
+
+- Não temos **nenhuma variável exógena** neste modelo! A condição de classificação não é satisfeita
+
+- Equações estruturais não identificadas (ou subidentificadas)
+
+---
+
+# Condição de Classificação
+
+- Alteramos o modelo incluindo a renda **Y** e assumindo que esta seja exógena
+
+$$
+`\begin{align*}
+Q^d&amp;=\alpha_1+\alpha_2 P + \gamma_1 Y + u_1, &amp;\alpha_2&lt;0\\
+Q^o&amp;=\beta_1+\beta_2 P + u_2, &amp;\beta_2&gt;0\\
+Q^d&amp;=Q^o=Q
+\end{align*}`
+$$
+
+- Qual das equações estruturais passa a ser identificada?
+
+--
+
+- É a equação de **oferta**! Uma equação é identificada se a outra equação do modelo possuir uma variável exógena
+
+- Renda exógena funciona como uma variável de deslocamento (_shifter_) da demanda
+
+- Variações exógenas de demanda permitem identificar a curva de oferta
+
+---
+
+# Condição de Classificação
+
+&lt;img src="05-simultaneas_pt_files/figure-html/oferta-id-1.svg" width="480" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Exemplo
+
+## Taxas de Assassinatos e Força Policial
+
+- Esperamos que o tamanho da força policial em um determinado município, ***reduza*** a criminalidade. Um simples modelo pode ser
+
+`$$assaspc=\alpha_1 polpc+\beta_{10}+\beta_{11}rendapc+u_1$$`
+- A **pergunta de pesquisa** é: qual o efeito do aumento da força policial no número de assassinatos per capita?
+
+- Vejam que a pergunta é **causal** e portanto, necessitamos de exogeneidade na variação do policiamento
+
+--
+
+.center[**Este é o caso** ❓]
+
+---
+
+# Exemplo
+
+## Taxas de Assassinatos e Força Policial
+
+- É fácil imaginar que não, não é o caso do policiamento ser exógeno em relação ao número de assassinatos em um município
+
+- O tamanho da **força policial responde** ao índice de criminalidade!
+
+`$$polpc=\alpha_2 assaspc+\beta_{20}+u_2$$`
+
+--
+
+- Qual o sinal esperado de `\(\alpha_1\)` e `\(\alpha_2\)`?
+- É possível interpretar diretamente a primeira equação de forma causal?
+- Qual(is) das equações estruturais são identificadas
+
+---
+
+# Exemplo
+
+- E se a renda também estiver incluída na força policial ?
+
+`$$\begin{align*}
+assaspc&amp;=\alpha_1 polpc+\beta_{10}+\beta_{11}rendapc+u_1\\
+polpc&amp;=\alpha_2 assaspc+\beta_{20}+\beta_{21}rendapc+u_2
+\end{align*}$$`
+
+--
+
+- Ainda teremos **identificação** de alguma das equações estruturais ❓
+
+--
+
+- .red[Não] mais! Apesar da renda ser exógena nas duas equações estruturais, ela não atende a **restrição de exclusão**
+
+---
+
+# Exemplo
+
+&lt;img src="05-simultaneas_pt_files/figure-html/oferta-id1-1.svg" width="480" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Estimação de Modelos de Equações Simultâneas
+
+- Uma vez que temos um sistema (ou pelo menos uma das equações) identificável, ***como estimar seus parâmetros***?
+
+--
+
+- Já sabemos como fazê-lo
+
+.center[**Através de Mínimos Quadrados em 2 Estágios**]
+
+--
+
+- Variáveis exógenas servirão como **instrumentos** para as variáveis endógenas
+
+---
+
+# Exemplo MQ2E
+
+## Oferta de Trabalho de Mulheres Casadas que Trabalham
+
+$$
+`\begin{align*}
+hours&amp;=\alpha_1 lwage + \beta_{10}+ \beta_{11}educ+\beta_{12}age+\beta_{13}kidslt6+\beta_{14}nwifeinc+u_1\\
+lwage&amp;=\alpha_2 hours + \beta_{20}+ \beta_{21}educ+ \beta_{22}exper+\beta_{23}exper^2+ u_2 
+\end{align*}`
+$$
+
+- **Hipóteses:** apenas `hours` e `lwage` são endógenas
+  + `educ` poderia ser endógena. Ignore para efeitos de ilustração
+  
+--
+
+- Condição de classificação é satisfeita se `\(\beta_{22}\neq 0\)` ou `\(\beta_{23}\neq 0\)`
+
+- Testamos através da forma reduzida da segunda equação
+
+---
+
+# Exemplo MQ2E
+
+## Oferta de Trabalho de Mulheres Casadas que Trabalham
+
+
+
+.panelset[
+.panel[.panel-name[Código]
+
+```r
+library(wooldridge)
+data("mroz")
+
+reg_1st &lt;- feols(lwage~educ+age+kidslt6+nwifeinc+exper+expersq,
+                 data = mroz, vcov = "HC1")
+```
+]
+
+.panel[.panel-name[Resultados]
+&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Model 1 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −0.4472 (0.2889) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; educ &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.1011 (0.0141) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −0.0026 (0.0059) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; kidslt6 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −0.0532 (0.1048) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; nwifeinc &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.0056 (0.0027) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; exper &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.0419 (0.0151) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;box-shadow: 0px 1px"&gt; expersq &lt;/td&gt;
+   &lt;td style="text-align:center;box-shadow: 0px 1px"&gt; −0.0008 (0.0004) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 428 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+]
+---
+
+# Exemplo MQ2E
+
+## Oferta de Trabalho de Mulheres Casadas que Trabalham
+
+.panelset[
+.panel[.panel-name[Código]
+
+```r
+# Regressão MQO viesada
+reg_mqo &lt;- feols(hours~lwage+educ+age+kidslt6+nwifeinc, 
+                 data = mroz, vcov = "HC1")
+# Regressão VI sobreidentificada
+reg_vi &lt;- feols(hours~educ+age+kidslt6+nwifeinc | lwage ~ exper+expersq, 
+                 data = mroz, vcov = "HC1")
+```
+]
+
+.panel[.panel-name[Resultados]
+&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; MQO &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; VI &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1523.77 (309.42) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2225.66 (607.37) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; lwage &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −2.05 (82.02) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1639.56 (597.51) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; educ &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −6.62 (18.44) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −183.75 (68.27) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; age &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.56 (5.36) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −7.81 (10.56) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; kidslt6 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −328.86 (126.68) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −198.15 (209.90) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;box-shadow: 0px 1px"&gt; nwifeinc &lt;/td&gt;
+   &lt;td style="text-align:center;box-shadow: 0px 1px"&gt; −5.92 (3.39) &lt;/td&gt;
+   &lt;td style="text-align:center;box-shadow: 0px 1px"&gt; −10.17 (5.32) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 428 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 428 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+]
+---
+
+# Sistemas com mais de 2 Equações
+
+$$
+`\begin{align*}
+y_1&amp;=\alpha_{12}y_2+\alpha_{13}y_3+\beta_{11}z_1+u_1\\
+y_2&amp;=\alpha_{21}y_1+\beta_{21}z_1+\beta_{22}z_2+\beta_{23}z_3+u_2\\
+y_3&amp;=\alpha_{32}y_2+\beta_{31}z_1+\beta_{32}z_2+\beta_{33}z_3+\beta_{34}z_4+u_3
+\end{align*}`
+$$
+
+- Geralmente complicado *mostrar que é identificada*
+
+- Fácil verificar equações que **não são identificadas**
+
+- Qual destas equações claramente não é identificada ❓
+
+--
+
+- Na terceira equação .red[não existe VI possível] para `\(y_2\)`
+
+--
+
+- As outras duas equações possuem VI potenciais (exógenas excluídas da eq. estrutural)
+
+---
+
+# Condição de Ordem Geral
+
+*Em um modelo de M equações simultâneas, para que uma equação seja identificada, o número de variáveis exógenas (ou predeterminadas) excluídas da equação não deve ser menor que o número de variáveis endógenas incluídas nessa equação menos 1*
+
+- M – número de variáveis endógenas no modelo
+- m – número de variáveis endógenas em uma dada equação
+- K – número de variáveis exógenas no modelo, incluindo os interceptos
+- k – número de variáveis exógenas em uma dada equação
+
+`\(K – k \geq m – 1\)`
+
+--
+
+- **Observações:**
+  + A variável dependente faz parte da contagem de endógenas
+  + Na igualdade dizemos que a equação é exatamente identificada
+  + A condição de ordem é necessária para a identificação mas não é suficiente. 
+
+---
+
+# Exemplo
+
+$$
+`\begin{align*}
+y_1&amp;=\alpha_{12}y_2+\alpha_{13}y_3+\beta_{11}z_1+u_1\\
+y_2&amp;=\alpha_{21}y_1+\beta_{21}z_1+\beta_{22}z_2+\beta_{23}z_3+u_2\\
+y_3&amp;=\alpha_{32}y_2+\beta_{31}z_1+\beta_{32}z_2+\beta_{33}z_3+\beta_{34}z_4+u_3
+\end{align*}`
+$$
+
+- Suponha que todos os `\(\beta\)` sejam diferentes de zero
+
+- `\(M=3\)`, `\(K=4\)`
+
+--
+
+- Eq. 1: `\(m=3\)`, `\(k=1\)`. Logo, `\(4-1&gt;3-1\)`. Condição de ordem é atendida com desigualdade estrita. **Equação é sobreidentificada**
+
+- Eq. 2 ❓
+
+---
+
+# Equações Simultâneas com Séries Temporais
+
+- Uma das aplicações mais antigas de SEM, grandes modelos macroeconômicos
+
+- Modelo Keynesiano de demanda agregada (economia fechada)
+
+$$
+`\begin{align*}
+C_t&amp;=\beta_0+\beta_1(Y_t-T_t)+\beta_2 r_t+\beta_3 C_{t-1}+u_{1t}\\
+I_t&amp;=\gamma_0+\gamma_1r_t+\gamma_2 Y_{t-1}+u_{2t}\\
+Y_t&amp;\equiv C_t+I_t+G_t
+\end{align*}`
+$$
+
+--
+
+- `\(C_t, I_t, Y_t\)` são endógenas
+
+- Variáveis defasadas são chamadas de ***variáveis predeterminadas***
+
+--
+
+- Variáveis predeterminadas *podem ser consideradas exógenas* sob a condição de **exogeneidade estrita** dos erros. `\(u_t\perp X_t\)` e `\(u_t \perp Y_{t-i}, X_{t-i}, i=1,\ldots, T\)` 
+
+---
+
+# Equações Simultâneas com Séries Temporais
+
+- Como poderíamos estimar as equações deste modelo?
+
+$$
+`\begin{align*}
+C_t&amp;=\beta_0+\beta_1(Y_t-T_t)+\beta_2 r_t+\beta_3 C_{t-1}+u_{1t}\\
+I_t&amp;=\gamma_0+\gamma_1r_t+\gamma_2 Y_{t-1}+u_{2t}\\
+Y_t&amp;\equiv C_t+I_t+G_t
+\end{align*}`
+$$
+
+--
+
+- A equação do **investimento** `\(I_t\)` possui apenas variáveis exógenas ou predeterminadas. Assumindo exogeneidade estrita, é possível estimar via MQO
+
+--
+
+- A equação do **consumo** `\(C_t\)` necessita instrumentalização da renda `\(Y_t\)`. MQ2E onde os **instrumentos** serão as variáveis exógenas e predeterminadas **excluídas** da equação
+
+---
+
+# Exemplo
+## Hipótese da Renda Permanete
+
+- Vamos usar VI para testar a Hipótese da Renda Permanente (HRP)
+
+`$$cc_t=\beta_0+\beta_1 cy_t + \beta_2 r3_t + u_t$$`
+
+- `\(cc_t=\Delta\log(c_t)\)` é o crescimento anual do consumo per capita real. `\(y_t\)` denota a renda disponível e `\(r3_t\)` a taxa de juros real
+
+--
+
+- HRP pura implica em `\(\beta_1=\beta_2=0\)`. Caso contrário alguma parte da população estaria consumindo renda corrente
+
+--
+
+- Muito embora o valor esperado do erro, condicional a todo o conjunto de informação até o período anterior seja zero, `\(E[u_t\mid \Omega_{t-1}]\)`
+
+- **Consumo, Renda e Juros** ainda podem ser entendidos como ***simultaneamente determinados***
+
+---
+
+# Exemplo
+## Hipótese da Renda Permanete
+
+- Como `\(u_t\)` não é correlacionado com `\(cc_{t-1}, cy_{t-1}\)` e `\(r3_{t-1}\)`, estas são candidatas a variável instrumental
+
+--
+
+.panelset[
+.panel[.panel-name[Código]
+
+```r
+library(wooldridge)
+data("consump")
+
+reg &lt;- feols(gc~1 | gy+r3 ~ gc_1+gy_1+r3_1,
+             data = consump, vcov = "HC1")
+```
+]
+
+.panel[.panel-name[Resultados]
+&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Model 1 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Intercepto &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.00806 (0.00356) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gy &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.58619 (0.14337) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;box-shadow: 0px 1px"&gt; r3 &lt;/td&gt;
+   &lt;td style="text-align:center;box-shadow: 0px 1px"&gt; −0.00027 (0.00095) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 35 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+- Neste caso **rejeitamos a HRP pura**
+]
+]
+
+
+
+---
+
+# Leitura Recomendada
+
+* WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. 
+
+* HANSEN, Bruce E. Econometrics. Manuscript, revision of February 2020.
+
+* ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mostly harmless econometrics: An empiricist's companion. Princeton university press, 2009.
+
+---
+layout: false
+
+class: title-slide-final, middle
+background-image: url(../../img/logo/UdescEsag.jpeg)
+background-size: 350px
+background-position: 9% 19%
+
+# ATÉ A PRÓXIMA AULA!
+
+
+
+
+|                                                                                                            |                                   |
+| :--------------------------------------------------------------------------------------------------------- | :-------------------------------- |
+| &lt;a href="https://github.com/rfbressan/econometria3_slides"&gt;.ScPored[&lt;i class="fa fa-link fa-fw"&gt;&lt;/i&gt;] | Slides |
+| &lt;a href="http://github.com/rfbressan"&gt;.ScPored[&lt;i class="fa fa-github fa-fw"&gt;&lt;/i&gt;]                          | @rfbressan                      |
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remark/0.14.0/remark.min.js"></script>
+<script src="../../js/ru_xaringan.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

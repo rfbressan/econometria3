@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Rafael Bressan">
+
+<title>Econometria III</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="Questoes_Painel_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Questoes_Painel_files/libs/quarto-html/quarto.js"></script>
+<script src="Questoes_Painel_files/libs/quarto-html/popper.min.js"></script>
+<script src="Questoes_Painel_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Questoes_Painel_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Questoes_Painel_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Questoes_Painel_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Questoes_Painel_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Questoes_Painel_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Questoes_Painel_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Econometria III</h1>
+<p class="subtitle lead"></p><p>Questões - Dados em Painel e Efeitos Fixos</p><p></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>Rafael Bressan </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">24 de julho de 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="questão-1" class="level1">
+<h1>Questão 1</h1>
+<p>Assinale <strong>V</strong>erdadeiro ou <strong>F</strong>also:</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) Dados em painel também são chamados de dados longitudinais, e diferem dos dados em seções transversais repetidas pois, em um painel não há repetição dos indíviduos ao longo do tempo.</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) Na análise econométrica de dados em painel, não podemos simplesmente supor que as observações sejam independentemente distribuídas ao longo do tempo.</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) Modelos DID tipicamente fazem uso de um experimento natural, onde algum evento exógeno altera o ambiente no qual as unidades de observação estão inseridas, separando-as em tratados e não-tratados.</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) Em um modelo de efeito fixo <span class="math inline">\(y_{it}=\beta_1x_{it}+a_i+u_{it}\)</span>, o termo <span class="math inline">\(a_i\)</span> é constante ao longo do tempo <span class="math inline">\(t\)</span> e deve ser observado para podermos estimar corretamente <span class="math inline">\(\beta_1\)</span>.</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) No modelo acima, o termo <span class="math inline">\(a_i\)</span> captura todos os fatores constantes no tempo e que são individuais (i.e.&nbsp;valores específicos da unidade <span class="math inline">\(i\)</span>).</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) A principal razão para coletar dados em painel é considerar que a heterogeneidade não observada <span class="math inline">\(a_i\)</span> é correlacionada com o regressor <span class="math inline">\(x_{it}\)</span>, e então estimar um modelo de efeitos fixos.</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) Um painel equilibrado possui o mesmo número de observações de períodos, <span class="math inline">\(T\)</span>, para cada um dos <span class="math inline">\(N\)</span> indíviduos. Em um total de <span class="math inline">\(N+T\)</span> observações.</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) O estimador de efeitos fixos faz uso da transformação intragrupo que é assim definida para o regressor <span class="math inline">\(x_{it}\)</span>, <span class="math inline">\(\ddot{x}_{it}=x_{it} - T^{-1}\sum_t x_{it}\)</span>.</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) O estimador de efeito fixo fará a regressão da variável dependente centrada na média, <span class="math inline">\(\ddot{y}_{it}\)</span>, contra o regressor observado <span class="math inline">\(x_{it}\)</span>.</p>
+<p>(<span class="math inline">\(\phantom{X}\)</span>) Se a cardinalidade do efeito fixo <span class="math inline">\(a_i\)</span> for igual a <span class="math inline">\(N\)</span>, então na regressão <span class="math inline">\(y_{it}=\beta_1x_{it}+a_i+u_{it}\)</span> perderemos <span class="math inline">\(N\)</span> graus de liberdade além daqueles necessários para estimar <span class="math inline">\(\beta_1\)</span>.</p>
+</section>
+<section id="questão-2" class="level1">
+<h1>Questão 2</h1>
+<p>Considere as observações <span class="math inline">\(\{(y_{it}, x_{it})\}_{i=1, t=1}^{i=N, t=T}\)</span> <em>iid</em> e que seguem o modelo linear</p>
+<p><span class="math display">\[y_{it}=\beta_1 x_{it}+\alpha_i +\lambda_i t+u_{it}\]</span> onde <span class="math inline">\(\alpha_i+\lambda_i t\)</span> são fatores não-observados individuais e com tendência temporal determinística.</p>
+<ol type="a">
+<li><p>Proponha um estimador para <span class="math inline">\(\beta_1\)</span></p></li>
+<li><p>Mostre que este estimador é consistente para <span class="math inline">\(\beta_1\)</span>, se assumirmos exogeneidade estrita do regressor, isto é <span class="math inline">\(E[u_{it}|x_{i1}, \ldots , x_{iT}]=0\)</span>.</p></li>
+</ol>
+</section>
+<section id="questão-3" class="level1">
+<h1>Questão 3</h1>
+<p>Considere o seguinte modelo em painel com <span class="math inline">\(i=1, \ldots , N\)</span> e <span class="math inline">\(t=1, \ldots , T\)</span>.</p>
+<p><span class="math display">\[y_{it}=\beta_1 x_{it}+a_i+u_{it}.\]</span> Onde <span class="math inline">\(E[u_{it}|x_{i1}, x_{i2}, \ldots, x_{iT}, a_i]=0\)</span> (hipótese de exogeneidade estrita).</p>
+<ol type="a">
+<li><p>Se os erros idiossincráticos <span class="math inline">\(u_{it}\)</span> forem serialmente <strong>não</strong> correlacionados com variância constante <span class="math inline">\(\sigma_u^2\)</span>, mostre que o estimador de primeira diferença irá induzir um correlação de <span class="math inline">\(\Delta u_{i,t}\)</span> com <span class="math inline">\(\Delta u_{i,t+1}\)</span> de <span class="math inline">\(-0,5\)</span>. (1,0 ponto)</p></li>
+<li><p>Considere a transformação intragrupo para estimação de efeitos fixos, <span class="math inline">\(\ddot{z}_{it}=z_{it}-\frac{1}{T}\sum_{t}z_{it}\)</span>. Mostre que o estimador de efeitos fixos nas condições do item anterior, produzirá uma correlação serial de <span class="math inline">\(corr(\ddot{u}_{it},\ddot{u}_{is})=-1/(T-1)\)</span>, para todo <span class="math inline">\(s\neq t\)</span>.</p></li>
+<li><p>Agora considere que os erros idiossincrátricos são serialmente correlacionados, <span class="math inline">\(u_{it}=u_{i,t-1}+\varepsilon_{it}\)</span> onde <span class="math inline">\(Var[\varepsilon_{it}]=\sigma_\varepsilon^2\)</span> e o ruído <span class="math inline">\(\varepsilon_{it}\)</span> <strong>não é serialmente correlacionado</strong>. Mostre que o estimador de primeira diferença irá eliminar a correlação serial nos resíduos. (0,5 ponto)</p></li>
+<li><p>Considere que <span class="math inline">\(N&gt;&gt;T\)</span> mas que ainda assim temos uma forte correlação serial nas observações de série temporal. Neste caso, qual estimador você prefere utilizar, primeira diferença ou efeitos fixos (i.e.&nbsp;transformação intragrupo)? Por quê? (0,5 ponto)</p></li>
+<li><p>Considere que <span class="math inline">\(N&gt;&gt;T\)</span> e não temos preocupação com correlação serial nas observações de série temporal. Neste caso, em quais situações você prefere utilizar os estimadores de primeira diferença e efeitos fixos (i.e.&nbsp;transformação intragrupo)? Por quê? (1,0 ponto)</p></li>
+</ol>
+</section>
+<section id="questão-4" class="level1">
+<h1>Questão 4</h1>
+<p>Qual das seguintes suposições é necessária para obter estimadores de efeito fixo não viesados?</p>
+<ol type="a">
+<li>Os erros são heterocedásticos.</li>
+<li>Os erros são serialmente correlacionados.</li>
+<li>As variáveis explicativas são estritamente exógenas.</li>
+<li>O efeito não observado está correlacionado com as variáveis explicativas.</li>
+</ol>
+<p>Um estimador MQO agrupado que é baseado em variáveis centralizadas na média temporal é chamado de _____.</p>
+<ol type="a">
+<li>estimador de efeitos aleatórios</li>
+<li>estimador de efeitos fixos</li>
+<li>estimador de desvios mínimos absolutos</li>
+<li>estimador de variável instrumental</li>
+</ol>
+<p>Quais devem ser os graus de liberdade (gl) para estimativa de efeitos fixos se o conjunto de dados incluir N unidades de seção transversal ao longo de T períodos de tempo e o modelo de regressão tem k variáveis independentes?</p>
+<ol type="a">
+<li>N-kT</li>
+<li>NT-k</li>
+<li>NT-N-k</li>
+<li>N-T-k</li>
+</ol>
+<p>Qual dos seguintes tipos de variáveis não pode ser incluído em um modelo de efeitos fixos?</p>
+<ol type="a">
+<li>Variável fictícia</li>
+<li>Variável dependente discreta</li>
+<li>Variável independente variável no tempo</li>
+<li>Variável independente constante no tempo</li>
+</ol>
+<p>Qual das opções a seguir é uma propriedade da regressão de variável dummy?</p>
+<ol type="a">
+<li>Este método é mais adequado para conjuntos de dados de painel com muitas observações transversais.</li>
+<li>O R2 obtido a partir deste método é menor do que o obtido a partir da regressão em dados centralizados pelo tempo.</li>
+<li>Os graus de liberdade não podem ser calculados diretamente com este método.</li>
+<li>As principais estatísticas obtidas a partir deste método são idênticas às obtidas a partir regressão em dados reduzidos pelo tempo.</li>
+</ol>
+<p>Qual das opções a seguir é uma diferença entre um estimador de efeitos fixos e um estimador de primeira diferença?</p>
+<ol type="a">
+<li>Os estimadores de efeitos fixos são sempre maiores que os estimadores de primeira diferença em uma análise de dados em painel de dois períodos.</li>
+<li>O estimador de efeitos fixos é mais eficiente que o estimador de primeira diferença quando os erros idiossincráticos são serialmente não correlacionados.</li>
+<li>O estimador de primeira diferença é mais sensível à não normalidade e à heteroscedasticidade.</li>
+<li>O viés no estimador da primeira diferença depende do período de tempo (T) da análise enquanto o viés no efeito fixo não depende de T.</li>
+</ol>
+<p>Um economista deseja estudar o efeito da renda sobre a poupança. Ele coletou dados de 120 gêmeos idênticos. Qual dos seguintes métodos de estimativa é o método mais adequado, se a renda estiver correlacionada com o efeito familiar não observado?</p>
+<ol type="a">
+<li>Estimativa de efeitos aleatórios</li>
+<li>Estimativa de efeitos fixos</li>
+<li>Estimativa de mínimos quadrados ordinários</li>
+<li>Estimativa de mínimos quadrados ponderados</li>
+</ol>
+</section>
+<section id="questão-5" class="level1">
+<h1>Questão 5</h1>
+<p>Vamos provar a equivalência entre a regressão com expansão em dummies para efeitos fixos e a transformação intragrupo. Considere o modelo:</p>
+<p><span class="math display">\[\begin{equation}
+y_{it}=\beta x_{it} + \alpha_i + u_{it}
+\end{equation}\]</span></p>
+<p>Podemos considerar cada um dos <span class="math inline">\(N\)</span> <span class="math inline">\(\alpha_i\)</span> parâmetros a serem estimados juntamente com <span class="math inline">\(\beta\)</span>. Os valores destes <span class="math inline">\(\alpha_i\)</span> são justamente os coeficientes associados as variáveis dummies. Portanto, nosso problema de estimação é:</p>
+<p><span class="math display">\[\{\hat\beta, \hat\alpha_i\}_{i=1}^N=\arg \min_{b, a_i}\sum_i\sum_t\left(y_{it}-b x_{it} - a_i\right)^2.\]</span></p>
+<ol type="a">
+<li><p>Demonstre que a condição de primeira ordem (FOC) com relação a <span class="math inline">\(b\)</span> implica em <span class="math inline">\(\sum_i\sum_t\left(y_{it}-b x_{it} - a_i\right)x_{it}=0\)</span>.</p></li>
+<li><p>Utilizando a FOC com relação a <span class="math inline">\(a_i\)</span>, mostre que uma solução possível para cada um dos parâmetros <span class="math inline">\(\hat\alpha_i\)</span> é:</p></li>
+</ol>
+<p><span class="math display">\[\hat\alpha_i=\bar{y}_i-\hat\beta\bar{x}_i, \qquad \forall i=1, \ldots, N.\]</span></p>
+<ol start="3" type="a">
+<li><p>Mostre que <span class="math inline">\(\sum_i\sum_t\ddot{y}_{it}x_{it} =\sum_i\sum_t\ddot{y}_{it}\ddot{x}_{it}\)</span>. O mesmo ocorre para <span class="math inline">\(\sum_i\sum_t\ddot{x}_{it}x_{it} =\sum_i\sum_t\ddot{x}_{it}^2\)</span>. Onde <span class="math inline">\(\ddot{y}_{it}=y_{it}-\bar{y}_i\)</span>.</p></li>
+<li><p>Utilizando os valores encontrados para <span class="math inline">\(\hat\alpha_i\)</span> no item b), substitua na FOC do item a) e considerando o resultado obtido em c), mostre a equivalência do estimador de variáveis dummies com a transformação intragrupo. Ou seja, demonstre que <span class="math inline">\(\hat\beta=\frac{\sum_i\sum_t\ddot{y}_{it}\ddot{x}_{it}}{\sum_i\sum_t\ddot{x}_{it}^2}\)</span>.</p></li>
+</ol>
+</section>
+<section id="questão-6" class="level1">
+<h1>Questão 6</h1>
+<p>No artigo de <span class="citation" data-cites="souza2020nota">Souza, Ziegelmann, e Figueiredo (<a href="#ref-souza2020nota" role="doc-biblioref">2020</a>)</span> intitulado <em>“Uma Nota Sobre o Prêmio Salarial em Empresas Exportadoras Brasileiras”</em>, os autores investigam a relação entre o status de exportação das empresas e o salário pago aos trabalhadores, testando se a exportação leva a um prêmio salarial para os empregados das empresas do setor externo ou se as empresas exportadoras já pagavam um salário maior antes de começar a exportar.</p>
+<p>Foi utilizado um painel de dados empregador-empregado do Brasil para os anos de 2003 a 2013 obtidos da RAIS. Esta contém informações sobre trabalhadores individualmente identificáveis em todos os seus empregadores, idade, gênero, educação, ocupação, tempo na empresa entre outras características. Além dos dados do trabalhador, são também utilizados variáveis da firma, tais como o setor de atividade, se atua no setor privado, número de ocupações diferentes dentro da firma, além de informações sobre variável de interesse, qual seja, o status de exportação da firma, todas oriundas da Secretaria de Comércio Exterior (Secex).</p>
+<p>O modelo empírico empregado para testar o impacto da firma ser exportadora sobre os salários dos trabalhadores segue uma especificação de efeitos fixos para tentar controlar a heterogeneidade não observada do empregado e da empresa:</p>
+<p><span class="math display">\[\begin{equation}
+\ln W_{ijt}=\beta_0+\beta_1\text{Exportador}_{ijt}+\beta_2X_{it}+\alpha_i+\gamma_j+\varepsilon_{ijt},
+\end{equation}\]</span></p>
+<p>onde <span class="math inline">\(\ln W_{ijt}\)</span> é o logaritmo do salário do indivíduo <span class="math inline">\(i\)</span> que trabalha na empresa <span class="math inline">\(j\)</span> no período de tempo <span class="math inline">\(t\)</span> . <span class="math inline">\(\text{Exportador}_{ijt}\)</span> é a variável dicotômica de interesse com valor 1 para os indivíduos que trabalham em firmas que se tornaram exportadoras a partir do quarto ano de cada coorte da amostra e 0 para os trabalhadores de firmas domésticas, <span class="math inline">\(X_{it}\)</span> é um vetor de características pessoais dos indivíduos e das firmas nas quais estes trabalham, <span class="math inline">\(\alpha_i\)</span> e <span class="math inline">\(\gamma_j\)</span> são os efeitos fixos do indivíduo e da firma, respectivamente.</p>
+<p>A Tabela abaixo apresenta os resultados para 3 estimações incrementais deste modelo.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Figs/Figueiredoetal2022_tab3.png" class="img-fluid" width="234"></p>
+</div>
+</div>
+<ol type="a">
+<li><p>Por que os autores não utilizaram diretamente um modelo MQO agrupado nos dados em painel? Explique em detalhes qual era o objetivo dos pesquisadores e quais os problemas que um MQO enfrentaria. (1,0 ponto)</p></li>
+<li><p>A interpretação dos autores dos resultados do modelo (3) é que este apresenta evidências que <em>“confirmam à existência de um mecanismo de autosseleção, onde as empresas pagam maiores salários por serem mais produtivas e, consequentemente, tornam-se aptas a entrar no mercado exportador.”</em>. Explique com suas palavras como você interprete os resultados para as interações entre ano <span class="math inline">\(t\)</span> e a variável binária <span class="math inline">\(\text{Exportador}\)</span>. (1,0 ponto)</p></li>
+</ol>
+</section>
+<section id="questão-7" class="level1">
+<h1>Questão 7</h1>
+<p>Considere o modelo:</p>
+<p><span class="math display">\[
+\begin{align*}
+y_{it} &amp;= \beta_0 + \beta_1 x_{it} + \varepsilon_{it}\\
+\varepsilon_{it} &amp;= a_i + u_{it}
+\end{align*}
+\]</span> Os dados consistem de <span class="math inline">\(N\)</span> observações de <span class="math inline">\(y\)</span> (salário) e <span class="math inline">\(x\)</span> (escolaridade) para <span class="math inline">\(T = 2\)</span> períodos de tempo.</p>
+<ol type="a">
+<li><p>Interprete possíveis variáveis omitidas que possam fazer parte do efeito fixo <span class="math inline">\(a_i\)</span>. Você acredita que <span class="math inline">\(a_i\)</span> possa ser não-correlacionado com <span class="math inline">\(x\)</span>? Que implicações isso tem para a escolha de sua estratégia de estimação de <span class="math inline">\(\beta_1\)</span>?</p></li>
+<li><p>Um pesquisador propõe eliminar o efeito fixo, <span class="math inline">\(a_i\)</span> , estimando por MQO um modelo em primeira diferenças do tipo:</p></li>
+</ol>
+<p><span class="math inline">\(y_{i1} − y_{i0} = \beta_1 (x_{i1} − x_{i0}) + (u_{i1} − u_{i0})\)</span></p>
+<p>Outro pesquisador propõe eliminar o efeito fixo estimando por MQO um modelo de diferenças em relação à média:</p>
+<p><span class="math inline">\(y_{it}-\bar{y}_i=\beta_1 (x_{it}-\bar{x}_i)+(u_{it}-\bar{u}_i)\)</span></p>
+<p>Onde <span class="math inline">\(\bar{y}_i=\frac{1}{T}\sum_{t}y_{it}\)</span></p>
+<p>é a média da variável <span class="math inline">\(y\)</span> para o indivíduo <span class="math inline">\(i\)</span>.</p>
+<p>Um terceiro pesquisador propõe ainda a inclusão de variáveis dummy <span class="math inline">\(d_i\)</span> indicando se a observação pertence ao indivíduo <span class="math inline">\(i\)</span>, estimando assim um MQO do modelo:</p>
+<p><span class="math inline">\(y_{it} = \beta_1 x_{it} + \sum_{i=1}^N a_i d_i + u_{it}\)</span></p>
+<p>Qual destes estimadores é melhor? Por quê?</p>
+</section>
+<section id="questão-8" class="level1">
+<h1>Questão 8</h1>
+<p>Considere um modelo simples de taxa de criminalidade (<span class="math inline">\(crim\)</span>) em função de desemprego (<span class="math inline">\(desemp\)</span>). Temos um painel com <span class="math inline">\(T=2\)</span> e heterogeneidade não observada <span class="math inline">\(a_i\)</span>. Especificamos o modelo com uma variável <em>dummy</em> para identificar <span class="math inline">\(t=2\)</span>.</p>
+<p><span class="math display">\[crim_{it}=\beta_0+\delta_0 D_{t2}+\beta_1 desemp_{it}+a_i+u_{it}.\]</span></p>
+<ol type="a">
+<li><p>Escreva o modelo em primeira diferença (PD) e mostre que esta especificação elimina a heterogeneidade.</p></li>
+<li><p>Escreva o modelo com a transformação <em>within</em> (dentro do grupo) e mostre que esta especificação também elimina a heterogeneidade.</p></li>
+<li><p>Suponha que <span class="math inline">\(\beta_1 &gt; 0\)</span> e, <span class="math inline">\(\Delta u_i\)</span> e <span class="math inline">\(\Delta desemp_i\)</span> são negativamente correlacionados. Qual é o viés no estimador de <span class="math inline">\(\beta_1\)</span> via MQO PD?</p></li>
+</ol>
+</section>
+<section id="questão-9" class="level1">
+<h1>Questão 9</h1>
+<p>Com uma única variável explicativa, a equação de média temporal é</p>
+<p><span class="math display">\[\bar{y}_i=\beta_0+\beta_1\bar{x}_i+a_i+\bar{u}_i.\]</span> Tendo incluído um intercepto, temos que <span class="math inline">\(E[a_i]=0\)</span>. Suponha que <span class="math inline">\(\bar{u}_i\)</span> seja não correlacionado com <span class="math inline">\(\bar{x}_i\)</span>, mas que <span class="math inline">\(cov(\bar{x}_i, a_i)=\sigma_{xa}\)</span>.</p>
+<ol type="a">
+<li><p>Sendo <span class="math inline">\(\tilde{\beta}_1\)</span> o estimador MQO da especificação acima, mostre que <span class="math inline">\(\operatorname{plim}\tilde{\beta}_1=\beta_1+\sigma_{xa}/Var[\bar{x}_i]\)</span> (lembre-se <span class="math inline">\(a_i\)</span> é não observado).</p></li>
+<li><p>Suponha também que <span class="math inline">\(x_{it}\)</span> seja serialmente não correlacionado com variância constante igual a <span class="math inline">\(\sigma_x^2\)</span>. Mostre que <span class="math inline">\(\operatorname{plim}\tilde{\beta}_1=\beta_1+T\sigma_{xa}/\sigma_x^2\)</span></p></li>
+</ol>
+</section>
+<section id="questão-10" class="level1">
+<h1>Questão 10</h1>
+<p>A regressão linear de efeitos fixos em duas vias ( <em>two way fixed effects</em> - TWFE) tornou-se um método padrão para estimar efeitos causais a partir de dados em painel. Muitos pesquisadores aplicados usam o estimador TWFE para ajustar os fatores de confusão não observados específicos da unidade e específicos do tempo ao mesmo tempo. A especificação é simples:</p>
+<p><span class="math display">\[y_{it}=\beta_1 x_{it}+\alpha_i+\theta_t+u_{it},\]</span> onde <span class="math inline">\(\alpha_i\)</span> representa características não observadas do indivíduo e <span class="math inline">\(\theta_t\)</span> efeitos temporais também não observados (ou não medidos). Se qualquer um dos efeitos fixos forem correlacionados com o regressor <span class="math inline">\(x_{it}\)</span>, então o estimador agrupado (ie., <em>pooled</em>) de MQO será viesado.</p>
+<ol type="a">
+<li><p>Como você poderia estimar <span class="math inline">\(\beta_1\)</span> sem incorrer em viés?</p></li>
+<li><p>Conhecemos a transformação dentro do grupo (ie., <em>within</em>) para apenas um efeito fixo de indivíduo. Proponha uma transformação similar que elimine ambos os fatores de confusão simultaneamente. (Dica: temos dois tipos de grupos agora. Você pode querer descontar as médias intragrupo e recompor a média geral.)</p></li>
+<li><p>Suponha que existam apenas dois grupos de indivíduos, <span class="math inline">\(i \in\{C, T\}\)</span> e dois períodos, <span class="math inline">\(t\in\{t_1, t_2\}\)</span> e que o regressor é um indicador de tratamento</p></li>
+</ol>
+<p><span class="math display">\[x_{it}=\begin{cases}
+1, \text{ se } i=T \text{ e } t=t_2\\
+0, \text{ caso contrário.}
+\end{cases}\]</span> Mostre que <span class="math inline">\(\beta_1\)</span> neste caso é</p>
+<p><span class="math display">\[
+\begin{align*}
+\beta_1&amp;=E[y_{it}|i\in T, t=t_2] - E[y_{it}|i\in T, t=t_1]\\
+&amp;-\lbrace E[y_{it}|i\in C, t=t_2] - E[y_{it}|i\in C, t=t_1]\rbrace
+\end{align*}
+\]</span></p>
+</section>
+<section id="questão-11" class="level1">
+<h1>Questão 11</h1>
+<p>Este exercício será baseado em um conjunto de dados da Organização Mundial da Saúde que se relaciona com resultados agregados dos sistemas de saúde nas economias mundiais. O arquivo é <code>WHO.csv</code>, carregue-o em seu software de preferência.</p>
+<p>As variáveis nos conjuntos de dados são</p>
+<table class="table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 72%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variável</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>YEAR</td>
+<td>1993, …, 1997</td>
+</tr>
+<tr class="even">
+<td>COMP, LOGCOMP</td>
+<td>medida composta de obtenção de cuidados de saúde</td>
+</tr>
+<tr class="odd">
+<td>DALE, LOGDALE</td>
+<td>expectativa de vida ajustada por deficiência</td>
+</tr>
+<tr class="even">
+<td>HLTHEXP,LOGHEXP</td>
+<td>despesas de saúde</td>
+</tr>
+<tr class="odd">
+<td>EDUC, LOGEDUC</td>
+<td>educação média</td>
+</tr>
+<tr class="even">
+<td>LOGHEXP2</td>
+<td>quadrado de LOGHEXP</td>
+</tr>
+<tr class="odd">
+<td>LOGEDUC2</td>
+<td>quadrado de LOGEDUC</td>
+</tr>
+<tr class="even">
+<td>LOGED_EX</td>
+<td>LOGHEXP * LOGEDUC</td>
+</tr>
+<tr class="odd">
+<td>GINI</td>
+<td>Coeficiente de Gini de distribuição de renda</td>
+</tr>
+<tr class="even">
+<td>TROPICS</td>
+<td>Variável dummy para localização tropical</td>
+</tr>
+<tr class="odd">
+<td>POPDEN, LOGPOPDEN</td>
+<td>densidade populacional</td>
+</tr>
+<tr class="even">
+<td>PUBTHE</td>
+<td>proporção das despesas de saúde que são públicas</td>
+</tr>
+<tr class="odd">
+<td>GDPC,LOGGDPC</td>
+<td>renda per capita</td>
+</tr>
+<tr class="even">
+<td>T93,…,T97</td>
+<td>Variáveis dummy de ano</td>
+</tr>
+<tr class="odd">
+<td>GEFF</td>
+<td>Medida do Banco Mundial de eficácia do governo</td>
+</tr>
+<tr class="even">
+<td>VOICE</td>
+<td>Medida do Banco Mundial de extensão da Democracia</td>
+</tr>
+<tr class="odd">
+<td>OECD</td>
+<td>Variável dummy, membro da OCDE da ONU em 1997</td>
+</tr>
+<tr class="even">
+<td>MEANLCMP</td>
+<td>(média de 5 anos) de LOGCMP</td>
+</tr>
+<tr class="odd">
+<td>MEANLHC,MEAHLHC2</td>
+<td>média do país e seu quadrado de LOGEDUC</td>
+</tr>
+<tr class="even">
+<td>MEANLEXP</td>
+<td>média do país de LOGHEXP</td>
+</tr>
+</tbody>
+</table>
+<p>Além do nome e código do país.</p>
+<ol type="a">
+<li>Quais são as dimensões do painel? É balanceado?</li>
+</ol>
+<p>Considere a partir de agora a seguinte regressão para explicar oferta de serviços de saúde</p>
+<p><span class="math display">\[LOGCOMP_{it} = \beta_0 + \beta_1 LOGEDUC_{it} + \beta_2 LOGHEXP_{it} + \beta_3 LOGED-EX_{it} + \varepsilon_{it}\]</span> ou seja, a oferta de saúde é explicada pela educação média e despesas com saúde, incluindo sua interação.</p>
+<ol start="2" type="a">
+<li><p>Estime a versão agrupada desta especificação e apresente os resultados.</p></li>
+<li><p>Você não acredita que este modelo esteja capturando a verdadeira influência da educação na oferta de saúde, afinal, os países na amostra são muito diferentes. Discorra sobre quais fatores individuais de cada país podem influenciar no provimento de serviços de saúde. Estes fatores seriam correlacionados com o nível educacional?</p></li>
+<li><p>Escolha um modelo que julgue o mais adequado para estimar o efeito da educação na oferta de saúde, apresente e comente sobre os resultados.</p></li>
+<li><p>Como os resultados do item anterior se comparam a estimação do MQO agrupado? Qual resultado é mais confiável, por quê?</p></li>
+</ol>
+</section>
+<section id="referências" class="level1 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Referências</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-souza2020nota" class="csl-entry" role="listitem">
+Souza, Wallace Patrick Santos de Farias, Flávio Augusto Ziegelmann, e Erik Alencar de Figueiredo. 2020. <span>“Uma nota sobre o pr<span>ê</span>mio salarial em empresas exportadoras brasileiras”</span>. <em>Revista Brasileira de Economia</em> 74: 221–32.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

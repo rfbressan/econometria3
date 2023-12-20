@@ -1,0 +1,352 @@
+---
+title: "Econometria III"
+subtitle: "Variáveis Instrumentais"
+author: "Rafael Bressan"
+date: "Esag </br> 27/03/2023"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, "../../css/scpo.css", "../../css/scpo-fonts.css"]
+    nature:
+      beforeInit: ["../../js/ru_xaringan.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+    includes:
+      in_header: ["../../libs/partials/header.html"]
+---
+
+layout: true
+
+<div class="my-footer"><img src="../../img/logo/UdescEsag.jpeg" style="height: 60px;"/></div> 
+
+---
+
+```{r setup, include=FALSE,warning=FALSE,message=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  dev = "svg",
+  cache = TRUE,
+  fig.align = "center"
+  #fig.width = 11,
+  #fig.height = 5
+)
+
+# define vars
+om = par("mar")
+lowtop = c(om[1],om[2],0.1,om[4])
+# Load libraries
+library(ggplot2)
+library(ggdag)
+library(dplyr)
+```
+
+# Preparando a cena
+
+.pull-left[
+
+* Nos capítulos [7](https://scpoecon.github.io/ScPoEconometrics/causality.html), [8](https://scpoecon.github.io/ScPoEconometrics/STAR.html) e [9](https ://scpoecon.github.io/ScPoEconometrics/RDD.html) do livro `Introduction to Econometrics with R` é falado sobre os méritos dos _métodos experimentais_.
+
+* Ensaios de controle aleatórios (RCTs) ou configurações _Quasi-experimentais_ (tão bons quanto aleatórios) nos permitem estimar efeitos **causais**.
+
+
+]
+
+--
+
+.pull-right[
+
+* Se as pessoas tiverem algum tipo de opção sobre a ingestão do tratamento, haverá *seleção*.
+
+* RCTs podem quebrar a auto-seleção de pessoas em tratamento, designando-as aleatoriamente.
+
+* Então, com dados experimentais, temos uma boa solução.
+
+* E os dados não experimentais?
+]
+
+---
+
+# Dados não experimentais
+
+.pull-left[
+
+* Falamos sobre **viés de variável omitida**.
+
+* E se houver correlação entre uma variável no termo de erro $u$, $x_2$ digamos, e nossa variável explicativa $x_1$?
+
+* Obteremos estimativas tendenciosas porque não podemos separar o que é o quê: efeito de $x_1$, ou de $x_2$?
+
+* Lembre-se de que isso pode ser tão grave que nem conseguimos o sinal correto de um efeito.
+]
+
+.pull-right[
+
+```{r dag1,fig.height = 6,echo = FALSE}
+# dag = dagify(y ~ x1,
+#             y ~ x2,
+#             y ~ x3,
+#             x1 ~ x2,
+#             x3 ~ x2,
+#        coords = list(x = c("x2" = 0,"x1" = 1,"x3" = 1.0,"y" = 2),
+#                      y = c("x2" = 0,"x1" = 0.5,"x3" = -0.5,"y" = 0)))
+# p2 = dag %>%
+#   tidy_dagitty() %>%
+#       mutate(linetype = if_else(name == "x2", "dashed","solid")) %>% 
+#     ggplot(aes(x = x, y = y, xend = xend, yend = yend)) + 
+#     geom_dag_point() + 
+#       geom_dag_text(col = "white") +
+#     geom_dag_edges(aes(edge_linetype = linetype), show.legend = FALSE) + 
+#     theme_dag()
+# p2
+knitr::include_graphics("../../img/IV_ovb_dag.png")
+```
+]
+
+--
+
+.center[**VI** fornece uma solução para VVO.]
+
+---
+
+layout: false
+class: separator, middle
+
+# Precisamos de um modelo.
+
+## Porque: *É preciso um modelo para vencer um modelo*
+
+---
+layout: true
+
+<div class="my-footer"><img src="../../img/logo/UdescEsag.jpeg" style="height: 60px;"/></div> 
+
+---
+
+# Modelo de Transmissão do Cólera de Snow
+
+
+* Suponha que $c_i$ assuma o valor 1 se o indivíduo $i$ morrer de cólera, 0 caso contrário.
+
+* Seja $w_i = 1$ significando que o abastecimento de água de $i$ é impuro e $w_i = 0$ vice-versa. A pureza da água é avaliada com uma tecnologia que não detecta pequenos micróbios.
+
+* Colete em $u_i$ todos os fatores não observáveis que afetam a probabilidade de $i$ morrer da doença: se $i$ é pobre, onde exatamente eles residem, se há má qualidade do ar nos arredores de $i$ e outras características individuais que impactam o resultado (como configuração genética de $i$).
+
+--
+
+Nós podemos escrever:
+
+$$
+c_i = \alpha + \delta w_i + u_i
+$$
+
+---
+
+# Fazer o Simples é sempre certo?
+
+.pull-left[
+
+* John Snow poderia ter usado seus dados e avaliar a correlação entre beber água impura e a incidência de cólera.
+
+* medida $Cor(c_i,w_i)$
+
+* Suponha $Cor(c_i,w_i) \approx 0,5$. Isso prova a teoria da infecção?
+]
+
+--
+
+.pull-right[
+Não é bem assim. Angus Deaton disse:
+
+> As pessoas que bebiam água impura também eram mais propensas a serem pobres e a viver em um ambiente contaminado de várias maneiras, principalmente pelos “miasmas venenosos” que eram então considerados a causa da cólera.
+
+]
+---
+
+# A coisa simples
+
+
+* Não faz sentido comparar alguém que bebe água pura com alguém que bebe água impura.
+
+* porque *tudo o mais não é igual*: a água impura está correlacionada com ser pobre, morar em área ruim, má qualidade do ar e assim por diante - todos os fatores que encontramos em $u_i$.
+
+* Isso viola a suposição crucial de ortogonalidade para estimativas MQO válidas, $E[u_i | w_i]=0$ neste contexto.
+
+* Outra maneira de dizer isso é que $Cov(w_i, u_i) \neq 0$, implicando que $w_i$ é ***endógeno***.
+
+* Existem fatores em $u_i$ que afetam tanto $w_i$ quanto $c_i$
+
+---
+
+# Modelo de Snow e um pouco de álgebra
+
+Lembre-se do nosso modelo simples:
+$$c_i = \alpha + \delta w_i + u_i$$
+Agora vamos condicionar os dois valores de $w$:
+\begin{align}
+E[c_i | w_i = 1] &= \alpha + \delta + E[u_i | w_i = 1] \\
+E[c_i | w_i = 0] &= \alpha + \phantom{\delta} + E[u_i | w_i = 0]
+\end{align}
+
+--
+
+Agora subtraia uma linha da outra:
+
+\begin{equation}
+E[c_i | w_i = 1] - E[c_i | w_i = 0] = \delta + \left\{ E[u_i | w_i = 1] - E[u_i | w_i = 0]\right\}
+\end{equation}
+
+* O último termo $\left\{ E[u_i | w_i = 1] - E[u_i | w_i = 0]\right\}$ não é igual a zero (pelo que Deaton disse!)
+
+* Uma estimativa de regressão para $\delta$ seria influenciada por essa quantidade.
+---
+
+
+layout: false
+class: separator, middle
+
+# Estimador de Variáveis Instrumentais
+
+
+---
+layout: true
+
+<div class="my-footer"><img src="../../img/logo/UdescEsag.jpeg" style="height: 60px;"/></div> 
+
+---
+
+# Propondo uma VI
+
+* Snow propõe uma **variável instrumental** $z_i$, a *identidade da empresa fornecedora de água* para o domicílio $i$:
+
+Mais formalmente, vamos definir o instrumento da seguinte forma:
+
+\begin{align*}
+z_i &= \begin{cases}
+                     1 & \text{se água fornecida por Lambeth} \\
+                     0 & \text{se água fornecida por Southwark ou Vauxhall.} \\
+       \end{cases} \\
+\end{align*}
+
+* $z_i$ está altamente correlacionado com a pureza da água $w_i$.
+
+* No entanto, parece não ter correlação com todos os outros fatores em $u_i$, que nos preocupavam antes: o abastecimento de água foi decidido anos antes, e agora as casas na mesma rua têm fornecedores diferentes!
+
+---
+background-image: url(../../img/IV-dag.png)
+background-position: 60% 50%
+
+# VI em um DAG
+
+* $u$ afeta tanto o resultado quanto a variável explicativa
+
+---
+
+# Definindo a VI de Snow Formalmente
+
+
+--
+
+Aqui estão as ***condições para um instrumento válido***:
+
+1. **Relevância**: A pureza da água é, de fato, uma função da identidade do fornecedor. Queremos que $E[w_i | z_i = 1] \neq E[w_i | z_i = 0]$, ou seja, a pureza média da água difere entre os fornecedores. Podemos *verificar* esta condição com dados observacionais. 
+--
+
+2. **Independência**: Se uma família tem $z_i = 1$ ou $z_i = 0$ não tem relação com $u$, portanto $z$ é *tão bom quanto aleatório*. Se condicionarmos $u$ a certos valores de $z$ não altera o resultado - queremos $E[u_i | z_i = 1] = E[u_i | z_i = 0].$
+
+--
+
+3. **Exclusividade** o instrumento deve afetar o resultado $c$ *somente* através do canal especificado (ou seja, através da pureza da água $w$), e nada mais.
+---
+
+# Definindo o estimador de VI
+
+Agora estamos prontos para definir um estimador de VI simples. Como antes, vamos condicionar os valores de $z$:
+
+\begin{align}
+E[c_i | z_i = 1] &= \alpha + \delta E[w_i | z_i = 1] + E[u_i | z_i = 1] \\
+E[c_i | z_i = 0] &= \alpha + \delta E[w_i | z_i = 0] + E[u_i | z_i = 0]
+\end{align}
+
+tomando a diferença entre as expressões:
+
+\begin{align}
+E[c_i | z_i = 1] - E[c_i | z_i = 0] &= \delta \left\{ E[w_i | z_i = 1] - E[w_i | z_i = 0]\right\} \\
+&+ \underbrace{\left\{ E[u_i | z_i = 1] - E[u_i | z_i = 0] \right\}}_{=0 \text{ por Indepedência}}
+\end{align}
+--
+
+* Finalmente, se a VI for *relevante*, ou seja, $E[w_i | z_i = 1] - E[w_i | z_i = 0] \neq 0$:
+\begin{equation}
+\delta = \frac{E[c_i | z_i = 1] - E[c_i | z_i = 0]}{E[w_i | z_i = 1] - E[w_i | z_i = 0]}
+\end{equation}
+
+
+---
+
+# Caso Especial: Estimador de Wald 
+
+Digamos que $x \mapsto y$ significa que $x$ é uma estimativa para $y$:
+
+1. $\overline{c}_1 \mapsto E[c_i | z_i = 1]$: a proporção de domicílios abastecidos por Lambeth com cólera.
+1. $\overline{w}_1 \mapsto E[w_i | z_i = 1]$: a proporção de domicílios abastecidos por Lambeth com água ruim.
+1. $\overline{c}_0 \mapsto E[c_i | z_i = 0]$: a proporção de domicílios não abastecidos por Lambeth com cólera.
+1. $\overline{w}_0 \mapsto E[w_i | z_i = 0]$: a proporção de domicílios não abastecidos por Lambeth com água ruim.
+
+O estimador seria então
+
+\begin{equation}
+\hat{\delta} = \frac{\overline{c}_1 - \overline{c}_0}{\overline{w}_1 - \overline{w}_0} 
+\end{equation}
+
+Neste caso especial onde todas as variáveis envolvidas $c,w,z$ são binárias, o estimador é chamado de ***estimador de Wald***.
+
+---
+
+**Resumo**: VIs são uma ferramenta poderosa para estabelecer causalidade em contextos apenas com dados observacionais e onde estamos preocupados que a suposição de média condicional $E[u_i | x_i]=0$ é violado (*endogeneidade*). 
+
+As principais características da VI $z$ são que:
+
+1. $z$ é *relevante* para $x$. Por exemplo, em uma regressão simples de $z$ em $x$, queremos que $z$ tenha um poder preditivo considerável. Podemos *testar* essa condição nos dados.
+
+1. Precisamos de uma teoria segundo a qual seja *razoável* supor que $z$ não esteja *relacionado* a outros fatores não observáveis que possam impactar o resultado. Portanto, $z$ é *exógeno* a $u$, ou $E[u | z] = 0$. Esta é uma **suposição** (ou seja, não podemos testar isso com dados).
+
+---
+
+# Leitura Recomendada
+
+* WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. Capítulo 15.
+
+* GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed. Capítulo 17
+
+* ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mostly harmless econometrics: An empiricist's companion. Princeton university press, 2009.
+
+---
+
+layout: false
+
+class: title-slide-final, middle
+background-image: url(../img/logo/UdescEsag.jpeg)
+background-size: 350px
+background-position: 9% 19%
+
+# ATÉ A PRÓXIMA AULA!
+
+
+.footnote[
+[1]: Este slides foram baseados nas aulas de econometria da [SciencesPo Department of Economics](https://github.com/ScPoEcon/ScPoEconometrics-Slides)
+]
+
+
+
+
+|                                                                                                            |                                   |
+| :--------------------------------------------------------------------------------------------------------- | :-------------------------------- |
+| <a href="https://github.com/rfbressan/econometria3_slides">.ScPored[<i class="fa fa-link fa-fw"></i>] | Slides |
+| <a href="http://github.com/rfbressan">.ScPored[<i class="fa fa-github fa-fw"></i>]                          | @rfbressan                      |
+
+
+

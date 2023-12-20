@@ -1,0 +1,383 @@
+---
+title: "Econometria III"
+subtitle: |
+    | Questões - Diferenças em diferenças
+author: "Rafael Bressan"
+date: "`r Sys.Date()`"
+format:
+  html:
+    theme: cosmo
+lang: pt-BR
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+```
+
+```{r loads}
+library(ISLR2)
+library(modelsummary)
+library(kableExtra)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r setup-modelsummary}
+g_map <- c("nobs", "adj.r2")
+```
+
+
+# Questão 1 
+
+Assinale **V**erdadeiro ou **F**also:
+
+Diferença em Diferenças (DID):
+
+($\phantom{X}$) Diferença em Diferenças (DID) requer pelo menos dois grupos de tratamento e dois grupos de controle.
+
+($\phantom{X}$) DID ajuda a controlar variáveis não observadas invariantes no tempo que podem afetar os grupos de tratamento e controle de forma diferente.
+
+($\phantom{X}$) DID estima o efeito médio do tratamento nos tratados (ATT) comparando a diferença nos resultados entre os grupos de tratamento e controle antes e depois do tratamento.
+
+($\phantom{X}$) DID pode ser usado quando a atribuição de tratamento é baseada em um projeto de experimento aleatorizado (RCT).
+
+($\phantom{X}$) DID assume que não há efeitos de contaminação do grupo de tratamento para o grupo de controle ou vice-versa.
+
+($\phantom{X}$) DID se baseia na suposição de tendências paralelas, que afirma que, na ausência de tratamento, os grupos de tratamento e controle teriam seguido caminhos paralelos ao longo do tempo.
+
+($\phantom{X}$) DID pode ser usado quando o tratamento ocorre em diferentes pontos no tempo para diferentes unidades.
+
+Efeitos aleatórios:
+
+($\phantom{X}$) Os efeitos aleatórios assumem que as características não observadas específicas do indivíduo estão correlacionadas com as variáveis explicativas.
+
+($\phantom{X}$) Os efeitos aleatórios utilizam uma transformação para quasi-centralizar os dados na média e então realiza um MQO Factível para fazer as estimativas.
+
+($\phantom{X}$) Os efeitos aleatórios são mais eficientes do que os efeitos fixos quando os efeitos individuais específicos não observados não são correlacionados com as variáveis explicativas.
+
+
+# Questão 2
+
+Em 2004, Rafael Di Tella e Ernesto Schargrodsky publicaram um estudo que analisava o efeito do aumento da presença policial no crime. Para medir esse efeito, Di Tella e Schargrodsky alavancaram um quasi-experimento. Após um atentado à bomba na sinagoga em Buenos Aires em 18 de julho de 1994, a polícia municipal foi designada para proteger as sinagogas ao redor da cidade. O aumento das patrulhas policiais em alguns quarteirões da cidade, mas não em outros, significa que há, sem dúvida, um grupo de tratamento e um grupo de controle para o aumento da presença policial, que Di Tella e Schargrodsky usaram para medir o efeito de policiais extras em roubos de carros.
+
+Estes são dados não experimentais que incluem contagens de roubos de carros para cada quarteirão de Buenos Aires de abril a dezembro de 1994. Existem 12 variáveis:
+
+- `observ` (vamos renomear para `block`): O número de ID do quarteirão
+- `barrio`: O bairro (bairro) para o quarteirão
+- `calle`: A rua do quarteirão
+- `altura`: O número da rua
+- `institu1` (vamos renomear para `same_block`): Variável indicadora marcando se há uma instituição judaica no quarteirão (1 se sim, 0 se não)
+- `institu3`: Variável indicadora marcando se há uma instituição judaica dentro de um quarteirão (1 se sim, 0 se não)
+- `distanci` (vamos renomear para `distance`): Distância até a instituição judaica mais próxima, medida em quarteirão
+- `edpub`: variável indicadora marcando se há um prédio educacional ou embaixada no quarteirão (1 se sim, 0 se não)
+- `estserv`: Variável indicadora marcando se há posto de gasolina no quarteirão (1 se sim, 0 se não)
+- `banco`: Variável indicadora marcando se há banco no quarteirão (1 se sim, 0 se não)
+- `totrob` (vamos renomear para `car_theft`): Número total de roubos de carros
+- `mes` (vamos renomear para `month`): Mês
+
+
+```{r libs, warning=FALSE, message=FALSE}
+library(tidyverse) # For ggplot, %>%, mutate, filter, group_by, and friends
+library(haven) # For loading data from Stata
+library(broom) # For showing models as data frames
+library(fixest) # For fast, nice, fixed effects regression
+library(modelsummary) # For side-by-side regression tables
+
+# This turns off this message that appears whenever you use summarize():
+# `summarise()` ungrouping output (override with `.groups` argument)
+options(dplyr.summarise.inform = FALSE)
+
+
+
+# Load terror data
+terror <- read_stata("data/MonthlyPanel.dta") %>%
+    # The attack happened on July 18. The authors omitted data from July 19-31, so
+    # all July observations are from before the attack. Make a new indicator
+    # variable `after` to mark if the row is from before or after the attack
+    mutate(after = mes > 7) %>%
+    # There are some weird months in the data like 73. Filter out anything > 12
+    filter(mes <= 12) %>%
+    # Rename some columns to be more readable
+    rename(
+        same_block = institu1,
+        distance = distanci,
+        car_theft = totrob,
+        month = mes,
+        block = observ
+    ) %>%
+    # Create indicator variables for the distance of each block to a synagogue
+    mutate(
+        one_block_away = ifelse(distance == 1, 1, 0),
+        two_blocks_away = ifelse(distance == 2, 1, 0),
+        more_than_two_away = ifelse(distance > 2, 1, 0)
+    ) %>%
+    # Make these factors/categories
+    mutate(
+        block = as.factor(block),
+        month = as.factor(month),
+        same_block_factor = as.factor(same_block)
+    )
+```
+
+
+a) Imagine que você saiu e coletou dados sobre a presença de policiais em cada cidade e a quantidade de crimes em cada cidade e encontrou uma relação positiva. Isso significa que a polícia **causa** o crime? Explique.
+
+
+Di Tella e Ernesto Schargrodsky exploram essa questão com um design de diferença-em-diferenças. Eles coletaram dados sobre a presença de policiais e roubos de carros nos quarteirões da cidade de Buenos Aires antes e depois do ataque. O interesse deles é ver se a polícia extra reduziu a quantidade de roubos de carros.
+
+b) Como esses dados são adequados para um projeto DID? O que estaríamos comparando aqui? Seja específico sobre os grupos pré/pós e tratamento/controle.
+
+
+
+c) Por que o fato de a polícia ter sido enviada para certos quarteirões *por causa de ataques terroristas* ajuda na identificação do efeito causal?
+
+
+d) O que você diria sobre a suposição de tendências paralelas na Figura 1 abaixo? Qual o problema em as tendências não serem paralelas?
+
+
+```{r plot-trends, fig.cap="Tendências temporais de furto."}
+# Make a plot here
+trends_df <- terror |>
+    group_by(month, same_block_factor) |>
+    summarise(avg_theft = mean(car_theft))
+
+ggplot(trends_df, aes(month, avg_theft,
+    group = same_block_factor,
+    color = same_block_factor
+)) +
+    geom_line() +
+    geom_vline(xintercept = "7", color = "red") +
+    labs(
+        x = "Mês",
+        y = "Média de furtos"
+    ) +
+    guides(color = guide_legend(title = "Sinagoga \nQuarteirão")) +
+    theme_classic()
+```
+
+
+```{r manual-diff-diff}
+# Calculate average of car_theft across same_block and after
+man_did <- terror |>
+    group_by(after, same_block) |>
+    summarise(avg_theft = mean(car_theft))
+# Pull each average
+theft_before_control <- man_did |>
+    filter(after == FALSE, same_block == 0) |>
+    pull(avg_theft)
+theft_after_control <- man_did |>
+    filter(after == TRUE, same_block == 0) |>
+    pull(avg_theft)
+theft_before_treat <- man_did |>
+    filter(after == FALSE, same_block == 1) |>
+    pull(avg_theft)
+theft_after_treat <- man_did |>
+    filter(after == TRUE, same_block == 1) |>
+    pull(avg_theft)
+
+man_did_est <- (theft_after_treat - theft_before_treat) - (theft_after_control - theft_before_control)
+```
+
+e) Calcule a estimativa de diferença em diferença dados esses números.
+
+|                     | Antes                  | Depois                | 
+|---------------------|-----------------------:|----------------------:|
+| Quadra sem Sinagoga |`r theft_before_control`|`r theft_after_control`|
+| Quadra com Sinagoga |`r theft_before_treat`  |`r theft_after_treat`  | 
+
+
+Verifique os resultados de uma regressão na Tabela 2 e responda:
+
+f) Qual equação de regressão foi estimada? 
+
+g) Se esta é uma regressão com efeitos fixos, por que o intercepto é reportado?
+
+h) Identifique o coeficiente relativo ao efeito causal DID. É igual ao calculado no item e)?
+
+
+```{r simple-diff-diff-model, warning=FALSE}
+did_model <- lm(car_theft ~ after * same_block, data = terror)
+msummary(did_model,
+    gof_map = c("nobs", "adj.r.squared"),
+    coef_rename = c(
+        `afterTRUE` = "after",
+        `afterTRUE:same_block` = "after x same_block"
+    ),
+    title = "Regressão DID."
+)
+```
+
+
+
+# Questão 3
+
+No artigo "Water for Life: The Impact of the Privatization of Water Services on Child Mortality" de @galiani2005water, os autores examinaram o impacto da privatização da água na mortalidade infantil na Argentina. O estudo constatou que a privatização dos serviços de água levou a uma redução significativa na mortalidade infantil, com uma redução geral de 8% e uma redução de 26% nas áreas mais pobres. O efeito foi observado principalmente na redução de mortes por doenças infecciosas e parasitárias, relacionadas às condições da água. Essas descobertas sugerem que a privatização dos serviços de água pode ter um impacto positivo nos resultados da saúde infantil.
+
+Os autores utilizaram dados de painel com o status socioeconômico dos municípios incluindo covariáveis invariantes no tempo, PIB per capita, desigualdade de renda e desemprego e um conjunto de características como a proporção de domicílios com necessidades básicas não atendidas (UBN), características de moradia, e características demográficas dos chefes de família para toda a década de 1990. Estes dados permitiram analisar os efeitos antes e depois da privatização. Para explicar possíveis fatores de confusão, os autores usaram a estimativa de **diferenças em diferenças**, controlando várias variáveis socioeconômicas e efeitos fixos regionais. 
+
+Entre 1991 e 1999, cerca de metade das empresas públicas de água que atendiam a 28% dos municípios do país e cobriam quase 60% da população do país foram transferidas para controle privado com fins lucrativos. Os demais municípios continuaram recebendo serviços de água de empresas públicas ou cooperativas sem fins lucrativos.
+
+A Figura \@ref(fig:galiani-tendencias) mostra a relação entre taxas de mortalidade infantil para os municípios que não tiveram seus serviços de abastecimento de água privatizados versus aqueles que o tiveram.
+
+```{r galiani-tendencias, fig.cap="Evolução das taxas de mortalidade para municípios com serviços de água privatizados vs. não privatizados", out.width="60%", fig.align='center'}
+knitr::include_graphics("Figs/Galiani_tendencias.png")
+```
+
+a) Com base nesta figura e, considerando que anos anteriores a 1995 o efeito das privatizações ainda não era relevante pois houveram poucas até esta data, explique porque um _design_ de DID pode ou não ser crível nesta situação. (1,0 ponto)
+
+b) Considere uma variável indicadora de privatização ($D_{it}=1$) e um vetor de variáveis de controle ($\textbf{X}_{it}$). Explique que tipo de preocupação os autores tiveram para **não** estimar uma regressão do tipo MQO agrupado nos dados obtidos? Uma regressão da seguinte forma:
+
+$$y_{it}=\beta_0+\textbf{X}_{it}\boldsymbol\beta+\delta D_{it}+\varepsilon_{it}.$$
+
+Onde $y_{it}$ refere-se a taxa de mortalidade infantil no município $i$ no ano $t$. (1,0 ponto) 
+
+\input{Galiani_resultados}
+
+c) A Tabela \@ref(tab:galiani-resultados) apresenta uma parte dos resultados obtidos com o estudo. A variável "Privatizado" é a _dummy_ de tratamento ($D_{it}=1$ quando município $i$ no ano $t$ tem serviços de água privados). As colunas (1) a (3) apresentam os resultados para diferentes especificações do modelo. Interprete os resultados obtidos e discorra sobre a robustez dos resultados para diferentes especificações. (1,0 ponto)
+
+d) Os resultados na Tabela \@ref(tab:galiani-resultados) são oriundos de uma regressão de efeitos fixos em duas vias (TWFE - modelo abaixo) e dados em números de mortes para cada mil crianças de até 5 anos de idade. Quanto de redução **percentual** represetam os coeficientes dos modelos (1) a (3) com relação a taxa de mortalidade em 1990? (1,0 ponto)
+
+$$y_{it}=\delta D_{it}+\lambda_i+\mu_t+\textbf{X}_{it}\boldsymbol\beta+\varepsilon_{it}.\tag{TWFE}$$
+
+```{r galiani-adocao, fig.cap="Porcentagem de municípios com sistemas de água privatizados", out.width="60%", fig.align='center'}
+knitr::include_graphics("Figs/Galiani_adocao_tratamento.png")
+```
+
+e) A Figura \@ref(fig:galiani-adocao) apresenta o número de municípios com serviços de água privatizados. Neste caso a regressão TWFE estimada pelos autores e os resultados apresentados na Tabela \@ref(tab:galiani-resultados) continuam válidos? Por quê? (1,0 ponto)
+
+
+# Questão 4
+
+Suponha que você observe os aluguéis cobrados em três diferentes bairros (A, B e C)
+de Florianópolis ao longo do tempo, e que um shopping center tenha sido
+construído no instante $t=0$ no bairro A:
+
+```{r shopping-did}
+t <- -2:2
+delta_t_ac <- c(2, 4, 1, 1, 2)
+delta_t_b <- c(3, 1, 0, 3, 2)
+delta_i_a <- 6
+delta_i_b <- 3
+delta_i_c <- 1
+efeito <- 2
+ya <- delta_t_ac + delta_i_a + efeito * (t > 0)
+yb <- delta_t_b + delta_i_b
+yc <- delta_t_ac + delta_i_c
+
+df <- data.frame(
+    t = c(t, t, t),
+    value = c(ya, yb, yc),
+    nbh = rep(c("A", "B", "C"), each = 5)
+)
+p <- ggplot(df, aes(t, value, color = nbh, group = nbh)) +
+    geom_line() +
+    geom_point(aes(shape = nbh, size = 0.2)) +
+    geom_vline(xintercept = 0, color = "black", linetype = "dashed", size = 0.3) +
+    guides(
+        color = guide_legend(title = "Bairro"),
+        shape = guide_legend(title = "Bairro"),
+        size = "none"
+    ) +
+    labs(x = "Tempo", y = "Aluguel") +
+    theme_bw()
+p
+```
+
+a) Qual o melhor bairro para servir de grupo de comparação (controle) para o bairro A se quisermos estimar o impacto da chegada do shopping center no preço dos alugueis por diferenças-em-diferenças? Por quê? (1,0 ponto)
+
+b) Faça a estimativa pontual do efeito do shopping center no preço dos alugueis no bairo A. Considere como período pré $t=-1$ e período pós $t=1$. (1,0 ponto)
+
+c) Para a estimação do item b) qual deve ser o teste placebo a ser realizado para a verificação das tendências paralelas? Calcule a estimativa DID do teste placebo e verifique se é igual a zero. (1,0 ponto)
+
+
+# Questão 5
+
+Em 1980, o estado do Kentucky elevou o limite de renda semanal que era coberta pela compensação em caso de acidentes. Queremos saber se essa nova política fez com que os trabalhadores passassem mais tempo desempregados. Se os benefícios não forem generosos o suficiente, os trabalhadores podem processar as empresas por lesões no trabalho, enquanto benefícios excessivamente generosos podem causar problemas de risco moral e induzir os trabalhadores a serem mais imprudentes no trabalho ou alegar que lesões fora do trabalho ocorreram durante o trabalho.
+
+a) Vamos utilizar dados de lesões no ambiente de trabalho oriundo do artigo de Meyer e Viscusi (1995). Carrege os dados a partir do arquivo `injury.csv`. 
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+injury <- read_csv("data/injury.csv")
+```
+
+b) Estas são as principais colunas com as quais nos preocuparemos:
+
+* durat (que vamos renomear para duration): duração dos benefícios de desemprego, medida em semanas
+
+* ldurat (que vamos renomear para log_duration): Versão registrada de durat (log(durat))
+
+* afchnge (que vamos renomear para after_1980): variável indicadora que marca se a observação aconteceu antes (0) ou depois (1) da mudança de política em 1980
+
+* highearn: variável indicadora que marca se a observação é de baixo (0) ou alto (1) salário
+
+Filtre as observações para abrangirem somente o estado de Kentucky (`ky == 1`) e renomeie as váriaveis de acordo.
+
+
+c) Em um gráfico separado entre antes e depois salário plote a média e o intervalo de confiança da duração do desemprego em logarítimo para os trabalhadores de baixo (controle) e alto salário (tratamento). Com base neste gráfico, você espera que o efeito da política sobre o tempo de desemprego seja positivo ou negativo?
+
+
+d) Considere que $t\in\{0,1\}$ represente antes/depois da política e $g\in\{T, C\}$ os grupos tratamento e controle, respectivamente. Calcule a estimativa de DID a partir da seguinte expressão:
+
+$$
+\hat\delta = 
+\left(\mathbb{E}[Y_{gt}|g=T, t=1] - \mathbb{E}[Y_{gt}|g=T, t=0]\right) - \left(\mathbb{E}[Y_{gt}|g=C, t=1] - \mathbb{E}[Y_{gt}|g=C, t=0]\right) 
+$$
+
+
+e) O cálculo manual feito no item anterior, apesar de correto, não nos fornece erro-padrão associado a estimativa e portanto, não conseguimos fazer inferência. O modelo de regressão para DID é útil nestas situações. Escreva a equação de regressão e estime-a. O efeito encontrado é o mesmo do item anterior? E quanto a inferência estatística, este efeito é estatisticamente significativo?
+
+
+# Questão 6
+
+Este exercício analisa o impacto de um programa de subsídio de plano de saúde para os pobres, o HISP. Um dos principais objetivos do programa é reduzir a carga de despesas relacionadas à saúde para famílias de baixa renda. Você foi encarregado de conduzir uma avaliação de impacto do efeito do HISP sobre os gastos diretos com saúde. Você usará o conjunto de dados denominado “evaluation.dta” para conduzir sua análise.
+
+Nesse cenário, você estimará o efeito do programa comparando a mudança nos resultados ao longo do tempo para um grupo de famílias que se inscreveram no programa. Assuma cumprimento integral, o que significa que todos os domicílios elegíveis ao programa se inscreveram nele.
+
+a)  Compare os gastos médios com saúde (health_expenditures) antes (round = 0) e após o programa (round = 1) para o grupo de domicílios elegíveis (eligible =1) nas comunidades de tratamento (treatment_locality = 1).
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(haven)
+eval_df <- read_dta("data/evaluation.dta")
+# Apenas comunidades de tratamento
+eval_df <- eval_df |>
+    filter(treatment_locality == 1)
+```
+
+b) Estime o mesmo resultado utilizando um modelo de regressão.
+
+
+c) A regressão linear de efeitos fixos em duas vias (TWFE) tornou-se um método padrão para estimar efeitos causais a partir de dados em painel, pois, ela pode controlar para fatores não observados da unidade e do tempo ao mesmo tempo. Outra justificativa comum para o uso do estimador TWFE é baseada em sua equivalência ao estimador de DID na configuração mais simples com dois grupos e dois períodos de tempo. A especificação TWFE é:
+
+$$
+y_{it}=\alpha_i+\gamma_t+\delta D_{it}+\varepsilon_{it}
+$$
+onde $D_{it}$ é uma variável binária que representa o status de tratamento (1, somente se for do grupo tratado no período pós). Neste caso $i$ representa o domicílio e $t$ o período. Note que essa especificação é mais geral que o DID canônico, uma vez que o efeito fixo de unidade, $\alpha_i$ engloba (absorve) o próprio indicador de grupo de tratamento.
+
+Rode uma regressão de TWFE para encontrar o mesmo efeito causal dos itens anteriores.
+
+**ATENÇÃO:** a equivalência TWFE e DID só vale para o caso 2x2. Caso tenhamos mais de dois períodos, com adesão ao tratamento em momentos diferentes, ou efeitos heterogêneos entre as coortes, a equivalência deixa de existir. Uma recente literatura vem mostrando o viés da estimação via TWFE nestes casos, [@GOODMANBACON2021254; @callaway2021difference; @de2020two; @imai2021use; @sun2021estimating] 
+
+
+# Questão 7
+
+Considere os seguintes dados simulados em `dind_data.csv`. Existem 10 períodos de tempo (`timeid`), 1000 unidades (`ids`), e o tratamento é ativado no período 5 (`post`). O grupo tratado (`treated_group`) recebe o tratamento no período 5 e o grupo controle não. Por favor, seja específico em quais erros-padrão você está reportando.
+
+a) Primeiro, concentre-se em `y_instant` e estime o efeito do tratamento para as três regressões a seguir:
+
+- O efeito do tratamento, controlando o status do grupo e o período pós $y_{it} = \alpha_{post} + \alpha_{treated} + \beta \texttt{post} \times \texttt{treated}$
+
+- O efeito do tratamento, controlando o status do grupo e efeitos fixos de tempo $y_{it} = \alpha_{t} + \alpha_{treated} + \beta \texttt{post} \times \texttt{treated}$
+
+- O efeito do tratamento, controlando os efeitos fixos de unidade e tempo $y_{it} = \alpha_{t} + \alpha_{i} + \beta \texttt{post} \times \texttt{treated}$
+
+Compare as estimativas pontuais e os erros-padrão. Como eles diferem? **Por quê**? 
+
+
+## Referências
