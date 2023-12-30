@@ -19,7 +19,7 @@ format:
     height: 900
 from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
 fontsize: "2.2em"
-editor: source
+# editor: source
 jupyter: python3
 ---
 
@@ -111,7 +111,7 @@ Mas nem todas as correlações são fáceis de diferenciar
 
 ::::{.columns}
 
-:::{.column width="50%"}
+:::{.column width="55%"}
 - Hoje em dia, nós sabemos que a resposta é *SIM*! 
 
 - Mas, voltemos para 1950
@@ -121,9 +121,9 @@ Mas nem todas as correlações são fáceis de diferenciar
   - ... que ocorre após um rápido aumento no consumo de cigarros
 :::
 
-:::{.column width="50%"}
+:::{.column width="45%"}
 
-![](img/Smoking_lung_cancer.png)
+![](img/Smoking_lung_cancer.png){width=90%}
 
 :::
 
@@ -262,8 +262,9 @@ todos os indivíduos tais que $D_i = 0$.
 
 * Na vida real, observamos apenas $Y_i$ que pode ser escrito como:
 
+:::{.fragment}
 $$Y_i = D_i \times Y_i^1 + (1- D_i) \times Y_i^0$$
-
+:::
 
 
 * ***Problema fundamental da inferência causal***: para qualquer indivíduo $i$, observamos apenas um dos resultados potenciais [(Holland, 1986)](http://people.umass.edu/~stanek/pdffiles /causal-holland.pdf).
@@ -274,18 +275,16 @@ $$Y_i = D_i \times Y_i^1 + (1- D_i) \times Y_i^0$$
 * O resultado potencial que não é observado existe em princípio, é chamado de ***resultado contrafactual***.
 
 
+:::{.fragment}
+| Grupo                | $Y_i^1$               | $Y_i^0$               |
+| -------------------- | :-------------------------: | :-------------------------: |
+| Tratamento $(D_i = 1)$ | Observável como $Y_i$     |      Contrafactual       |
+| Controle $(D_i = 0)$   |      Contrafactual       | Observável como $Y_i$     |
+:::
 
-Grupo | $Y_i^1$ | $Y_i^0$
-|::|::
-Tratamento $(D_i = 1)$ &nbsp; &nbsp; | &nbsp; &nbsp; Observável como $Y_i$ &nbsp; &nbsp; | Contrafactual
-Controle $(D_i = 0)$ | Contrafactual | &nbsp; &nbsp; Observável como $Y_i$ &nbsp; &nbsp;
-
-
-
-* A partir deles podemos definir o ***efeito de tratamento individual*** $\delta_i= Y_i^1 - Y_i^0$
+* A partir deles podemos definir o ***efeito de tratamento individual*** $\delta_i= Y_i^1 - Y_i^0$.
 
 * $\delta_i$ mede o **efeito causal do tratamento** $D_i$ no resultado $Y_i$ do indivíduo
-
 
 
 * O efeito do tratamento ***não*** pode ser observado no nível individual (Por quê?), nossos estimandos serão médias populacionais.
@@ -306,7 +305,7 @@ $$
 
 * O ATE mede simplesmente a ***média dos efeitos individuais do tratamento sobre toda a população***.
 
-([*Apêndice:*](@sec-attandatu) Tratamento Médio nos Tratados e Tratamento Médio nos Não Tratados)
+([*Apêndice:*](./#/sec-attandatu) Tratamento Médio nos Tratados e Tratamento Médio nos Não Tratados)
 
 
 ## Exemplo: Classe Pequena vs. Grande
@@ -316,17 +315,17 @@ Resultados potenciais para os alunos em turma pequena $(Y^1)$ ou grande $(Y^0)$:
 ::::{.columns}
 
 :::{.column width="50%"}
-Aluno | &nbsp; &nbsp; $Y^1$ &nbsp; &nbsp; | &nbsp; &nbsp; $Y^0$ &nbsp; &nbsp; | &nbsp; &nbsp; $\delta$ &nbsp; &nbsp;
-|::|::|::|
-1 | 5 | 2 | 3
-2 | 6 | 4 | 2
-3 | 3 | 6 | -3
-4 | 5 | 4 | 1
-5 | 10 | 8 | 2
-6 | 2 | 4 | -2
-7 | 5 | 2 | 3
-8 | 6 | 4 | 2
-Média | 5.25 | 4.25 | 1.0
+| Aluno | $Y^1$ | $Y^0$ | $\delta$ |
+|-------|-------|-------|---------|
+| 1     | 5     | 2     | 3       |
+| 2     | 6     | 4     | 2       |
+| 3     | 3     | 6     | -3      |
+| 4     | 5     | 4     | 1       |
+| 5     | 10    | 8     | 2       |
+| 6     | 2     | 4     | -2      |
+| 7     | 5     | 2     | 3       |
+| 8     | 6     | 4     | 2       |
+| Média | 5.25  | 4.25  | 1.0     |
 
 :::
 
@@ -347,6 +346,8 @@ $$
 
 - :warning: nem todos os alunos se beneficiaram igualmente com o tratamento!
 
+- Chamamos isso de **efeito heterogêneo** do tratamento.
+
 :::
 
 ::::
@@ -360,13 +361,14 @@ $$
 
 * A partir dos dados, podemos calcular a **D**iferença **S**imples nas médias dos **R**esultados (***DSR***) para ambos os grupos:
 
+:::{.fragment}
 $$
 \begin{aligned}
 DSR &= \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) \\
 &= \underbrace{\frac{1}{N_T}\sum_{i=1}^{N_T}(Y_i|D_i=1)}_{\text{resultado médio do grupo de tratamento}} - \underbrace{\frac {1}{N_C}\sum_{i=1}^{N_C}(Y_i|D_i=0)}_{\text{resultado médio do grupo de controle}}
 \end{aligned}
 $$
-
+:::
 
 
 ## Diferença Simples nas médias dos Resultados: um exemplo
@@ -374,17 +376,16 @@ $$
 ::::{.columns}
 
 :::{.column width="50%"}
-Estudante | &nbsp; &nbsp; $Y$ &nbsp; &nbsp; | &nbsp; &nbsp; $D$ &nbsp; &nbsp; | &nbsp; &nbsp; $\delta$&nbsp; &nbsp;
-|::|::|::
-1 | 5 | 1 | 3
-2 | 6 | 1 | 2
-3 | 6 | 0 | -3
-4 | 4 | 0 | 1
-5 | 10 | 1 | 2
-6 | 4 | 0 | -2
-7 | 5 | 1 | 3
-8 | 6 | 1 | 2
-
+| Estudante | $Y$ | $D$ | $\delta$ |
+|-----------|-----|-----|---------|
+| 1         | 5   | 1   | 3       |
+| 2         | 6   | 1   | 2       |
+| 3         | 6   | 0   | -3      |
+| 4         | 4   | 0   | 1       |
+| 5         | 10  | 1   | 2       |
+| 6         | 4   | 0   | -2      |
+| 7         | 5   | 1   | 3       |
+| 8         | 6   | 1   | 2       |
 :::
 
 :::{.column width="50%"}
@@ -402,7 +403,7 @@ $$
 
 * A DSR **irá (quase sempre) falhar em capturar o efeito causal do tratamento**
 
-* Observe que esse tipo de comparação "ingênua" é frequentemente feita por jornalistas, políticos, cientistas mal treinados (mas você não mais! `r emo::ji("wink")`)
+* Observe que esse tipo de comparação "ingênua" é frequentemente feita por jornalistas, políticos, cientistas mal treinados (mas você não mais! :wink:)
 :::
 
 ::::
@@ -427,8 +428,9 @@ $$DSR = \delta + \underbrace{\mathop{\mathbb{E}}(Y_i^0 | D_i = 1) - \mathop{\mat
 E por hipótese: $ATE = \mathop{\mathbb{E}}(\delta_i) = \mathop{\mathbb{E}}(\delta) = \delta$ 
 
 
-([*Apêndice*](@sec-naive-comp-extended): quando a suposição de tratamento constante é relaxada, outro termo de viés aparece.)
+([*Apêndice*](./#/sec-naive-comp-extended): quando a suposição de tratamento constante é relaxada, outro termo de viés aparece.)
 
+* :warning: $\mathbb{E}(Y_i^0 | D_i = 1)$ é um resultado contrafactual, portanto, **não observável**!
 
 ## Aleatorização resolve o problema da inferência causal!
 
@@ -444,9 +446,11 @@ E por hipótese: $ATE = \mathop{\mathbb{E}}(\delta_i) = \mathop{\mathbb{E}}(\del
 
 * Com atribuição aleatória, temos:
 
+:::{.fragment}
 $$ DSR = \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) = ATE$$
+:::
 
-:point_right: Podemos estimar o ATE diretamente a partir dos dados!
+* :point_right: Podemos estimar o ATE diretamente a partir dos dados!
 
 
 ## Experimentos Aleatorizados
@@ -464,11 +468,13 @@ $$ DSR = \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) = A
 
 ## Tamanho da turma e desempenho dos alunos
 
-Suponha que regredimos as notas médias dos alunos em matemática ou leitura no tamanho da turma.
+* Suponha que regredimos as notas médias dos alunos em matemática ou leitura no tamanho da turma.
 
+:::{.fragment}
 $$\textrm{matemática}_i = b_0 + b_1 \textrm{tamanho}_i + e_i$$
+:::
 
-Sem maiores informações sobre a origem dos dados coletados, $b_1^{OLS}$ só poderá estabelecer uma ***associação*** e não uma ***relação causal***.
+* Sem maiores informações sobre a origem dos dados coletados, $b_1^{OLS}$ só poderá estabelecer uma ***associação*** e não uma ***relação causal***.
 
 
 
@@ -480,7 +486,7 @@ Sem maiores informações sobre a origem dos dados coletados, $b_1^{OLS}$ só po
 
 
 
-Um RCT cuidaria de todos esses vieses!
+* Um RCT cuidaria de todos esses vieses!
 
 
 ## O Experimento do Projeto STAR
@@ -523,7 +529,6 @@ Vamos nos concentrar apenas em:
 
 
 ```{python}
-
 star_df = pd.read_csv("https://www.dropbox.com/s/bf1fog8yasw3wjj/star_data.csv?dl=1")
 star_df = star_df.dropna()
 
@@ -561,14 +566,19 @@ diff_table["diff_regular_aide_regular"] = (
 diff_table = diff_table.sort_values(by=["grade"], ascending=False).reset_index(drop=True)
 ```
 
+:::{.fragment}
 ```{python}
-#| output: asis
-#| 
-diff_table[diff_table['grade']=='k'][['grade', 'test', 'mean_regular', 'mean_small', 'diff_small_regular']].to_markdown(index=False)
+from IPython.display import Markdown
+
+Markdown(
+    diff_table[diff_table["grade"] == "k"][
+        ["grade", "test", "mean_regular", "mean_small", "diff_small_regular"]
+    ].to_markdown(index=False)
+)
 ```
+:::
 
-
-Qual é a interpretação para esses ATEs?
+* Qual é a interpretação para esses ATEs?
 
 
 ## RCT em forma de Regressão
@@ -587,12 +597,13 @@ $$
 
 
 
-Assumindo $\delta_i = \delta$, para todo $i$, então $Y_i = Y_i^0 + D_i \delta$
+* Assumindo $\delta_i = \delta$, para todo $i$, então $Y_i = Y_i^0 + D_i \delta$
 
 
 
-Adicionando $\mathbb{E}[Y_i^0] - \mathbb{E}[Y_i^0] = 0$ ao lado direito:
+* Adicionando $\mathbb{E}[Y_i^0] - \mathbb{E}[Y_i^0] = 0$ ao lado direito:
 
+:::{.fragment}
 $$
 \begin{aligned} 
 Y_i &= \mathbb{E}[Y_i^0] + D_i \delta + Y_i^0 - \mathbb{E}[Y_i^0] \\ &= b_0 + \delta D_i + e_i 
@@ -600,32 +611,34 @@ Y_i &= \mathbb{E}[Y_i^0] + D_i \delta + Y_i^0 - \mathbb{E}[Y_i^0] \\ &= b_0 + \d
 $$
 
 onde $b_0 = \mathbb{E}[Y_i^0]$ e $e_i = Y_i^0 - \mathbb{E}[Y_i^0]$
-
+:::
 
 
 ## O Experimento do Projeto STAR: Regressão
 
-A última equação se parece exatamente com o modelo de regressão simples! (com $\delta = b_1$)
+* A última equação se parece exatamente com o modelo de regressão simples! (com $\delta = b_1$)
 
-Vamos, portanto, estimar o ATE de ser designado para uma turma pequena em notas de matemática.
+* Vamos, portanto, estimar o ATE de ser designado para uma turma pequena em notas de matemática.
 
 
 
-Queremos estimar o seguinte modelo: $\text{math score}_i = b_0 + \delta \text{small}_i + e_i$, com
+* Queremos estimar o seguinte modelo: $\text{math score}_i = b_0 + \delta \text{small}_i + e_i$, com
 
+:::{.fragment}
 $$
-\text{pequeno}_i = \begin{cases}
+\text{small}_i = \begin{cases}
                      1 \textrm{ se atribuído a uma turma pequena} \\\\
                      0 \textrm{ se atribuído a uma turma regular}
        \end{cases}
 $$
+:::
 
 
 ```{python}
 star_df_k_small = star_df.loc[(star_df['star'].isin(['regular', 'small'])) & (star_df['grade'] == 'k')]
 star_df_k_small['small'] = star_df_k_small['star'] == 'small'
 
-star_df_k_small.groupby(['star'])['small'].count()
+# star_df_k_small.groupby(['star'])['small'].count()
 ```
 
 
@@ -635,19 +648,20 @@ Modelo de regressão que queremos estimar: $\text{math score}_i = b_0 + \delta \
 
 
 ```{python}
-#| output: asis
+# | output: asis
 lm_math = smf.ols(formula="math ~ small", data=star_df_k_small).fit()
-lm_math.summary()
+lm_math.summary(slim=True)
 ```
 
 ## O Experimento do Projeto STAR: Regressão
 
-Lembre-se de que: $b_0 = \mathbb{E}[Y_i^0]$ e $\delta = \mathbb{E}[Y_i | D_i = 1] - \mathbb{E}[Y_i | D_i = 0]$
+Lembre que: $b_0 = \mathbb{E}[Y_i^0]$ e $\delta = \mathbb{E}[Y_i | D_i = 1] - \mathbb{E}[Y_i | D_i = 0]$
 
 ::::{.columns}
 
 :::{.column width="50%"}
 
+$b_0=$
 ```{python}
 #| output: asis
 b_0 = star_df_k_small.loc[star_df_k_small['small'] == False, 'math'].mean()
@@ -657,6 +671,7 @@ b_0
 
 :::{.column width="50%"}
 
+$\delta=$
 ```{python}
 delta = (
     star_df_k_small.loc[star_df_k_small["small"] == True, "math"].mean()
@@ -725,7 +740,8 @@ baseline_graph_mean +
  -->
 
 
-# Regressão com uma Variável Dummy: Graficamente
+## Regressão com Variável Dummy 
+### Graficamente
 
 O regressor em nossa regressão é uma ***variável binária***, ou seja, uma variável que assume os valores VERDADEIRO ou FALSO (1 ou 0).
 
@@ -740,9 +756,9 @@ filtered_data = star_df_k_small[
 ```
 
 ```{python}
-#| echo: false
+# | fig-align: center
 # Create a Figure and Axes object
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(12, 8))
 
 # Plot scatter plot
 ax.scatter(filtered_data["small"], filtered_data["math"], alpha=0.7, color="grey")
@@ -779,7 +795,7 @@ ax.annotate(
     "$\delta$",
     xy=(1.15, b_0 + delta / 2),
     xytext=(1.15, b_0 + delta / 2),
-    fontsize=10,
+    fontsize=24,
 )
 
 # Set x-axis ticks and labels
@@ -793,37 +809,39 @@ ax.legend()
 plt.show()
 ```
 
-## Regressão com uma Variável Dummy: Formalmente
+## Regressão com Variável Dummy 
+### Formalmente
 
 Lembre-se do modelo de regressão: $\text{math score}_i = b_0 + \delta \text{small}_i + e_i$
 
+:::{.fragment}
 $$
 \begin{aligned} \mathbb{E}[\textrm{math score} | \text{small}_i = 0]&= \mathbb{E}[b_0 + \delta \text{small}_i + e_i | \text{small}_i = 0] \\ 
 &= b_0 + \delta \mathbb{E}[\text{small}_i| \text{small}_i = 0] + \mathbb{E}[e_i|\text{small}_i = 0] \\ 
 &= b_0 
 \end{aligned}
 $$
+:::
 
-
-
+:::{.fragment}
 $$
 \begin{aligned} \mathbb{E}[\textrm{math score} | \text{small}_i = 1]&= \mathbb{E}[b_0 + \delta \text{small}_i + e_i | \text{small}_i = 1] \\ 
 &= b_0 + \delta \mathbb{E}[\text{small}_i| \text{small}_i = 1] + \mathbb{E}[e_i|\text{small}_i = 1] \\ 
 &= b_0 + \delta 
 \end{aligned}
 $$
+:::
 
-
-
+:::{.fragment}
 $$\begin{aligned} ATE &= \mathbb{E}[\textrm{math score} | \text{small}_i = 1] - \mathbb{E}[\textrm{math score} | \text{small}_i = 0] \\ 
 &= b_0 + \delta - b_0 \\ 
 &= \delta 
 \end{aligned}
 $$
+:::
 
 
-
-Já sabíamos disso, mas agora entendemos por que é verdade :v:
+* Já sabíamos disso, mas agora entendemos por que é verdade :v:
 
 
 
@@ -875,14 +893,14 @@ No entanto, eles têm algumas deficiências:
 * Portanto, se não podemos administrar um RCT, isso significa que temos que encontrar uma maneira de fazer inferência causal a partir de ***dados observacionais*** (em oposição a ***dados experimentais***).
 
 
-
+:::{.fragment}
 2 casos amplos:
 
 * ***seleção ocorre em características observáveis***: *regressão múltipla*
 
 * ***seleção ocorre em características não observáveis***: múltiplas abordagens (e.g., *variáveis instrumentais*, *diferença em diferenças*, etc.)
 
-
+:::
 
 ## 
 
@@ -1191,7 +1209,7 @@ Algumas ferramentas
 
 # Appendix
 
-## Average Treatment on the Treated and on the Untreated{#sec-attandatu}
+## Average Treatment on the Treated and on the Untreated {#sec-attandatu}
 
 Other ***conditional*** average treatment effects may be of interest:
 
@@ -1226,8 +1244,11 @@ The ATU measures the ***average treatment effect conditional on being in the con
 
 ::::
 
-*Note:* In the majority of cases, ATE $\neq$ ATT $\neq$ ATU! <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> @sec-ate
+*Note:* In the majority of cases, ATE $\neq$ ATT $\neq$ ATU! 
 
+::: footer
+[:back:](./#/sec-ate)
+:::
 
 
 ## Problems with Naive Comparisons {#sec-naive-comp-extended}
@@ -1246,4 +1267,8 @@ where $1 - \pi$ denotes the share of people in the control group.
 So there is a novel source of bias that comes from the potential ***heterogeneity in the individual treatment effect*** $\delta_i$.
 
 * ***Selection bias***: those who attend university are likely to have higher baseline cognitive skills (regardless of whether they actually attend college).
-* ***Heterogeneous treatment effect bias***: those who attend university may improve their cognitive skills more at university because they are more motivated. <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> @sec-naive-comp
+* ***Heterogeneous treatment effect bias***: those who attend university may improve their cognitive skills more at university because they are more motivated. 
+
+::: footer
+[:back:](./#/sec-naive-comp)
+:::

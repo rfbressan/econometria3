@@ -26,18 +26,18 @@ $code-color: #139954;
 }
 
 .reveal .footer {
-  font-size: 0.35em !important;
-  text-align: left !important;
+  // font-size: 0.55em !important;
+  text-align: center !important;
 }
 
 .reveal .slides section .fragment.semi-fade-out {
-	opacity: 1;
-	visibility: inherit;
+  opacity: 1;
+  visibility: inherit;
 
-	&.visible {
-		opacity: 0.25;
-		visibility: inherit;
-	}
+  &.visible {
+    opacity: 0.25;
+    visibility: inherit;
+  }
 }
 
 /* .sectionhead {

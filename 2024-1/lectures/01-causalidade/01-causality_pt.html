@@ -392,7 +392,7 @@ Rafael Bressan
 <p>Mas nem todas as correlações são fáceis de diferenciar</p>
 <p><strong><em>Fumar causa câncer de pulmão?</em></strong></p>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:55%;">
 <ul>
 <li class="fragment"><p>Hoje em dia, nós sabemos que a resposta é <em>SIM</em>!</p></li>
 <li class="fragment"><p>Mas, voltemos para 1950</p>
@@ -401,8 +401,8 @@ Rafael Bressan
 <li class="fragment"><p>… que ocorre após um rápido aumento no consumo de cigarros</p></li>
 </ul></li>
 </ul>
-</div><div class="column" style="width:50%;">
-<p><img data-src="img/Smoking_lung_cancer.png"></p>
+</div><div class="column" style="width:45%;">
+<p><img data-src="img/Smoking_lung_cancer.png" style="width:90.0%"></p>
 </div>
 </div>
 <ul>
@@ -485,7 +485,9 @@ D_i = \begin{cases}
 </ul></li>
 <li class="fragment"><p>Na vida real, observamos apenas <span class="math inline">\(Y_i\)</span> que pode ser escrito como:</p></li>
 </ul>
+<div class="fragment">
 <p><span class="math display">\[Y_i = D_i \times Y_i^1 + (1- D_i) \times Y_i^0\]</span></p>
+</div>
 <ul>
 <li class="fragment"><strong><em>Problema fundamental da inferência causal</em></strong>: para qualquer indivíduo <span class="math inline">\(i\)</span>, observamos apenas um dos resultados potenciais <a href="http://people.umass.edu/~stanek/pdffiles%20/causal-holland.pdf">(Holland, 1986)</a>.</li>
 </ul>
@@ -495,9 +497,36 @@ D_i = \begin{cases}
 <ul>
 <li class="fragment">O resultado potencial que não é observado existe em princípio, é chamado de <strong><em>resultado contrafactual</em></strong>.</li>
 </ul>
-<p>Grupo | <span class="math inline">\(Y_i^1\)</span> | <span class="math inline">\(Y_i^0\)</span> |::|:: Tratamento <span class="math inline">\((D_i = 1)\)</span> &nbsp; &nbsp; | &nbsp; &nbsp; Observável como <span class="math inline">\(Y_i\)</span> &nbsp; &nbsp; | Contrafactual Controle <span class="math inline">\((D_i = 0)\)</span> | Contrafactual | &nbsp; &nbsp; Observável como <span class="math inline">\(Y_i\)</span> &nbsp; &nbsp;</p>
+<div class="fragment">
+<table>
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Grupo</th>
+<th style="text-align: center;"><span class="math inline">\(Y_i^1\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(Y_i^0\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tratamento <span class="math inline">\((D_i = 1)\)</span></td>
+<td style="text-align: center;">Observável como <span class="math inline">\(Y_i\)</span></td>
+<td style="text-align: center;">Contrafactual</td>
+</tr>
+<tr class="even">
+<td>Controle <span class="math inline">\((D_i = 0)\)</span></td>
+<td style="text-align: center;">Contrafactual</td>
+<td style="text-align: center;">Observável como <span class="math inline">\(Y_i\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
 <ul>
-<li class="fragment"><p>A partir deles podemos definir o <strong><em>efeito de tratamento individual</em></strong> <span class="math inline">\(\delta_i= Y_i^1 - Y_i^0\)</span></p></li>
+<li class="fragment"><p>A partir deles podemos definir o <strong><em>efeito de tratamento individual</em></strong> <span class="math inline">\(\delta_i= Y_i^1 - Y_i^0\)</span>.</p></li>
 <li class="fragment"><p><span class="math inline">\(\delta_i\)</span> mede o <strong>efeito causal do tratamento</strong> <span class="math inline">\(D_i\)</span> no resultado <span class="math inline">\(Y_i\)</span> do indivíduo</p></li>
 <li class="fragment"><p>O efeito do tratamento <strong><em>não</em></strong> pode ser observado no nível individual (Por quê?), nossos estimandos serão médias populacionais.</p></li>
 </ul>
@@ -515,14 +544,79 @@ ATE &amp;= \mathop{\mathbb{E}}(\delta_i) \\
 <ul>
 <li class="fragment">O ATE mede simplesmente a <strong><em>média dos efeitos individuais do tratamento sobre toda a população</em></strong>.</li>
 </ul>
-<p>(<a href="@sec-attandatu"><em>Apêndice:</em></a> Tratamento Médio nos Tratados e Tratamento Médio nos Não Tratados)</p>
+<p>(<a href="./#/sec-attandatu"><em>Apêndice:</em></a> Tratamento Médio nos Tratados e Tratamento Médio nos Não Tratados)</p>
 </section>
 <section id="exemplo-classe-pequena-vs.-grande" class="slide level2">
 <h2>Exemplo: Classe Pequena vs.&nbsp;Grande</h2>
 <p>Resultados potenciais para os alunos em turma pequena <span class="math inline">\((Y^1)\)</span> ou grande <span class="math inline">\((Y^0)\)</span>:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Aluno | &nbsp; &nbsp; <span class="math inline">\(Y^1\)</span> &nbsp; &nbsp; | &nbsp; &nbsp; <span class="math inline">\(Y^0\)</span> &nbsp; &nbsp; | &nbsp; &nbsp; <span class="math inline">\(\delta\)</span> &nbsp; &nbsp; |::|::|::| 1 | 5 | 2 | 3 2 | 6 | 4 | 2 3 | 3 | 6 | -3 4 | 5 | 4 | 1 5 | 10 | 8 | 2 6 | 2 | 4 | -2 7 | 5 | 2 | 3 8 | 6 | 4 | 2 Média | 5.25 | 4.25 | 1.0</p>
+<table>
+<thead>
+<tr class="header">
+<th>Aluno</th>
+<th><span class="math inline">\(Y^1\)</span></th>
+<th><span class="math inline">\(Y^0\)</span></th>
+<th><span class="math inline">\(\delta\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>5</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>6</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>3</td>
+<td>6</td>
+<td>-3</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>10</td>
+<td>8</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>2</td>
+<td>4</td>
+<td>-2</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>5</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>6</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Média</td>
+<td>5.25</td>
+<td>4.25</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
 </div><div class="column" style="width:50%;">
 <p><span class="math display">\[
 \begin{align}
@@ -535,6 +629,7 @@ ATE &amp;= \mathop{\mathbb{E}}(\delta_i) \\
 <ul>
 <li class="fragment"><p>o efeito causal <strong><em>médio</em></strong> de estar na turma pequena em relação à grande nas notas é de 1 ponto.</p></li>
 <li class="fragment"><p><span class="emoji" data-emoji="warning">⚠️</span> nem todos os alunos se beneficiaram igualmente com o tratamento!</p></li>
+<li class="fragment"><p>Chamamos isso de <strong>efeito heterogêneo</strong> do tratamento.</p></li>
 </ul>
 </div>
 </div>
@@ -545,18 +640,79 @@ ATE &amp;= \mathop{\mathbb{E}}(\delta_i) \\
 <li class="fragment"><p>Na prática, temos o mesmo <strong>problema de falta de dados</strong> para calcular o ATE que tivemos para <span class="math inline">\(\delta_i\)</span>. Falta <span class="math inline">\(Y_i^1\)</span> ou <span class="math inline">\(Y_i^0\)</span> para cada <span class="math inline">\(i\)</span>.</p></li>
 <li class="fragment"><p>A partir dos dados, podemos calcular a <strong>D</strong>iferença <strong>S</strong>imples nas médias dos <strong>R</strong>esultados (<strong><em>DSR</em></strong>) para ambos os grupos:</p></li>
 </ul>
+<div class="fragment">
 <p><span class="math display">\[
 \begin{aligned}
 DSR &amp;= \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) \\
 &amp;= \underbrace{\frac{1}{N_T}\sum_{i=1}^{N_T}(Y_i|D_i=1)}_{\text{resultado médio do grupo de tratamento}} - \underbrace{\frac {1}{N_C}\sum_{i=1}^{N_C}(Y_i|D_i=0)}_{\text{resultado médio do grupo de controle}}
 \end{aligned}
 \]</span></p>
+</div>
 </section>
 <section id="diferença-simples-nas-médias-dos-resultados-um-exemplo" class="slide level2">
 <h2>Diferença Simples nas médias dos Resultados: um exemplo</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Estudante | &nbsp; &nbsp; <span class="math inline">\(Y\)</span> &nbsp; &nbsp; | &nbsp; &nbsp; <span class="math inline">\(D\)</span> &nbsp; &nbsp; | &nbsp; &nbsp; <span class="math inline">\(\delta\)</span>&nbsp; &nbsp; |::|::|:: 1 | 5 | 1 | 3 2 | 6 | 1 | 2 3 | 6 | 0 | -3 4 | 4 | 0 | 1 5 | 10 | 1 | 2 6 | 4 | 0 | -2 7 | 5 | 1 | 3 8 | 6 | 1 | 2</p>
+<table>
+<thead>
+<tr class="header">
+<th>Estudante</th>
+<th><span class="math inline">\(Y\)</span></th>
+<th><span class="math inline">\(D\)</span></th>
+<th><span class="math inline">\(\delta\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>5</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>6</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>6</td>
+<td>0</td>
+<td>-3</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>4</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>10</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>4</td>
+<td>0</td>
+<td>-2</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>5</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>6</td>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
 </div><div class="column" style="width:50%;">
 <p>A diferença simples na média dos resultados:</p>
 <p><span class="math display">\[
@@ -568,7 +724,7 @@ DSR &amp;= \frac{5+6+10+5+6}{5} - \frac{6+4+4}{3} \\
 <ul>
 <li class="fragment"><p>A DSR é bem maior que o ATE!</p></li>
 <li class="fragment"><p>A DSR <strong>irá (quase sempre) falhar em capturar o efeito causal do tratamento</strong></p></li>
-<li class="fragment"><p>Observe que esse tipo de comparação “ingênua” é frequentemente feita por jornalistas, políticos, cientistas mal treinados (mas você não mais! <code>r emo::ji("wink")</code>)</p></li>
+<li class="fragment"><p>Observe que esse tipo de comparação “ingênua” é frequentemente feita por jornalistas, políticos, cientistas mal treinados (mas você não mais! <span class="emoji" data-emoji="wink">😉</span>)</p></li>
 </ul>
 </div>
 </div>
@@ -584,7 +740,10 @@ DSR &amp;= \frac{5+6+10+5+6}{5} - \frac{6+4+4}{3} \\
 <p>Para simplificar, suponha que o <strong>efeito do tratamento seja constante</strong> entre as pessoas: para todo <span class="math inline">\(i, \delta_i = \delta\)</span>.</p>
 <p><span class="math display">\[DSR = \delta + \underbrace{\mathop{\mathbb{E}}(Y_i^0 | D_i = 1) - \mathop{\mathbb{E}}(Y_i^0 | D_i = 0)}_\text{Viés de Seleção}\]</span></p>
 <p>E por hipótese: <span class="math inline">\(ATE = \mathop{\mathbb{E}}(\delta_i) = \mathop{\mathbb{E}}(\delta) = \delta\)</span></p>
-<p>(<a href="@sec-naive-comp-extended"><em>Apêndice</em></a>: quando a suposição de tratamento constante é relaxada, outro termo de viés aparece.)</p>
+<p>(<a href="./#/sec-naive-comp-extended"><em>Apêndice</em></a>: quando a suposição de tratamento constante é relaxada, outro termo de viés aparece.)</p>
+<ul>
+<li class="fragment"><span class="emoji" data-emoji="warning">⚠️</span> <span class="math inline">\(\mathbb{E}(Y_i^0 | D_i = 1)\)</span> é um resultado contrafactual, portanto, <strong>não observável</strong>!</li>
+</ul>
 </section>
 <section id="aleatorização-resolve-o-problema-da-inferência-causal" class="slide level2">
 <h2>Aleatorização resolve o problema da inferência causal!</h2>
@@ -597,8 +756,12 @@ DSR &amp;= \frac{5+6+10+5+6}{5} - \frac{6+4+4}{3} \\
 </ul></li>
 <li class="fragment"><p>Com atribuição aleatória, temos:</p></li>
 </ul>
+<div class="fragment">
 <p><span class="math display">\[ DSR = \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) = ATE\]</span></p>
-<p><span class="emoji" data-emoji="point_right">👉</span> Podemos estimar o ATE diretamente a partir dos dados!</p>
+</div>
+<ul>
+<li class="fragment"><span class="emoji" data-emoji="point_right">👉</span> Podemos estimar o ATE diretamente a partir dos dados!</li>
+</ul>
 </section>
 <section id="experimentos-aleatorizados" class="slide level2">
 <h2>Experimentos Aleatorizados</h2>
@@ -612,14 +775,18 @@ DSR &amp;= \frac{5+6+10+5+6}{5} - \frac{6+4+4}{3} \\
 </section>
 <section id="tamanho-da-turma-e-desempenho-dos-alunos" class="slide level2">
 <h2>Tamanho da turma e desempenho dos alunos</h2>
-<p>Suponha que regredimos as notas médias dos alunos em matemática ou leitura no tamanho da turma.</p>
-<p><span class="math display">\[\textrm{matemática}_i = b_0 + b_1 \textrm{tamanho}_i + e_i\]</span></p>
-<p>Sem maiores informações sobre a origem dos dados coletados, <span class="math inline">\(b_1^{OLS}\)</span> só poderá estabelecer uma <strong><em>associação</em></strong> e não uma <strong><em>relação causal</em></strong>.</p>
 <ul>
+<li class="fragment">Suponha que regredimos as notas médias dos alunos em matemática ou leitura no tamanho da turma.</li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[\textrm{matemática}_i = b_0 + b_1 \textrm{tamanho}_i + e_i\]</span></p>
+</div>
+<ul>
+<li class="fragment"><p>Sem maiores informações sobre a origem dos dados coletados, <span class="math inline">\(b_1^{OLS}\)</span> só poderá estabelecer uma <strong><em>associação</em></strong> e não uma <strong><em>relação causal</em></strong>.</p></li>
 <li class="fragment"><p><strong>Seleção de alunos</strong>: seleção em escolas com turmas de tamanhos diferentes. Pais tenham a noção de que turmas menores são melhores, eles colocarão seus filhos nessas escolas.</p></li>
 <li class="fragment"><p><strong>Seleção de professores</strong>: os professores escolhem escolas com turmas menores porque é mais fácil ensinar nestas e, se houver competição, os professores melhores terão as vagas.</p></li>
+<li class="fragment"><p>Um RCT cuidaria de todos esses vieses!</p></li>
 </ul>
-<p>Um RCT cuidaria de todos esses vieses!</p>
 </section>
 <section id="o-experimento-do-projeto-star" class="slide level2">
 <h2>O Experimento do Projeto STAR</h2>
@@ -652,8 +819,49 @@ DSR &amp;= \frac{5+6+10+5+6}{5} - \frac{6+4+4}{3} \\
 <li class="fragment"><p>Um grupo de controle: <strong>aulas regulares</strong>,</p></li>
 <li class="fragment"><p>Uma série: <strong>jardim de infância</strong> (k).</p></li>
 </ul>
-<pre><code>'| grade   | test   |   mean_regular |   mean_small |   diff_small_regular |\n|:--------|:-------|---------------:|-------------:|---------------------:|\n| k       | math   |        484.446 |      493.342 |              8.89519 |\n| k       | read   |        435.764 |      441.134 |              5.36954 |'</code></pre>
-<p>Qual é a interpretação para esses ATEs?</p>
+<div class="fragment">
+<div class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="17">
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 23%">
+<col style="width: 20%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">grade</th>
+<th style="text-align: left;">test</th>
+<th style="text-align: right;">mean_regular</th>
+<th style="text-align: right;">mean_small</th>
+<th style="text-align: right;">diff_small_regular</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">k</td>
+<td style="text-align: left;">math</td>
+<td style="text-align: right;">484.446</td>
+<td style="text-align: right;">493.342</td>
+<td style="text-align: right;">8.89519</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">k</td>
+<td style="text-align: left;">read</td>
+<td style="text-align: right;">435.764</td>
+<td style="text-align: right;">441.134</td>
+<td style="text-align: right;">5.36954</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<ul>
+<li class="fragment">Qual é a interpretação para esses ATEs?</li>
+</ul>
 </section>
 <section id="rct-em-forma-de-regressão" class="slide level2">
 <h2>RCT em forma de Regressão</h2>
@@ -664,33 +872,33 @@ DSR &amp;= \frac{5+6+10+5+6}{5} - \frac{6+4+4}{3} \\
 Y_i &amp;=Y_i^0 +D_i (Y_i^1 - Y_i^0) \\ &amp;= Y_i^0 +D_i \delta_i
 \end{aligned}
 \]</span></p>
-<p>Assumindo <span class="math inline">\(\delta_i = \delta\)</span>, para todo <span class="math inline">\(i\)</span>, então <span class="math inline">\(Y_i = Y_i^0 + D_i \delta\)</span></p>
-<p>Adicionando <span class="math inline">\(\mathbb{E}[Y_i^0] - \mathbb{E}[Y_i^0] = 0\)</span> ao lado direito:</p>
+<ul>
+<li class="fragment"><p>Assumindo <span class="math inline">\(\delta_i = \delta\)</span>, para todo <span class="math inline">\(i\)</span>, então <span class="math inline">\(Y_i = Y_i^0 + D_i \delta\)</span></p></li>
+<li class="fragment"><p>Adicionando <span class="math inline">\(\mathbb{E}[Y_i^0] - \mathbb{E}[Y_i^0] = 0\)</span> ao lado direito:</p></li>
+</ul>
+<div class="fragment">
 <p><span class="math display">\[
 \begin{aligned}
 Y_i &amp;= \mathbb{E}[Y_i^0] + D_i \delta + Y_i^0 - \mathbb{E}[Y_i^0] \\ &amp;= b_0 + \delta D_i + e_i
 \end{aligned}
 \]</span></p>
 <p>onde <span class="math inline">\(b_0 = \mathbb{E}[Y_i^0]\)</span> e <span class="math inline">\(e_i = Y_i^0 - \mathbb{E}[Y_i^0]\)</span></p>
+</div>
 </section>
 <section id="o-experimento-do-projeto-star-regressão" class="slide level2">
 <h2>O Experimento do Projeto STAR: Regressão</h2>
-<p>A última equação se parece exatamente com o modelo de regressão simples! (com <span class="math inline">\(\delta = b_1\)</span>)</p>
-<p>Vamos, portanto, estimar o ATE de ser designado para uma turma pequena em notas de matemática.</p>
-<p>Queremos estimar o seguinte modelo: <span class="math inline">\(\text{math score}_i = b_0 + \delta \text{small}_i + e_i\)</span>, com</p>
+<ul>
+<li class="fragment"><p>A última equação se parece exatamente com o modelo de regressão simples! (com <span class="math inline">\(\delta = b_1\)</span>)</p></li>
+<li class="fragment"><p>Vamos, portanto, estimar o ATE de ser designado para uma turma pequena em notas de matemática.</p></li>
+<li class="fragment"><p>Queremos estimar o seguinte modelo: <span class="math inline">\(\text{math score}_i = b_0 + \delta \text{small}_i + e_i\)</span>, com</p></li>
+</ul>
+<div class="fragment">
 <p><span class="math display">\[
-\text{pequeno}_i = \begin{cases}
+\text{small}_i = \begin{cases}
                      1 \textrm{ se atribuído a uma turma pequena} \\\\
                      0 \textrm{ se atribuído a uma turma regular}
        \end{cases}
 \]</span></p>
-<div class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="18">
-<pre><code>star
-regular    1781
-small      1578
-Name: small, dtype: int64</code></pre>
-</div>
 </div>
 </section>
 <section id="o-experimento-do-projeto-star-regressão-1" class="slide level2">
@@ -712,46 +920,16 @@ Name: small, dtype: int64</code></pre>
 <td>0.008</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Method:</td>
-<td>Least Squares</td>
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>3359</td>
 <td data-quarto-table-cell-role="th">F-statistic:</td>
 <td>28.09</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Date:</td>
-<td>Wed, 20 Dec 2023</td>
-<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
-<td>1.23e-07</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Time:</td>
-<td>15:57:23</td>
-<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
-<td>-17807.</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">No. Observations:</td>
-<td>3359</td>
-<td data-quarto-table-cell-role="th">AIC:</td>
-<td>3.562e+04</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Df Residuals:</td>
-<td>3357</td>
-<td data-quarto-table-cell-role="th">BIC:</td>
-<td>3.563e+04</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Df Model:</td>
-<td>1</td>
-<td data-quarto-table-cell-role="th"></td>
-<td></td>
-</tr>
-<tr class="odd">
 <td data-quarto-table-cell-role="th">Covariance Type:</td>
 <td>nonrobust</td>
-<td data-quarto-table-cell-role="th"></td>
-<td></td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>1.23e-07</td>
 </tr>
 </tbody>
 </table>
@@ -786,43 +964,17 @@ Name: small, dtype: int64</code></pre>
 </tr>
 </tbody>
 </table>
-<table class="simpletable" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Omnibus:</td>
-<td>84.426</td>
-<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
-<td>1.984</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
-<td>0.000</td>
-<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
-<td>90.308</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Skew:</td>
-<td>0.400</td>
-<td data-quarto-table-cell-role="th">Prob(JB):</td>
-<td>2.45e-20</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Kurtosis:</td>
-<td>3.081</td>
-<td data-quarto-table-cell-role="th">Cond. No.</td>
-<td>2.55</td>
-</tr>
-</tbody>
-</table>
 <br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 </section>
 <section id="o-experimento-do-projeto-star-regressão-2" class="slide level2">
 <h2>O Experimento do Projeto STAR: Regressão</h2>
-<p>Lembre-se de que: <span class="math inline">\(b_0 = \mathbb{E}[Y_i^0]\)</span> e <span class="math inline">\(\delta = \mathbb{E}[Y_i | D_i = 1] - \mathbb{E}[Y_i | D_i = 0]\)</span></p>
+<p>Lembre que: <span class="math inline">\(b_0 = \mathbb{E}[Y_i^0]\)</span> e <span class="math inline">\(\delta = \mathbb{E}[Y_i | D_i = 1] - \mathbb{E}[Y_i | D_i = 0]\)</span></p>
 <div class="columns">
 <div class="column" style="width:50%;">
+<p><span class="math inline">\(b_0=\)</span></p>
 <pre><code>484.4463784390792</code></pre>
 </div><div class="column" style="width:50%;">
+<p><span class="math inline">\(\delta=\)</span></p>
 <div class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>8.895193170553284</code></pre>
@@ -898,37 +1050,50 @@ baseline_graph_mean +
 
  -->
 </section>
-<section>
-<section id="regressão-com-uma-variável-dummy-graficamente" class="title-slide slide level1 center">
-<h1>Regressão com uma Variável Dummy: Graficamente</h1>
+<section id="regressão-com-variável-dummy" class="slide level2">
+<h2>Regressão com Variável Dummy</h2>
+<h3 id="graficamente">Graficamente</h3>
 <p>O regressor em nossa regressão é uma <strong><em>variável binária</em></strong>, ou seja, uma variável que assume os valores VERDADEIRO ou FALSO (1 ou 0).</p>
 <div class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
-<p><img data-src="01-causality_pt_files/figure-revealjs/cell-10-output-1.png" width="816" height="451"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="01-causality_pt_files/figure-revealjs/cell-10-output-1.png" width="965" height="673"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="regressão-com-uma-variável-dummy-formalmente" class="slide level2">
-<h2>Regressão com uma Variável Dummy: Formalmente</h2>
+<section id="regressão-com-variável-dummy-1" class="slide level2">
+<h2>Regressão com Variável Dummy</h2>
+<h3 id="formalmente">Formalmente</h3>
 <p>Lembre-se do modelo de regressão: <span class="math inline">\(\text{math score}_i = b_0 + \delta \text{small}_i + e_i\)</span></p>
+<div class="fragment">
 <p><span class="math display">\[
 \begin{aligned} \mathbb{E}[\textrm{math score} | \text{small}_i = 0]&amp;= \mathbb{E}[b_0 + \delta \text{small}_i + e_i | \text{small}_i = 0] \\
 &amp;= b_0 + \delta \mathbb{E}[\text{small}_i| \text{small}_i = 0] + \mathbb{E}[e_i|\text{small}_i = 0] \\
 &amp;= b_0
 \end{aligned}
 \]</span></p>
+</div>
+<div class="fragment">
 <p><span class="math display">\[
 \begin{aligned} \mathbb{E}[\textrm{math score} | \text{small}_i = 1]&amp;= \mathbb{E}[b_0 + \delta \text{small}_i + e_i | \text{small}_i = 1] \\
 &amp;= b_0 + \delta \mathbb{E}[\text{small}_i| \text{small}_i = 1] + \mathbb{E}[e_i|\text{small}_i = 1] \\
 &amp;= b_0 + \delta
 \end{aligned}
 \]</span></p>
+</div>
+<div class="fragment">
 <p><span class="math display">\[\begin{aligned} ATE &amp;= \mathbb{E}[\textrm{math score} | \text{small}_i = 1] - \mathbb{E}[\textrm{math score} | \text{small}_i = 0] \\
 &amp;= b_0 + \delta - b_0 \\
 &amp;= \delta
 \end{aligned}
 \]</span></p>
-<p>Já sabíamos disso, mas agora entendemos por que é verdade <span class="emoji" data-emoji="v">✌️</span></p>
+</div>
+<ul>
+<li class="fragment">Já sabíamos disso, mas agora entendemos por que é verdade <span class="emoji" data-emoji="v">✌️</span></li>
+</ul>
 <!-- class:inverse
 
 # Tarefa: Sua Vez!
@@ -975,11 +1140,13 @@ star_df_clean <- star_df %>%
 <ul>
 <li class="fragment">Portanto, se não podemos administrar um RCT, isso significa que temos que encontrar uma maneira de fazer inferência causal a partir de <strong><em>dados observacionais</em></strong> (em oposição a <strong><em>dados experimentais</em></strong>).</li>
 </ul>
+<div class="fragment">
 <p>2 casos amplos:</p>
 <ul>
 <li class="fragment"><p><strong><em>seleção ocorre em características observáveis</em></strong>: <em>regressão múltipla</em></p></li>
 <li class="fragment"><p><strong><em>seleção ocorre em características não observáveis</em></strong>: múltiplas abordagens (e.g., <em>variáveis instrumentais</em>, <em>diferença em diferenças</em>, etc.)</p></li>
 </ul>
+</div>
 </section>
 <section id="section" class="slide level2">
 <h2></h2>
@@ -1121,7 +1288,7 @@ A causa B
 
 <aside><div>
 <p>[1]: Este slides foram baseados nas aulas de econometria da <a href="https://github.com/ScPoEcon/ScPoEconometrics-Slides">SciencesPo Department of Economics</a></p>
-</div></aside></section></section>
+</div></aside></section>
 <section>
 <section id="appendix" class="title-slide slide level1 center">
 <h1>Appendix</h1>
@@ -1151,7 +1318,10 @@ ATU &amp;= \mathop{\mathbb{E}}(\delta_i | D_i = 0) \\
 <p><em>Example:</em> the effect of attending a private school (<em>treatment</em>) for students from a public school (<em>control group</em>).</p>
 </div>
 </div>
-<p><em>Note:</em> In the majority of cases, ATE <span class="math inline">\(\neq\)</span> ATT <span class="math inline">\(\neq\)</span> ATU! <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#/sec-ate">Section&nbsp;0.14</a></p>
+<p><em>Note:</em> In the majority of cases, ATE <span class="math inline">\(\neq\)</span> ATT <span class="math inline">\(\neq\)</span> ATU!</p>
+<div class="footer">
+<p><a href="./#/sec-ate"><span class="emoji" data-emoji="back">🔙</span></a></p>
+</div>
 </section>
 <section id="sec-naive-comp-extended" class="slide level2">
 <h2>Problems with Naive Comparisons</h2>
@@ -1165,8 +1335,11 @@ ATU &amp;= \mathop{\mathbb{E}}(\delta_i | D_i = 0) \\
 <p>So there is a novel source of bias that comes from the potential <strong><em>heterogeneity in the individual treatment effect</em></strong> <span class="math inline">\(\delta_i\)</span>.</p>
 <ul>
 <li class="fragment"><strong><em>Selection bias</em></strong>: those who attend university are likely to have higher baseline cognitive skills (regardless of whether they actually attend college).</li>
-<li class="fragment"><strong><em>Heterogeneous treatment effect bias</em></strong>: those who attend university may improve their cognitive skills more at university because they are more motivated. <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <a href="#/sec-naive-comp">Section&nbsp;0.18</a></li>
+<li class="fragment"><strong><em>Heterogeneous treatment effect bias</em></strong>: those who attend university may improve their cognitive skills more at university because they are more motivated.</li>
 </ul>
+<div class="footer">
+<p><a href="./#/sec-naive-comp"><span class="emoji" data-emoji="back">🔙</span></a></p>
+</div>
 
 <img src="img/UdescEsag.jpeg" class="slide-logo r-stretch"><div class="footer footer-default">
 
