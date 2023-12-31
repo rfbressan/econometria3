@@ -968,7 +968,9 @@ A causa B
 
 Como representamos uma variável omitida (não observada) em um DAG?
 
-<center>
+::::{.columns}
+
+:::{.column width="50%"}
 
 ```{python}
 # Create a directed graph
@@ -1005,30 +1007,37 @@ ax.margins(0.20)
 plt.show()
 ```
 
-</center>
+:::
 
+:::{.column width="50%"}
 - A variável C é não observada e portanto, omitida
 
-
 - Entretanto, C é causa comum de A e B. Chamamos de variável de confusão
-- A e B estão correlacionados pelo caminho A <- C -> B, que **não é causal** (_backdoor_)
 
+- A e B estão correlacionados pelo caminho A <- C -> B, que **não é causal** (_backdoor_)
 
 - Efeito causal de A em B não está identificado
 
-:warning: **Viés de variável omitida!**
-
+- :warning: **Viés de variável omitida!**
+:::
+::::
 
 
 ## Identificação em um DAG
 
-- Suponha que observamos uma variável X
-
-
 ::::{.columns}
 :::{.column width="50%"}
+
+- Suponha que observamos uma variável X
+
 - X ainda é uma variável de confusão.
+
 - Podemos **controlar** para X e identificar nosso efeito causal
+
+- Condicionar em uma variável ao longo de algum caminho _backdoor_, ***bloqueia*** este caminho
+
+- Efeito causal de A em B é **identificado condicional ao valor de X**
+
 :::
 
 :::{.column width="50%"}
@@ -1070,17 +1079,12 @@ plt.show()
 ::::
 
 
-
-- Condicionar em uma variável ao longo de algum caminho _backdoor_, ***bloqueia*** este caminho
-
-- Efeito causal de A em B é **identificado condicional ao valor de X**
-
-
-
 ## Identificação em um DAG
 
 ::::{.columns}
+
 :::{.column width="50%"}
+
 - Considere este outro DAG
 
 ```{python}
@@ -1126,8 +1130,9 @@ plt.show()
 - Caminho colisor é **automaticamente bloqueado** sem necessidade de condicionar! 
 
 :::
+::::
 
-:point_right: Efeito causal de A em B **já está identificado!**
+- :point_right: Efeito causal de A em B **já está identificado!**
 
 
 
@@ -1171,22 +1176,24 @@ plt.show()
 
 ## Identificação em um DAG
 
-Passos quando utilizando DAGs
+- Passos quando utilizando DAGs
 
-1. Desenhe o grafo e qual efeito você quer identificar
+    1. Desenhe o grafo e qual efeito você quer identificar
 
-1. Escreva todos os caminhos entre os nós de causa e efeito
+    1. Escreva todos os caminhos entre os nós de causa e efeito
 
-1. Qual é o caminho direto?
+    1. Qual é o caminho direto?
 
-1. Quais são os caminhos _backdoor_? Estão (ou podem ser) bloqueados?
+    1. Quais são os caminhos _backdoor_? Estão (ou podem ser) bloqueados?
 
 
 
-Algumas ferramentas
+- Algumas ferramentas
 
-- [causalfusion.net](https://causalfusion.net/)
-- [DAGitty](http://dagitty.net/)
+    - [causalfusion.net](https://causalfusion.net/)
+    - [DAGitty](http://dagitty.net/)
+    - [DoWhy](https://www.pywhy.org/dowhy/v0.11.1/index.html)
+    - [EconML](https://econml.azurewebsites.net/)
 
 
 ## :books: Leitura Recomendada

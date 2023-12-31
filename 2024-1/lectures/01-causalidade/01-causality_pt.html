@@ -1184,31 +1184,34 @@ A causa B
 <section id="variável-omitida-em-um-dag" class="slide level2">
 <h2>Variável Omitida em um DAG</h2>
 <p>Como representamos uma variável omitida (não observada) em um DAG?</p>
-<center>
+<div class="columns">
+<div class="column" style="width:50%;">
 <div class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <p><img data-src="01-causality_pt_files/figure-revealjs/cell-12-output-1.png" width="979" height="499"></p>
 </div>
 </div>
-</center>
+</div><div class="column" style="width:50%;">
 <ul>
 <li class="fragment"><p>A variável C é não observada e portanto, omitida</p></li>
 <li class="fragment"><p>Entretanto, C é causa comum de A e B. Chamamos de variável de confusão</p></li>
 <li class="fragment"><p>A e B estão correlacionados pelo caminho A &lt;- C -&gt; B, que <strong>não é causal</strong> (<em>backdoor</em>)</p></li>
 <li class="fragment"><p>Efeito causal de A em B não está identificado</p></li>
+<li class="fragment"><p><span class="emoji" data-emoji="warning">⚠️</span> <strong>Viés de variável omitida!</strong></p></li>
 </ul>
-<p><span class="emoji" data-emoji="warning">⚠️</span> <strong>Viés de variável omitida!</strong></p>
+</div>
+</div>
 </section>
 <section id="identificação-em-um-dag" class="slide level2">
 <h2>Identificação em um DAG</h2>
-<ul>
-<li class="fragment">Suponha que observamos uma variável X</li>
-</ul>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li class="fragment">X ainda é uma variável de confusão.</li>
-<li class="fragment">Podemos <strong>controlar</strong> para X e identificar nosso efeito causal</li>
+<li class="fragment"><p>Suponha que observamos uma variável X</p></li>
+<li class="fragment"><p>X ainda é uma variável de confusão.</p></li>
+<li class="fragment"><p>Podemos <strong>controlar</strong> para X e identificar nosso efeito causal</p></li>
+<li class="fragment"><p>Condicionar em uma variável ao longo de algum caminho <em>backdoor</em>, <strong><em>bloqueia</em></strong> este caminho</p></li>
+<li class="fragment"><p>Efeito causal de A em B é <strong>identificado condicional ao valor de X</strong></p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-execution_count="12">
@@ -1218,21 +1221,20 @@ A causa B
 </div>
 </div>
 </div>
-<ul>
-<li class="fragment"><p>Condicionar em uma variável ao longo de algum caminho <em>backdoor</em>, <strong><em>bloqueia</em></strong> este caminho</p></li>
-<li class="fragment"><p>Efeito causal de A em B é <strong>identificado condicional ao valor de X</strong></p></li>
-</ul>
 </section>
 <section id="identificação-em-um-dag-1" class="slide level2">
 <h2>Identificação em um DAG</h2>
-<p>::::{.columns} :::{.column width=“50%”} - Considere este outro DAG</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment">Considere este outro DAG</li>
+</ul>
 <div class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <p><img data-src="01-causality_pt_files/figure-revealjs/cell-14-output-1.png" width="979" height="499"></p>
 </div>
 </div>
-<p>:::</p>
-<div class="column" style="width:50%;">
+</div><div class="column" style="width:50%;">
 <ul>
 <li class="fragment"><p>X agora é chamado de <strong>colisor</strong> (<em>collider</em>)</p></li>
 <li class="fragment"><p>Tanto A quanto B afetam X</p></li>
@@ -1245,7 +1247,10 @@ A causa B
 <li class="fragment"><p>Caminho colisor é <strong>automaticamente bloqueado</strong> sem necessidade de condicionar!</p></li>
 </ul>
 </div>
-<p><span class="emoji" data-emoji="point_right">👉</span> Efeito causal de A em B <strong>já está identificado!</strong></p>
+</div>
+<ul>
+<li class="fragment"><span class="emoji" data-emoji="point_right">👉</span> Efeito causal de A em B <strong>já está identificado!</strong></li>
+</ul>
 </section>
 <section id="identificação-em-um-dag-2" class="slide level2">
 <h2>Identificação em um DAG</h2>
@@ -1262,17 +1267,21 @@ A causa B
 </section>
 <section id="identificação-em-um-dag-3" class="slide level2">
 <h2>Identificação em um DAG</h2>
-<p>Passos quando utilizando DAGs</p>
+<ul>
+<li class="fragment"><p>Passos quando utilizando DAGs</p>
 <ol type="1">
 <li class="fragment"><p>Desenhe o grafo e qual efeito você quer identificar</p></li>
 <li class="fragment"><p>Escreva todos os caminhos entre os nós de causa e efeito</p></li>
 <li class="fragment"><p>Qual é o caminho direto?</p></li>
 <li class="fragment"><p>Quais são os caminhos <em>backdoor</em>? Estão (ou podem ser) bloqueados?</p></li>
-</ol>
-<p>Algumas ferramentas</p>
+</ol></li>
+<li class="fragment"><p>Algumas ferramentas</p>
 <ul>
 <li class="fragment"><a href="https://causalfusion.net/">causalfusion.net</a></li>
 <li class="fragment"><a href="http://dagitty.net/">DAGitty</a></li>
+<li class="fragment"><a href="https://www.pywhy.org/dowhy/v0.11.1/index.html">DoWhy</a></li>
+<li class="fragment"><a href="https://econml.azurewebsites.net/">EconML</a></li>
+</ul></li>
 </ul>
 </section>
 <section id="leitura-recomendada" class="slide level2">

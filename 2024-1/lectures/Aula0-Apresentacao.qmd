@@ -1,0 +1,178 @@
+---
+title: "63ECON2 - Econometria III"
+title-slide-attributes:
+  data-background-image: "img/UdescEsag.jpeg"
+  data-background-size: 50%
+  data-background-position: top left
+  # data-background-opacity: "0.7"
+center-title-slide: true
+author: "Rafael Bressan"
+logo: "img/UdescEsag.jpeg"
+format: 
+  revealjs:
+    theme: [default, udesc.scss] 
+    code-fold: true
+    chalkboard: true
+    incremental: true
+    width: 1600
+    height: 900
+from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
+fontsize: "2.2em"
+editor: source
+jupyter: python3
+---
+
+
+## Apresentação: Docente
+
+**Nome**: Rafael Bressan
+
+**Formação**: 
+
+::: {.nonincremental}
+
+1. Mestrado acadêmico em Economia - FGV/EESP, 2022.
+1. Especialização em Data Science e Big Data - PUC-MG, 2021.
+1. Ciências Econômicas - UDESC, 2020
+1. Engenharia de Controle e Automação Industrial - UFSC, 2003.
+
+:::
+
+**Áreas de Interesse**: Microeconometria aplicada a evasão fiscal e comércio internacional
+
+**Website**: [Site Pessoal](https://rafaelbressan.netlify.app/)
+
+**Contato**: rafael.bressan@edu.udesc.br
+
+## Apresentação: Econometria III
+
+63ECON2 - Econometria III
+
+- Neste curso você aprenderá ferramentas atualmente utilizadas em **microeconometria** 
+
+    + Variáveis Instrumentais (VI) e mínimos quadrados em dois estágios (MQ2E)
+    + Modelos de equações simultâneas
+    + Dados em painel, regressão com efeitos-fixos (EF), efeitos aleatórios (EA) e diferença-em-diferenças (DID)
+    
+- Modelos com variável dependente limitada
+    + Logit
+    + Probit
+
+## Programação Econométrica
+
+- Você também aprenderá a fazer econometria **na prática**
+- Usaremos as linguagens de programação R e Python nos exemplos e laboratórios
+
+- :warning: Vocês podem **escolher** a linguagem que preferirem, inclusive outras que não R ou Python (e.g., Stata, SAS, Julia, etc.)
+
+- :warning: Este não é um curso de R ou Python. Vocês são encorajados a aprenderem a prática econométrica utilizando as aulas de laboratório e **o seu próprio esforço**.
+
+## Programação Econométrica
+
+- A econometria na prática requer habilidades com manipulações de dados, estimações e testes de hipóteses
+
+- Saber onde coletar os dados
+
+- Saber como organizar e tratar os dados antes de estimar um modelo
+
+- Estimar, testar hipóteses, interpretar e apresentar os resultados são habilidades que vocês devem desenvolver
+
+
+## Ementa
+
+**Ementa**. *Modelos de regressão com dados de painel. Modelo com efeitos fixos. Modelo com efeitos aleatórios. Variáveis instrumentais. Mínimos quadrados em dois estágios. Modelos de equações simultâneas. O problema da identificação. Método de estimação de máxima verossimilhança. Método generalizado dos momentos. O teste de Hausman. Modelos de escolha qualitativa.*
+
+## Conteúdo Programático
+
+- **Parte I** – Causalidade e o framework de Resultados Potenciais de Rubin. Gráficos Direcionados Acíclicos (DAGs).
+
+- **Parte II** – Modelos de equações simultâneas, o problema da identificação, revisão dos principais tipos de viés de estimação. Condição de Classificação e de Ordem. Mínimos Quadrados Indiretos. Variável Instrumental. Estimação de VI no modelo de regressão múltipla. Mínimos Quadrados em 2 Estágios. Teste de endogeneidade e de sobreidentificação.
+
+- **Parte III** – Dados em Painel. Viés de heterogeneidade não observada. Estimação de Efeitos Fixos. Variação intragrupo e entre-grupos. Expansão em variáveis dummies e primeira diferença. Efeitos Aleatórios. Método das diferenças em diferenças (DID). Grupos controle e tratamento. DID em forma de regressão. Nova literatura de DID com adoção ao tratamento escalonada
+
+- **Parte IV** - Modelos de Escolha Qualitativa. Modelos de Probabilidade Linear, Logit e Probit. Estimação de Máxima Verossimilhança. Interpretação das estimativas Logit e Probit. Efeito Marginal, Efeito Médio e Efeito na Média. Método dos Momentos Generalizado (GMM).
+
+## Aulas e Ensino
+
+- Aula expositiva/dialogada através da utilização do recurso de projetor e quadro, elaboração de exercícios de forma individual e/ou em grupos para fixação do conteúdo.
+
+- Os alunos poderão tirar suas dúvidas em conversa com o professor após o término da aula ou via e-mail.
+
+- O meio de comunicação preferencial do professor com os alunos será através dos avisos do Moodle. Avisos importantes sobre o cronograma da disciplina também serão feitos através do Moodle.
+
+- Todo o material necessário para o acompanhamento da disciplina será disponibilizado pelo professor, na página da disciplina no Moodle. Assim, não haverá necessidade de o aluno ter os livros de forma física, muito embora a biblioteca possua os livros texto indicados em seu acervo.
+
+- Listas de exercícios estarão disponíveis para os alunos estudarem para as provas.
+
+
+## Aulas e sistema de avaliação
+
+-   Os alunos devem ter em mente que o aprendizado e o acompanhamento do
+    curso dependem essencialmente de seu **próprio esforço**.
+
+-   Os tópicos do programa serão apresentados em aulas expositivas,
+    destinadas à apresentação de conceitos, modelos e suas aplicações.
+
+-   Embora importantes, **as aulas não podem jamais ser vistas como substitutas da leitura regular e cuidadosa dos textos indicados e da resolução dos exercícios propostos.**
+
+- O sistema de **avaliação** da disciplina se dará da seguinte maneira:
+
+    - **2 Provas escritas**, presenciais, com os seguintes pesos: 30% e 30%.
+
+    - **1 Trabalho econométrico individual** de cunho prático.
+
+- É obrigatória a frequência em no mínimo 75% das aulas para aprovação.
+
+- As provas de segunda chamada serão realizadas apenas mediante o que consta na resolução no 039/2015-CONSEPE.
+
+## Trabalho individual
+
+- Ao final do semestre vocês devem apresentar um trabalho econométrico individual que será:
+    + A replicaçao dos resultados de um artigo científico a sua escolha, ou;
+    + Os resultados obtidos a partir de dados de acesso público
+
+- Na segunda semana de aula deve ser preenchida uma [planilha](https://docs.google.com/spreadsheets/d/1opdo6CtDe2exBjh8zA7BtEaoXTaFh800Exa7O91cXEE/edit?usp=sharing) com o nome do artigo a ser replicado ou a fonte dos dados e objetivo do trabalho
+
+- Haverá uma **entrega parcial** com resultados preliminares a ser marcada pelo professor no cronograma da disciplina
+
+- O trabalho deve ser apresentado através de um relatório seguindo as normas da ABNT (artigo científico)
+    + Juntamente com o relatório, o código fonte deve ser apresentado
+
+- O trabalho deve conter **no mínimo** uma tabela de estatísticas descritivas, uma tabela de resultados com estimação de mais de um modelo e uma figura descritiva dos dados ou de resultado
+    + A formulação teórica ou apresentação da metodologia de estimação também deve constar no trabalho
+
+- No final do semestre, os trabalhos serão apresentados em sala de aula
+
+## Fontes de dados
+
+- Artigos para serem replicados e dados podem ser obtidos em:
+
+    + [Base dos Dados](https://basedosdados.org/)
+    + [IPEA](http://ipeadata.gov.br/Default.aspx)
+    + [IBGE](https://www.ibge.gov.br/)
+    + [openICPSR](https://www.openicpsr.org/openicpsr/)
+    + [AEA](https://www.aeaweb.org/journals)
+    + [JAE](https://journaldata.zbw.eu/journals/jae)
+    + [Replication Wiki](http://replication.uni-goettingen.de/wiki/index.php/Category:Article_methods_and_estimation)
+
+## :books: Bibliografia Recomendada
+
+* WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. 
+
+* GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed. 
+
+* PEIXOTO, Betânia et al. Avaliação econômica de projetos sociais. Fundação Itaú Social, 3ª ed, 2017.
+
+* BÉKÉS, Gábor; KÉZDI, Gábor. Data analysis for business, economics, and policy. Cambridge University Press, 2021.
+
+* GERTLER, Paul J. et al. Avaliação de Impacto na Prática, 2018. - 2. ed. Banco Mundial.
+
+* CUNNINGHAM, Scott. Causal Inference: The Mixtape, New Haven: Yale University Press, 2021. URL: https://mixtape.scunning.com/
+
+* ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mastering'metrics: The path from cause to effect. Princeton university press, 2014. URL: http://www.masteringmetrics.com/
+
+* ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mostly harmless econometrics: An empiricist's companion. Princeton university press, 2009.
+
+* WOOLDRIDGE, Jeffrey M. Econometric Analysis of Cross Section and Panel Data. MIT press, 2010. Second Edition. 
+
+* HANSEN, Bruce E. Econometrics. Manuscript, revision of February 2020.
