@@ -29,6 +29,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="02-IV_pt_files/libs/revealjs/dist/theme/quarto.css">
   <link href="02-IV_pt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -321,6 +386,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -534,12 +602,845 @@ E[c_i | z_i = 1] - E[c_i | z_i = 0] &amp;= \delta \left\{ E[w_i | z_i = 1] - E[w
 </ol></li>
 </ul>
 </section>
+<section id="aplicações-de-variáveis-instrumentais" class="slide level2">
+<h2>Aplicações de Variáveis Instrumentais</h2>
+<ul>
+<li class="fragment"><p>O que fizemos na aula passada?</p>
+<ul>
+<li class="fragment"><p>Aprendemos sobre o grande experimento de John Snow em Londres em 1850.</p></li>
+<li class="fragment"><p>Usamos sua história para motivar o estimador IV.</p></li>
+</ul></li>
+<li class="fragment"><p>Hoje</p>
+<ul>
+<li class="fragment"><p>Veremos outras aplicações IV.</p></li>
+<li class="fragment"><p>Introduzimos uma extensão chamada <strong><em>Mínimos Quadrados em 2 Estágios</em></strong>.</p></li>
+<li class="fragment"><p>Usaremos <code>R</code> para calcular as estimativas.</p></li>
+<li class="fragment"><p>Finalmente falaremos sobre instrumentos <em>fracos</em>.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="retornos-da-escolaridade" class="slide level2">
+<h2>Retornos da Escolaridade</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Qual é o impacto causal da escolaridade sobre os rendimentos?</p></li>
+<li class="fragment"><p><a href="https://en.wikipedia.org/wiki/Jacob_Mincer">Jacob Mincer</a> estava interessado nesta importante questão.</p></li>
+<li class="fragment"><p>Aqui está o modelo dele: <span class="math display">\[
+\log Y_i = \alpha + \rho S_i + \beta_1 X_i + \beta_2 X_i^2 + e_i
+\]</span></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="img/schooling-dag.png"></p>
+</div>
+</div>
+</section>
+<section id="retornos-da-escolaridade-1" class="slide level2">
+<h2>Retornos da Escolaridade</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math display">\[
+\log Y_i = \alpha + \rho S_i + \beta_1 X_i + \beta_2 X_i^2 + e_i
+\]</span></p>
+<ul>
+<li class="fragment"><p>Ele encontrou uma estimativa para <span class="math inline">\(\rho\)</span> de cerca de 0,11,</p></li>
+<li class="fragment"><p>11% de vantagem nos ganhos para cada ano adicional de educação</p></li>
+<li class="fragment"><p>Veja o DAG. Esse é um bom modelo? Bem, por que não seria?</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="img/schooling-dag.png"></p>
+</div>
+</div>
+</section>
+<section id="viés-de-habilidade" class="slide level2">
+<h2>Viés de Habilidade</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Comparamos os ganhos de homens com certa escolaridade e experiência de trabalho</p></li>
+<li class="fragment"><p>Tudo o mais é igual, depois de controlar isso?</p></li>
+<li class="fragment"><p>Dado <span class="math inline">\(X\)</span>,</p>
+<ul>
+<li class="fragment">Podemos encontrar trabalhadores mais ou menos diligentes por aí?</li>
+<li class="fragment">Podemos encontrar trabalhadores com capacidades diferentes?</li>
+<li class="fragment">As conexões familiares dos trabalhadores variam?</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Sim claro. Então, <em>todo o resto</em> não é igual.</p></li>
+<li class="fragment"><p>Isso é um problema, porque para consistência dos MQO exigimos a suposição de ortogonalidade <span class="math display">\[E[e_i | S_i, X_i] = 0\]</span></p></li>
+<li class="fragment"><p>Vamos introduzir a <strong>habilidade</strong> <span class="math inline">\(A_i\)</span> explicitamente.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="mincer-com-habilidade-não-observada" class="slide level2">
+<h2>Mincer com Habilidade não Observada</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Na verdade temos <em>dois</em> fatores não-observáveis: <span class="math inline">\(e\)</span> e <span class="math inline">\(A\)</span>.</p></li>
+<li class="fragment"><p>Claro que não podemos distingui-los.</p></li>
+<li class="fragment"><p>Então definimos um novo fator não observável <span class="math display">\[u_i = e_i + A_i\]</span></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="img/schooling-dag2.png"></p>
+</div>
+</div>
+</section>
+<section id="mincer-com-habilidade-não-observada-1" class="slide level2">
+<h2>Mincer com Habilidade não Observada</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Em termos de uma equação: <span class="math display">\[\log Y_i = \alpha + \rho S_i + \beta_1 X_i + \beta_2 X_i^2 + \underbrace{u_i}_{A_i + e_i}\]</span></p></li>
+<li class="fragment"><p>Às vezes, isso não importa e o viés dos MQO é pequeno.</p></li>
+<li class="fragment"><p>Às vezes importa, e a estimação é totalmente errada!</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="img/schooling-dag2.png"></p>
+</div>
+</div>
+</section>
+<section>
+<section id="mecânica-das-variáveis-instrumentais" class="title-slide slide level1 center">
+<h1>Mecânica das Variáveis Instrumentais</h1>
+
+</section>
+<section id="identificação" class="slide level2">
+<h2>Identificação</h2>
+<p>Vamos voltar ao nosso modelo linear simples:</p>
+<p><span class="math display">\[
+y = \beta_0 + \beta_1 x + u
+\]</span></p>
+<p>onde tememos que <span class="math inline">\(Cov(x,u) \neq 0\)</span>, <span class="math inline">\(x\)</span> seja <em>endógeno</em>.</p>
+</section>
+<section id="condições-para-vi" class="slide level2">
+<h2>Condições para VI</h2>
+<ol type="1">
+<li class="fragment"><strong>Relevância do Instrumento</strong>: <span class="math inline">\(Cov(z,x) \neq 0\)</span></li>
+<li class="fragment"><strong>Exogenidade do VI</strong> (restrição de exclusão): <span class="math inline">\(Cov(z,u) = 0\)</span>, a VI é exógena na equação do resultado.</li>
+</ol>
+</section>
+<section id="modelo-válido-a-vs-modelo-inválido-b-para-vi-z" class="slide level2">
+<h2>Modelo Válido (A) vs Modelo Inválido (B) para VI <code>z</code></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<p><img data-src="02-IV_pt_files/figure-revealjs/cell-3-output-1.png" width="979" height="519"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<p><img data-src="02-IV_pt_files/figure-revealjs/cell-4-output-1.png" width="979" height="519"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="identificação-1" class="slide level2">
+<h2>Identificação</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Condições para VI</strong></p>
+<ol type="1">
+<li class="fragment"><strong>Relevância</strong>: <span class="math inline">\(Cov(z,x) \neq 0\)</span></li>
+<li class="fragment"><strong>Exogeneidade</strong>: <span class="math inline">\(Cov(z,u) = 0\)</span></li>
+</ol>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Como isto <strong><em>identifica</em></strong> <span class="math inline">\(\beta_1\)</span>?</p></li>
+<li class="fragment"><p>Como podemos expressar <span class="math inline">\(\beta_1\)</span> em termos de momentos populacionais de forma única?</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="identificação-2" class="slide level2">
+<h2>Identificação</h2>
+<p><span class="math display">\[\begin{align}
+Cov(z,y) &amp;= Cov(z, \beta_0 + \beta_1 x + u) \\
+         &amp;= \beta_1 Cov(z,x) + Cov(z,u)
+\end{align}\]</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Sob a condição 2. acima (<strong>restrição de exclusão</strong>), temos que <span class="math inline">\(Cov(z,u)=0\)</span>, então:</p>
+<p><span class="math display">\[
+Cov(z,y) = \beta_1 Cov(z,x)
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p>e sob a condição 1. (<strong>relevância</strong>), temos <span class="math inline">\(Cov(z,x)\neq 0\)</span>, portanto:</p>
+<p><span class="math display">\[
+\beta_1 =  \frac{Cov(z,y)}{Cov(z,x)}.
+\]</span></p>
+</div>
+</div>
+<ul>
+<li class="fragment"><p><span class="math inline">\(\beta_1\)</span> é <strong><em>identificado</em></strong> via os momentos populacionais <span class="math inline">\(Cov(z,y)\)</span> e <span class="math inline">\(Cov(z,x)\)</span></p></li>
+<li class="fragment"><p>Podemos <strong><em>estimar</em></strong> estes momentos através dos <strong><em>análogos amostrais</em></strong> (<em>sample plugin estimator</em>)</p></li>
+</ul>
+</section>
+<section id="estimador-de-variáveis-instrumentais-1" class="slide level2">
+<h2>Estimador de Variáveis Instrumentais</h2>
+<p>Basta “plugar” os momentos <strong>amostrais</strong>:</p>
+<p><span class="math display">\[\hat{\beta}_1 = \frac{\sum_{i=1}^n (z_i - \bar{z})(y_i - \bar{y})}{\sum_{i=1}^n (z_i - \bar{z})(x_i - \bar{x})}\]</span></p>
+<ul>
+<li class="fragment"><p>A estimativa do intercepto é <span class="math inline">\(\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}\)</span></p></li>
+<li class="fragment"><p>Dado que ambas as hipóteses 1. e 2. são satisfeitas, dizemos que <strong><em>o estimador de VI é consistente para <span class="math inline">\(\beta_1\)</span></em></strong> e escrevemos: <span class="math display">\[
+\text{plim}(\hat{\beta}_1) = \beta_1
+\]</span></p></li>
+<li class="fragment"><p>em palavras: o <em>limite em probabilidade</em> de <span class="math inline">\(\hat{\beta}_1\)</span> é o verdadeiro <span class="math inline">\(\beta_1\)</span>. O estimador <span class="math inline">\(\hat{\beta}_1\)</span> converge em probabilidade para o parâmetro populacional</p></li>
+<li class="fragment"><p>Se isso for verdade, dizemos que este estimador é <strong>consistente</strong>.</p></li>
+</ul>
+</section>
+<section id="inferência-com-variáveis-instrumentais" class="slide level2">
+<h2>Inferência com Variáveis Instrumentais</h2>
+<p>Assumindo <span class="math inline">\(E(u^2|z) = \sigma^2\)</span> a variância do estimador de VI é:</p>
+<p><span class="math display">\[Var(\hat{\beta}_{1,IV}) = \frac{\sigma^2}{n \sigma_x^2 \rho_{x,z}^2}\]</span></p>
+<ul>
+<li class="fragment"><p><span class="math inline">\(\sigma_x^2\)</span> é a variância populacional de <span class="math inline">\(x\)</span>,</p></li>
+<li class="fragment"><p><span class="math inline">\(\sigma^2\)</span> é a variância de <span class="math inline">\(u\)</span>, e</p></li>
+<li class="fragment"><p><span class="math inline">\(\rho_{x,z}\)</span> é a correlação populacional entre <span class="math inline">\(x\)</span> e <span class="math inline">\(z\)</span>.</p></li>
+<li class="fragment"><p>Você pode ver 2 coisas importantes aqui:</p>
+<ol type="1">
+<li class="fragment">Sem o termo <span class="math inline">\(\rho_{x,z}^2\)</span>, isso é <strong>a variância do MQO</strong>.</li>
+<li class="fragment">A medida que o tamanho da amostra <span class="math inline">\(n\)</span> aumenta, a <strong>variância diminui</strong> (assim como no MQO).</li>
+</ol></li>
+</ul>
+</section>
+<section id="variância-de-vi-é-sempre-maior-que-mqo" class="slide level2">
+<h2>Variância de VI é sempre maior que MQO</h2>
+<ul>
+<li class="fragment">Compare os estimadores de variância de MQO e VI:</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><span class="math inline">\(Var(\hat{\beta}_{1}) = \frac{\sigma^2}{n \sigma_x^2}\)</span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><span class="math inline">\(Var(\hat{\beta}_{1,IV}) = \frac{\sigma^2}{n \sigma_x^2 \rho_{x,z}^2}\)</span></li>
+</ul>
+</div>
+</div>
+<ol type="1">
+<li class="fragment"><p>Dado <span class="math inline">\(\rho_{x,z}^2 &lt; 1\)</span> na maioria das situações da vida real, temos que <span class="math inline">\(Var(\hat{\beta}_{1,IV}) &gt; Var(\hat{\beta}_ {1})\)</span> quase certamente.</p></li>
+<li class="fragment"><p>Quanto maior a correlação entre <span class="math inline">\(z\)</span> e <span class="math inline">\(x\)</span>, mais próximo o <span class="math inline">\(\rho_{x,z}^2\)</span> está de 1 e voltamos a variância do MQO.</p></li>
+</ol>
+</section>
+<section id="variância-de-vi-é-sempre-maior-que-mqo-1" class="slide level2">
+<h2>Variância de VI é sempre maior que MQO</h2>
+
+<img align="center" src="https://media.giphy.com/media/Xg4Lc2tzOXXdNCU4Qc/giphy.gif" width="90" class="r-stretch"><p>Se tiverermos um regressor exógeno válido <span class="math inline">\(x\)</span>, <strong>não</strong> devemos usar VI <span class="math inline">\(z\)</span> para obter <span class="math inline">\(\hat{\beta}\)</span>, pois sua variância será desnecessariamente grande.</p>
+</section>
+<section id="estimador-de-variância-com-vi" class="slide level2">
+<h2>Estimador de variância com VI</h2>
+<p>Novamente utilizamos os análogos amostrais</p>
+<ul>
+<li class="fragment"><span class="math inline">\(n\sigma_x^2\)</span> é a <span class="math inline">\(SQT_x\)</span></li>
+<li class="fragment"><span class="math inline">\(\rho_{x,z}^2\)</span> é estimado via <span class="math inline">\(R_{x,z}^2\)</span>. R2 de uma regressão simples de <span class="math inline">\(x\)</span> em <span class="math inline">\(z\)</span></li>
+<li class="fragment">a variância de <span class="math inline">\(u\)</span> é obtida através do estimador: <span class="math display">\[\hat{\sigma}^2=\frac{1}{n-2}\sum_{i=1}^{n}\hat{u}_i^2\]</span> onde <span class="math inline">\(\hat{u}_i=y_i-\hat\beta_0-\hat\beta_{1, IV} x_i\)</span></li>
+</ul>
+</section>
+<section id="como-saber-se-a-vi-é-válida" class="slide level2">
+<h2>Como Saber se a VI é Válida?</h2>
+<ul>
+<li class="fragment"><p><strong>Condições para VI</strong></p>
+<ol type="1">
+<li class="fragment"><strong>Relevância</strong>: <span class="math inline">\(Cov(z,x) \neq 0\)</span></li>
+<li class="fragment"><strong>Exclusão</strong>: <span class="math inline">\(Cov(z,u) = 0\)</span></li>
+</ol></li>
+<li class="fragment"><p>Somente a condição <strong>1.</strong> pode ser testada empiricamente!</p></li>
+<li class="fragment"><p><span class="emoji" data-emoji="warning">⚠️</span> Restrição de exclusão é hipótese não testável</p>
+<ul>
+<li class="fragment">Pesquisador deve se valer de teoria econômica e arguição lógica</li>
+</ul></li>
+</ul>
+</section>
+<section id="mínimos-quadrados-em-2-estágios-mq2e" class="slide level2">
+<h2>Mínimos Quadrados em 2 Estágios: MQ2E</h2>
+<ul>
+<li class="fragment"><strong>Equação estrutural</strong>: <span class="math inline">\(y_i=\beta_0+\beta_1 s_i + \beta_2 x_i + u_i\)</span></li>
+</ul>
+<ol type="1">
+<li class="fragment"><p>Estimamos um <strong>modelo de primeiro estágio</strong> que usa apenas variáveis exógenas (como <span class="math inline">\(z\)</span>) para explicar nosso regressor endógeno <span class="math inline">\(s\)</span>.</p></li>
+<li class="fragment"><p>Em seguida, usamos a <strong>previsão</strong> do 1º estágio, <span class="math inline">\(\hat{s}\)</span>, no que é chamado de modelo de <strong>segundo estágio</strong>. Esse procedimento deve eliminar qualquer endogeneidade entre <span class="math inline">\(\hat{s}\)</span> e <span class="math inline">\(y\)</span>.</p></li>
+</ol>
+<div class="fragment">
+<p><span class="math display">\[\begin{align}
+\text{1. Estágio: }s_i &amp;= \alpha_0 + \alpha_1 z_i + \alpha_2 x_i + \eta_i \\
+\text{2. Estágio: }y_i &amp;= \beta_0 + \beta_1 \hat{s}_i + \beta_2 x_i + \varepsilon_i
+\end{align}\]</span></p>
+</div>
+<ul>
+<li class="fragment"><p><strong>Condições:</strong></p>
+<ol type="1">
+<li class="fragment">Relevância do IV: <span class="math inline">\(\alpha_1 \neq 0\)</span></li>
+<li class="fragment">Exogeneidade (restrição de exclusão): <span class="math inline">\(E[u | z] = 0\)</span></li>
+</ol></li>
+</ul>
+</section>
+<section id="mínimos-quadrados-em-2-estágios-mq2e-1" class="slide level2">
+<h2>Mínimos Quadrados em 2 Estágios: MQ2E</h2>
+<ul>
+<li class="fragment"><p>O primeiro estágio isola a endogeneidade no termo de erro <span class="math inline">\(\eta_i\)</span> <span class="math display">\[s_i=\underbrace{\alpha_0 + \alpha_1 z_i + \alpha_2 x_i}_{\hat{s}_i\text{: parte exógena}} + \eta_i\]</span></p></li>
+<li class="fragment"><p>E utiliza somente a parte exógena no segundo estágio! <span class="math display">\[y_i = \beta_0 + \beta_1 \hat{s}_i + \beta_2 x_i + \varepsilon_i\]</span> Assim o segundo estágio faz uso somente de <strong><em>variações exógenas</em></strong> de <span class="math inline">\(s_i\)</span> e, portanto, <span class="math inline">\(\hat{\beta}_1\)</span> será não viesado.</p></li>
+<li class="fragment"><p><span class="emoji" data-emoji="warning">⚠️</span> o primeiro estágio <strong>DEVE</strong> ser linear. Caso contrário, regressão proibida de Hausman! (MHE ch.&nbsp;4, p.&nbsp;142)</p></li>
+<li class="fragment"><p>Não realizamos manualmente porque os erros padrão no 2º estágio estarão errados</p></li>
+</ul>
+<div class="fragment">
+<center>
+<strong>Vejamos em um exemplo</strong>
+</center>
+</div>
+</section>
+<section id="vamos-implementar-angrist-e-krueger-1991" class="slide level2">
+<h2>Vamos implementar Angrist e Krueger (1991)!</h2>
+<h3 id="data-de-nascimento-é-tão-boa-quanto-aleatória">Data de nascimento é tão boa quanto aleatória</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Angrist e Krueger (AK91) é um estudo influente que aborda o viés de habilidade</p>
+<ol type="1">
+<li class="fragment">construir uma VI que codifique a <em>data de nascimento do aluno</em></li>
+<li class="fragment">A criança nascida logo após a data limite começará a escola mais tarde!</li>
+</ol></li>
+<li class="fragment"><p>Crianças que completam 6 anos até 31 de dezembro devem se matricular na 1ª série em setembro do mesmo ano</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Nascidos em dezembro de 2016, estarão com 5a9m quando começarem a escola</p></li>
+<li class="fragment"><p>Nascidos em 1º de janeiro de 2017 estarão com 6a9m quando <em>estes</em> entrarem na escola em setembro de 2023</p></li>
+<li class="fragment"><p>Podem legalmente abandonar a escola quando fazem 16 anos! Alguns terão mais escolaridade que outros</p></li>
+<li class="fragment"><p>VI Dummy para <em>trimestre de nascimento</em>: afeta a escolaridade, mas não está relacionado a <span class="math inline">\(A\)</span>!</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="setup-com-variável-instrumental" class="slide level2">
+<h2>Setup com Variável Instrumental</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p><em>trimestre de nascimento</em> dummy <span class="math inline">\(z\)</span>: afeta a escolaridade, mas não está relacionada a <span class="math inline">\(A\)</span>!</p></li>
+<li class="fragment"><p>Em particular: se nasceu no 4º trimestre ou não.</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><img data-src="img/schooling-dag3.png" style="width:100.0%"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="dados-sobre-aniversário-e-salários" class="slide level2">
+<h2>Dados sobre aniversário e salários</h2>
+<p>Vamos carregar os dados e olhar seu sumário</p>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Dados baixados de https://www.masteringmetrics.com/resources/</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>ak91_file <span class="op">=</span> <span class="st">"../../../data/ak91.dta"</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>ak91 <span class="op">=</span> pd.read_stata(ak91_file)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Estatisticas descritivas</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>ak91.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">lnw</th>
+<th data-quarto-table-cell-role="th">s</th>
+<th data-quarto-table-cell-role="th">yob</th>
+<th data-quarto-table-cell-role="th">qob</th>
+<th data-quarto-table-cell-role="th">sob</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>329509.000000</td>
+<td>329509.000000</td>
+<td>329509.000000</td>
+<td>329509.000000</td>
+<td>329509.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>5.899943</td>
+<td>12.769912</td>
+<td>34.602772</td>
+<td>2.506429</td>
+<td>30.692646</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.678772</td>
+<td>3.279323</td>
+<td>2.903971</td>
+<td>1.111821</td>
+<td>14.217417</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>-2.341810</td>
+<td>0.000000</td>
+<td>30.000000</td>
+<td>1.000000</td>
+<td>1.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>5.636505</td>
+<td>12.000000</td>
+<td>32.000000</td>
+<td>2.000000</td>
+<td>19.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>5.952494</td>
+<td>12.000000</td>
+<td>35.000000</td>
+<td>3.000000</td>
+<td>34.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>6.257376</td>
+<td>15.000000</td>
+<td>37.000000</td>
+<td>3.000000</td>
+<td>42.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>10.532100</td>
+<td>20.000000</td>
+<td>39.000000</td>
+<td>4.000000</td>
+<td>56.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="transformações-dos-dados" class="slide level2">
+<h2>Transformações dos Dados</h2>
+<ul>
+<li class="fragment"><p>Queremos criar uma <em>dummy</em> <code>q4</code> que é <code>TRUE</code> se você nasceu no 4º trimestre.</p></li>
+<li class="fragment"><p>criar versões <code>factor</code> de trimestre e ano de nascimento.</p></li>
+</ul>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>ak91[<span class="st">'qob_fct'</span>] <span class="op">=</span> ak91[<span class="st">'qob'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>ak91[<span class="st">'q4'</span>] <span class="op">=</span> (ak91[<span class="st">'qob'</span>] <span class="op">==</span> <span class="st">"4"</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>ak91[<span class="st">'yob_fct'</span>] <span class="op">=</span> ak91[<span class="st">'yob'</span>].astype(<span class="st">'category'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>ak91_age <span class="op">=</span> ak91.groupby([<span class="st">'qob'</span>, <span class="st">'yob'</span>]).agg(lnw<span class="op">=</span>(<span class="st">'lnw'</span>, <span class="st">'mean'</span>), s<span class="op">=</span>(<span class="st">'s'</span>, <span class="st">'mean'</span>)).reset_index()</span>
+<span id="cb2-6"><a href="#cb2-6"></a>ak91_age[<span class="st">'q4'</span>] <span class="op">=</span> (ak91_age[<span class="st">'qob'</span>] <span class="op">==</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="primeiro-estágio" class="slide level2">
+<h2>Primeiro Estágio!</h2>
+<p>Vamos reproduzir agora a primeira figura de AK91 sobre educação em função do trimestre de nascimento!</p>
+<p><code>{r,eval = FALSE} ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = s)) +     geom_line() +     geom_label(mapping = aes(label = qob, color = q4)) +     guides(label = FALSE, color = FALSE) +     scale_x_continuous("Year of birth", breaks = 1930:1940) +     scale_y_continuous("Years of Education",         breaks = seq(12.2, 13.2, by = 0.2),         limits = c(12.2, 13.2)     ) +     theme_bw()</code></p>
+</section>
+<section id="primeiro-estágio-1" class="slide level2">
+<h2>Primeiro Estágio!</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><br> 1. Os números rotulados significam trimestre de nascimento.</p>
+<ol type="1">
+<li class="fragment"><p>Nascidos no 4º trimestre <strong>obtiveram</strong> mais educação na maioria dos anos!</p></li>
+<li class="fragment"><p><strong>Relevância da VI</strong>.</p></li>
+</ol>
+</div><div class="column" style="width:70%;">
+<p><code>{r ak91-dummy, eval = TRUE, echo = FALSE, fig.height = 5} ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = s )) +   geom_line() +    geom_label(mapping = aes(label = qob, color = q4)) +   guides(label = FALSE, color = FALSE) +   scale_x_continuous("Year of birth", breaks = 1930:1940) +   scale_y_continuous("Years of Education", breaks = seq(12.2, 13.2, by = 0.2),                      limits = c(12.2, 13.2)) +   theme_bw()</code></p>
+</div>
+</div>
+</section>
+<section id="impacto-da-vi-no-resultado" class="slide level2">
+<h2>Impacto da VI no resultado</h2>
+<p>E quanto aos ganhos para esses grupos?</p>
+<p><code>{r, eval = FALSE} ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = lnw)) +   geom_line() +   geom_label(mapping = aes(label = qob, color = q4)) +   scale_x_continuous("Year of birth", breaks = 1930:1940) +   scale_y_continuous("Log weekly wages") +   guides(label = FALSE, color = FALSE) +     theme_bw()</code></p>
+</section>
+<section id="impacto-da-vi-no-resultado-1" class="slide level2">
+<h2>Impacto da VI no resultado</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><br> <br> <br> 1. Nascidos no 4º trimestre estão entre os mais bem pagos por ano de nascimento.</p>
+<ol type="1">
+<li class="fragment">Em geral, os salários semanais parecem diminuir um pouco ao longo do tempo.</li>
+</ol>
+</div><div class="column" style="width:70%;">
+<p><code>{r ak91-wage,echo = FALSE,fig.height = 5} ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = lnw)) +   geom_line() +   geom_label(mapping = aes(label = qob, color = q4)) +   scale_x_continuous("Year of birth", breaks = 1930:1940) +   scale_y_continuous("Log weekly wages") +   guides(label = FALSE, color = FALSE) +     theme_bw()</code></p>
+</div>
+</div>
+</section>
+<section id="executando-estimativa-vi-no-r" class="slide level2">
+<h2>Executando estimativa VI no <code>R</code></h2>
+<p><br> <br></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Várias opções (como sempre com <code>R</code>! 😉)</p></li>
+<li class="fragment"><p>Usaremos a função <a href="https://declaredesign.org/r/estimatr/reference/iv_robust.html"><code>iv_robust</code></a> do pacote <code>estimatr</code>.</p></li>
+<li class="fragment"><p><em>Robusto</em>? Calcula erros padrão que estão corrigindo a heterocedasticidade. <a href="https://declaredesign.org/r/estimatr/articles/mathematical-notes.html">Detalhes aqui.</a></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p>```{r mq2e, cache=TRUE} library(estimatr) # create a list of models mod &lt;- list()</p>
+<section id="standard-biased-ols" class="title-slide slide level1 center">
+<h1>standard (biased!) OLS</h1>
+<p>mod$ols &lt;- lm(lnw ~ s, data = ak91)</p>
+</section>
+
+<section id="iv-born-in-q4-is-true" class="title-slide slide level1 center">
+<h1>IV: born in q4 is TRUE?</h1>
+
+</section>
+
+<section id="doing-iv-manually-in-2-stages." class="title-slide slide level1 center">
+<h1>doing IV manually in 2 stages.</h1>
+<p>mod<span class="math inline">\(stage_1 &lt;- lm(s ~ q4, data = ak91) ak91\)</span>shat &lt;- predict(mod<span class="math inline">\(stage_1) mod\)</span>stage_2 &lt;- lm(lnw ~ shat, data = ak91)</p>
+</section>
+
+<section id="run-2sls" class="title-slide slide level1 center">
+<h1>run 2SLS</h1>
+
+</section>
+
+<section id="doing-iv-all-in-one-go" class="title-slide slide level1 center">
+<h1>doing IV all in one go</h1>
+
+</section>
+
+<section id="notice-the-formula" class="title-slide slide level1 center">
+<h1>notice the formula!</h1>
+
+</section>
+
+<section id="formula-y-x-z" class="title-slide slide level1 center">
+<h1>formula = y ~ x | z</h1>
+<p>mod$MQ2E &lt;- iv_robust(lnw ~ s | q4, data = ak91, diagnostics = TRUE)</p>
+<pre><code>
+
+
+:::
+::::
+
+
+## Executando estimativa VI no `R`
+
+&lt;br&gt;
+&lt;br&gt;
+
+::::{.columns}
+:::{.column width="50%"}
+* Várias opções (como sempre com `R`! 😉)
+
+* Usará a função [`iv_robust`](https://declaredesign.org/r/estimatr/reference/iv_robust.html) do pacote `estimatr`.
+
+* *Robusto*? Calcula erros padrão que estão corrigindo a heterocedasticidade. [Detalhes aqui.](https://declaredesign.org/r/estimatr/articles/mathematical-notes.html)
+
+* Observe o `predict` para obter $\hat{s}$.
+:::
+
+
+:::{.column width="50%"}
+
+
+
+```{r, eval = FALSE}
+library(estimatr)
+# create a list of models
+mod &lt;- list()
+
+# standard (biased!) OLS
+mod$ols &lt;- lm(lnw ~ s, data = ak91)
+
+# IV: born in q4 is TRUE?
+# doing IV manually in 2 stages.
+mod$stage_1 &lt;- lm(s ~ q4, data = ak91)
+ak91$shat &lt;- predict(mod$stage_1) #&lt;&lt;
+modmod$stage_2 &lt;- lm(lnw ~ shat, data = ak91)
+
+# run 2SLS
+# doing IV all in one go
+# notice the formula!
+# formula = y ~ x | z
+mod$MQ2E  &lt;- iv_robust(lnw ~ s | q4,
+                       data = ak91,
+                       diagnostics = TRUE)</code></pre>
+</section>
+
+</div>
+</div>
+</section>
+<section id="resultados" class="slide level2">
+<h2>Resultados</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p><code>{r ms1, echo = FALSE} glance_custom.iv_robust &lt;- function(x){   f = x$diagnostic_first_stage_fstatistic   if (is.null(f)) {     return()   } else {     out &lt;- tibble::tibble(`1. Stage F:` = f["value"])     return(out)   } } library(huxtable) tab = msummary(models = mod,                stars = TRUE,                statistic = 'std.error',                gof_omit = 'DF|Deviance|AIC|BIC|R2 Adj.|p.value|F$|se_type|statistic|Log.Lik.|Num.Obs.|N',                output = "huxtable" ) tab %&gt;%   set_bottom_border(row = 9, col = everywhere) %&gt;%   set_tb_padding(3.5)</code></p>
+</div><div class="column" style="width:30%;">
+<ol type="1">
+<li class="fragment"><p>MQO viesado para baixo (erro de medição)</p></li>
+<li class="fragment"><p>Primeira Fase: VI <code>q4</code> é estatisticamente significativo</p></li>
+<li class="fragment"><p>O segundo estágio tem a mesma estimativa pontual que <code>MQ2E</code>, mas um erro padrão diferente (segundo estágio um está errado)</p></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="lembra-da-estatística-f" class="slide level2">
+<h2>Lembra da estatística F?</h2>
+<ul>
+<li class="fragment"><p>Encontramos isso antes: é útil testar modelos restritos versus irrestritos entre si.</p></li>
+<li class="fragment"><p>Aqui, estamos interessados em saber se nossos instrumentos são <em>conjuntamente</em> significativos. Claro, com apenas uma VI, isso não é mais informativo do que o t-stat dessa VI.</p></li>
+<li class="fragment"><p>Este F-Stat compara o poder preditivo do primeiro estágio com e sem as VIs. Se eles tiverem poder preditivo muito semelhante, o F-stat será baixo e não poderemos rejeitar H0 de que nossas VIs são <strong>conjuntamente insignificantes</strong> no modelo do primeiro estágio. 😞</p></li>
+</ul>
+</section>
+<section id="vi-com-um-instrumento-fraco" class="slide level2">
+<h2>VI com um instrumento fraco</h2>
+<ul>
+<li class="fragment"><p>VI é consistente sob determinadas premissas.</p></li>
+<li class="fragment"><p>No entanto, <em>mesmo</em> que tenhamos apenas <span class="math inline">\(Cor(z,u)\)</span> muito pequenos, podemos errar</p></li>
+<li class="fragment"><p>Pequena correlação entre <span class="math inline">\(x\)</span> e <span class="math inline">\(z\)</span> pode produzir estimativas <strong>inconsistentes</strong>.</p></li>
+</ul>
+<p><span class="math display">\[\text{plim}(\hat{\beta}_{1,IV}) = \beta_1 + \frac{Cor(z,u)}{Cor(z,x)} \cdot \frac{\sigma_u}{\sigma_x}\]</span></p>
+<ul>
+<li class="fragment"><p>Mesmo que <span class="math inline">\(Cor(z,u)\)</span> seja muito pequena</p></li>
+<li class="fragment"><p>Um <strong>instrumento fraco</strong> é aquele com pequeno valor absoluto para <span class="math inline">\(Cor(z,x)\)</span></p></li>
+<li class="fragment"><p>Mesmo com um tamanho de amostra grande, nosso estimador <em>não</em> convergirá para o verdadeiro parâmetro populacional <span class="math inline">\(\beta_1\)</span>.</p></li>
+</ul>
+</section>
+<section id="vi-com-um-instrumento-fraco-1" class="slide level2">
+<h2>VI com um instrumento fraco</h2>
+<p>Para ilustrar esse ponto, vamos supor que queremos analisar o impacto do número de maços de cigarros fumados por dia por mulheres grávidas (<em>packs</em>) no peso ao nascer de seus filhos (<em>bwght</em>):</p>
+<p><span class="math display">\[\log(bwght) = \beta_0 + \beta_1 packs + u\]</span></p>
+<p>Estamos preocupados que o comportamento de fumar esteja correlacionado com uma série de outras variáveis relacionadas à saúde que estão em <span class="math inline">\(u\)</span> e que podem afetar o peso ao nascer da criança.</p>
+<p>Então, procuramos um IV. Suponha que usemos o preço dos cigarros (<em>cigprice</em>), supondo que o preço dos cigarros não esteja correlacionado com fatores em <span class="math inline">\(u\)</span>. Vamos executar o primeiro estágio de <em>cigprice</em> em <em>packs</em> e então vamos mostrar as estimativas de MQ2E:</p>
+</section>
+<section id="vi-com-um-instrumento-fraco-2" class="slide level2">
+<h2>VI com um instrumento fraco</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {r bw} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>data(bwght, package = "wooldridge")</span>
+<span id="cb4-2"><a href="#cb4-2"></a>mods &lt;- list()</span>
+<span id="cb4-3"><a href="#cb4-3"></a>mods$Estagio_1 &lt;- lm(packs ~ cigprice, data = bwght)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>mods$VI &lt;- estimatr::iv_robust(log(bwght) ~  packs | cigprice, data = bwght, </span>
+<span id="cb4-5"><a href="#cb4-5"></a>                               diagnostics = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>{r,echo = FALSE} tbl &lt;- modelsummary(mods, gof_omit = 'DF|Deviance|AIC|BIC|R2 Adj.|p.value|F$|se_type|statistic|Log.Lik.|Num.Obs.|N', output = "huxtable") %&gt;%     set_bottom_border(row = 7, col = everywhere) %&gt;%     set_bold(1, everywhere) %&gt;%     set_tb_padding(5) font_size(tbl) &lt;- 15 tbl</code></p>
+</section>
+<section id="vi-com-um-instrumento-fraco-3" class="slide level2">
+<h2>VI com um instrumento fraco</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>As primeiras colunas mostram: primeiro estágio muito fraco. <em>cigprice</em> parece ter zero impacto nos maços!</p></li>
+<li class="fragment"><p><span class="math inline">\(R^2\)</span> é zero.</p></li>
+<li class="fragment"><p>O que é que usamos nesta VI, no entanto?</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>na segunda coluna: impacto muito grande e positivo(!) dos maços fumados no peso ao nascer. 🤔</p></li>
+<li class="fragment"><p>Enorme erro padrão.</p></li>
+<li class="fragment"><p>Um <span class="math inline">\(R^2\)</span> de -23?!</p></li>
+<li class="fragment"><p>F-stat do primeiro estágio: 0,121. Corresponde a um valor p de <code>r round(mods[["VI"]]$diagnostic_first_stage_fstatistic["p.value"],3)</code> : nós <strong>não podemos</strong> rejeitar a H0 de um primeiro estágio insignificante.</p></li>
+<li class="fragment"><p>Então: abordagem <strong>inválida</strong>. ❌</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="variáveis-de-controle-adicionais" class="slide level2">
+<h2>Variáveis de Controle Adicionais</h2>
+<ul>
+<li class="fragment"><p>Vimos uma tendência de tempo clara na educação mais cedo.</p></li>
+<li class="fragment"><p>Há também flutuações do ciclo de negócios nos ganhos</p></li>
+<li class="fragment"><p>Devemos de alguma forma controlar por diferentes períodos de tempo.</p></li>
+<li class="fragment"><p>Além disso, podemos usar mais de uma VI! Aqui está como:</p></li>
+</ul>
+</section>
+<section id="variáveis-de-controle-adicionais-1" class="slide level2">
+<h2>Variáveis de Controle Adicionais</h2>
+<p>``<code>{r mq2e2, cache=TRUE} # we keep adding to our</code>mod` list: mod<span class="math inline">\(ols_yr &lt;- update(mod\)</span>ols, . ~ . + yob_fct) # previous OLS model</p>
+</section></section>
+<section id="add-exogenous-vars-on-both-sides-of-the" class="title-slide slide level1 center">
+<h1>add exogenous vars on both sides of the <code>|</code> !</h1>
+<p>mod$MQ2E_yr &lt;- iv_robust(lnw ~ s + yob_fct | q4 + yob_fct, data = ak91, diagnostics = TRUE )</p>
+</section>
+
+<section>
+<section id="use-all-quarters-as-ivs" class="title-slide slide level1 center">
+<h1>use all quarters as IVs</h1>
+<p>mod$MQ2E_all &lt;- iv_robust(lnw ~ s + yob_fct | qob_fct + yob_fct, data = ak91, diagnostics = TRUE )</p>
+<pre><code>
+
+
+
+
+## Variáveis de Controle Adicionais
+
+
+
+```{r, echo = FALSE}
+# here is how to make the table:
+rows &lt;- data.frame(term = c("Instruments","Year of birth"),
+                   ols  = c("none","no"),
+                   SLS  = c("Q4","no"),
+                   ols_yr  = c("none","yes"),
+                   SLS_yr  = c("Q4","yes"),
+                   SLS_all  = c("All Quarters","yes")
+                   )
+names(rows)[c(3,5,6)] &lt;- c("2SLS","2SLS_yr","2SLS_all")
+tab = msummary(models = mod[c("ols","MQ2E","ols_yr","MQ2E_yr","MQ2E_all")], 
+               statistic = 'std.error',
+               gof_map = gm,
+               add_rows = rows,
+               coef_omit = 'yob_fct',
+               output = 'huxtable')
+
+htab = tab %&gt;%
+  set_bottom_border(row = 6, col = everywhere) %&gt;%
+  set_bold(1, everywhere) %&gt;%
+  set_tb_padding(4)
+
+htab</code></pre>
+</section>
+<section id="variáveis-de-controle-adicionais-2" class="slide level2">
+<h2>Variáveis de Controle Adicionais</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p><code>{r,echo = FALSE} htab</code></p>
+</div><div class="column" style="width:30%;">
+<p><strong>Adicionando controle de ano</strong>…</p>
+<ul>
+<li class="fragment">deixa o MQO praticamente inalterado</li>
+<li class="fragment">ligeiro aumento na estimativa de MQ2E</li>
+</ul>
+<p><strong>Usando todos os trimestres como VI</strong>…</p>
+<ul>
+<li class="fragment">Aumenta muito a precisão da estimativa MQ2E!</li>
+<li class="fragment">A estimativa pontual é de 10,5% agora!</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="fazendo-um-balanço---o-trimestre-de-nascimento-qob" class="slide level2">
+<h2>Fazendo um balanço - O Trimestre de Nascimento (QOB)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment">Isso produzirá estimativas consistentes se
+<ol type="1">
+<li class="fragment">A VI prediz bem o regressor endógeno.</li>
+<li class="fragment">A VI é tão boa quanto aleatória/independente das VOs.</li>
+<li class="fragment">Só pode impactar o resultado através da escolaridade.</li>
+</ol></li>
+<li class="fragment">Como o QOB se comporta com relação a estes itens?</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ol type="1">
+<li class="fragment"><p>O gráfico do 1º estágio e o F-stat alto oferecem evidências de <strong>relevância</strong>. ✅</p></li>
+<li class="fragment"><p>O QOB é <strong>independente</strong> de, digamos, <em>características maternas</em>? Aniversários não são realmente aleatórios - há épocas de nascimento para certas origens socioeconômicas. maior escolaridade materna dão à luz no segundo trimestre. (não no 4º! ✅)</p></li>
+<li class="fragment"><p>Exclusão: E se as crianças mais novas (nascidas no 4º tri!) forem desfavorecidas desde o início, que tem impactos negativos a longo prazo? Então <span class="math inline">\(E[u|z] \neq 0\)</span>! Bem, os mais novos se saem melhor (mais escolaridade e salário mais alto)! ✅</p></li>
+</ol>
+</div>
+</div>
+</section></section>
+<section>
+<section id="tópicos-especiais-vi" class="title-slide slide level1 center">
+<h1>Tópicos Especiais VI</h1>
+
+</section>
+<section id="experimentos-aleatorizados" class="slide level2">
+<h2>Experimentos Aleatorizados</h2>
+<ul>
+<li class="fragment"><p>Experimento aleatorizado (RCT ou A/B testing)</p></li>
+<li class="fragment"><p>Atribui indíviduos para grupos Controle ou Tratado, mas não obriga</p></li>
+<li class="fragment"><p>Existe <em>noncompliance</em>. Tratamento efetivo <span class="math inline">\(T_i \neq Z_i\)</span> designação</p></li>
+<li class="fragment"><p><strong>Atribuição ao tratamento</strong> <span class="math inline">\(Z_i\)</span> serve como <strong>instrumento</strong> para o efetivo status <span class="math inline">\(T_i\)</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="tópicos-especiais-vi-1" class="title-slide slide level1 center">
+<h1>Tópicos Especiais VI</h1>
+
+</section>
+<section id="experimentos-aleatorizados-1" class="slide level2">
+<h2>Experimentos Aleatorizados</h2>
+<ul>
+<li class="fragment">Duas medidas de tratamento
+<ul>
+<li class="fragment">Intention-to-treat (<strong>ITT</strong>): forma reduzida <span class="math inline">\(Y_i=\pi Z_i+v_i\)</span></li>
+<li class="fragment">Local Average Treatment Effect (<strong>LATE</strong>): variável instrumental (MQ2E)</li>
+</ul></li>
+<li class="fragment">Para validade do experimento, checa-se o balanço de covariadas entre grupo controle e tratamento</li>
+<li class="fragment">Bom balanço <span class="math inline">\(\implies\)</span> aleatorização bem feita. (Imbens e Rubin, 2015)</li>
+</ul>
+</section></section>
+<section>
+<section id="tópicos-especiais-vi-2" class="title-slide slide level1 center">
+<h1>Tópicos Especiais VI</h1>
+
+</section>
+<section id="instrumentos-de-bartik" class="slide level2">
+<h2>Instrumentos de Bartik</h2>
+<blockquote>
+<p>A ideia por trás de um instrumento de Bartik é medir variações locais a partir de um choque nacional (regional)</p>
+</blockquote>
+<ul>
+<li class="fragment"><p>Também conhecidos como <strong><em>Shift-Share design</em></strong></p></li>
+<li class="fragment"><p>Comuns na literatura de comércio internacional (Autor, Dorn, e Hanson, 2013), imigração (Card, 2009) e trabalho (Bound e Holzer, 2000)</p></li>
+<li class="fragment"><p><strong><em>Bartik Instruments: What, When, Why, and How</em></strong>. Goldsmith-Pinkham, et al.&nbsp;(2020)</p></li>
+</ul>
+</section></section>
+<section>
+<section id="tópicos-especiais-vi-3" class="title-slide slide level1 center">
+<h1>Tópicos Especiais VI</h1>
+
+</section>
+<section id="instrumentos-de-bartik-1" class="slide level2">
+<h2>Instrumentos de Bartik</h2>
+<ul>
+<li class="fragment"><p>Um choque nacional (<em><strong>shifter</strong></em>), em diferentes indústrias, é “espalhado” localmente de forma diferente entre as localidades através de uma matriz de exposições (<em><strong>shares</strong></em>)</p></li>
+<li class="fragment"><p>Crescimento do salário em razão do crescimento no emprego, em uma localidade <span class="math inline">\(l\)</span></p></li>
+</ul>
+<p><span class="math display">\[y_l=\rho+\beta_1x_l+\epsilon_l\]</span></p>
+<ul>
+<li class="fragment"><p>Crescimento do emprego é <em>produto interno</em> da fração de cada indústria <span class="math inline">\(k\)</span> no emprego com o crescimento desta indústria. <span class="math inline">\(x_l=\sum_kz_{lk}g_{lk}\)</span></p></li>
+<li class="fragment"><p>Crescimento da indústria local é decomposto: <span class="math inline">\(g_{lk}=g_k+\tilde{g}_{lk}\)</span></p></li>
+<li class="fragment"><p>O <strong><em>Instrumento de Bartik</em></strong> é: <span class="math display">\[Z_l=\sum_k z_{lk}g_k\]</span></p></li>
+</ul>
+</section>
 <section id="leitura-recomendada" class="slide level2">
 <h2><span class="emoji" data-emoji="books">📚</span> Leitura Recomendada</h2>
 <ul>
 <li class="fragment"><p>WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. Capítulo 15.</p></li>
 <li class="fragment"><p>GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed.&nbsp;Capítulo 17</p></li>
 <li class="fragment"><p>ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mostly harmless econometrics: An empiricist’s companion. Princeton university press, 2009.</p></li>
+<li class="fragment"><p>IMBENS, Guido W.; RUBIN, Donald B. Causal inference in statistics, social, and biomedical sciences. Cambridge University Press, 2015.</p></li>
+<li class="fragment"><p>GOLDSMITH-PINKHAM, Paul; SORKIN, Isaac; SWIFT, Henry. Bartik instruments: What, when, why, and how. American Economic Review, v. 110, n.&nbsp;8, p.&nbsp;2586-2624, 2020.</p></li>
 </ul>
 </section>
 <section id="até-a-próxima-aula" class="slide level2">
@@ -551,7 +1452,7 @@ E[c_i | z_i = 1] - E[c_i | z_i = 0] &amp;= \delta \left\{ E[w_i | z_i = 1] - E[w
 <img src="img/UdescEsag.jpeg" class="slide-logo r-stretch"><div class="footer footer-default">
 
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
