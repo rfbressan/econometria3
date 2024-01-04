@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 econometria3.code-workspace
 
+data/
