@@ -1360,3 +1360,43 @@ $$y_l=\rho+\beta_1x_l+\epsilon_l$$
 
 ## Erros Padrão Robustos{#sec-robust}
 
+- Resíduos representa a diferença entre a variável dependente o a média estimada.[^1]
+$$
+\begin{aligned}
+y = X\hat\beta + \hat{u}\\
+\hat{u} = y − X\hat{\beta}
+\end{aligned}
+$$
+
+- Variância de \hat{\beta} depende dos erros.
+$$
+\begin{aligned}
+Var(\hat{\beta}\mid X) &= E[(X'X)^{-1}X'uu'X(X'X)^{-1}\mid X]\\
+&= (X'X)^{-1}X'E[uu'\mid X]X(X'X)^{-1}\\
+&= (X'X)^{-1}X'\Sigma X(X'X)^{-1}\\
+\end{aligned}
+$$
+
+- $\Sigma=E[uu'\mid X]$. Uma matriz $n\times n$
+
+[^1]: Notação matricial, y é um vetor de $n\times 1$, X é uma matriz $n\times k$, \beta é um vetor $k\times 1$ e u é um vetor $n\times 1$.
+
+## Erros Padrão Robustos
+
+- Se os erros são **homocedásticos**, então $\Sigma=\sigma^2I_n$ e o estimador de variância do MQO: $\hat{V}^{mqo}(\hat{\beta}\mid X)=\hat\sigma^2(X'X)^{-1}$. 
+
+- Se os erros são **heterocedásticos**, o ***estimador de variância*** do MQO é inconsistente!
+  + Veja que o estimador de MQO de $\beta$ ainda é consistente
+
+- O **estimador de variância robusto** a heterocedasticidade proposto por White é:
+$$
+\begin{aligned}
+\hat{V}^{rob}(\hat{\beta}\mid X) &= (X'X)^{-1}X'\hat{\Sigma}X(X'X)^{-1}\\
+\hat{\Sigma} &= \begin{bmatrix}
+\hat{u}_1^2 & 0 & \cdots & 0\\
+0 & \hat{u}_2^2 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \hat{u}_n^2\\
+\end{bmatrix}
+\end{aligned}
+$$
