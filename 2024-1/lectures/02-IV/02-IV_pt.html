@@ -760,10 +760,12 @@ y = \beta_0 + \beta_1 x + u
 </section>
 <section id="identificação-2" class="slide level2">
 <h2>Identificação</h2>
-<p><span class="math display">\[\begin{align}
+<p><span class="math display">\[
+\begin{aligned}
 Cov(z,y) &amp;= Cov(z, \beta_0 + \beta_1 x + u) \\
          &amp;= \beta_1 Cov(z,x) + Cov(z,u)
-\end{align}\]</span></p>
+\end{aligned}
+\]</span></p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Sob a condição 2. acima (<strong>restrição de exclusão</strong>), temos que <span class="math inline">\(Cov(z,u)=0\)</span>, então:</p>
@@ -947,7 +949,7 @@ Cov(z,y) = \beta_1 Cov(z,x)
 <span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Estatisticas descritivas</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a>ak91.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="32">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1056,7 +1058,7 @@ Cov(z,y) = \beta_1 Cov(z,x)
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>ak91[<span class="st">'qob_fct'</span>] <span class="op">=</span> ak91[<span class="st">'qob'</span>].astype(<span class="st">'category'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>ak91[<span class="st">'q4'</span>] <span class="op">=</span> (ak91[<span class="st">'qob'</span>] <span class="op">==</span> <span class="st">"4"</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>ak91[<span class="st">'q4'</span>] <span class="op">=</span> (ak91[<span class="st">'qob'</span>] <span class="op">==</span> <span class="fl">4.0</span>).astype(<span class="bu">int</span>)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>ak91[<span class="st">'yob_fct'</span>] <span class="op">=</span> ak91[<span class="st">'yob'</span>].astype(<span class="st">'category'</span>)</span>
 <span id="cb2-4"><a href="#cb2-4"></a></span>
 <span id="cb2-5"><a href="#cb2-5"></a>ak91_age <span class="op">=</span> ak91.groupby([<span class="st">'qob'</span>, <span class="st">'yob'</span>]).agg(lnw<span class="op">=</span>(<span class="st">'lnw'</span>, <span class="st">'mean'</span>), s<span class="op">=</span>(<span class="st">'s'</span>, <span class="st">'mean'</span>)).reset_index()</span>
@@ -1067,96 +1069,160 @@ Cov(z,y) = \beta_1 Cov(z,x)
 <section id="primeiro-estágio" class="slide level2">
 <h2>Primeiro Estágio!</h2>
 <p>Vamos reproduzir agora a primeira figura de AK91 sobre educação em função do trimestre de nascimento!</p>
-<p><code>{r,eval = FALSE} ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = s)) +     geom_line() +     geom_label(mapping = aes(label = qob, color = q4)) +     guides(label = FALSE, color = FALSE) +     scale_x_continuous("Year of birth", breaks = 1930:1940) +     scale_y_continuous("Years of Education",         breaks = seq(12.2, 13.2, by = 0.2),         limits = c(12.2, 13.2)     ) +     theme_bw()</code></p>
-</section>
-<section id="primeiro-estágio-1" class="slide level2">
-<h2>Primeiro Estágio!</h2>
 <div class="columns">
 <div class="column" style="width:30%;">
-<p><br> 1. Os números rotulados significam trimestre de nascimento.</p>
 <ol type="1">
+<li class="fragment"><p>Os números rotulados significam trimestre de nascimento.</p></li>
 <li class="fragment"><p>Nascidos no 4º trimestre <strong>obtiveram</strong> mais educação na maioria dos anos!</p></li>
 <li class="fragment"><p><strong>Relevância da VI</strong>.</p></li>
 </ol>
 </div><div class="column" style="width:70%;">
-<p><code>{r ak91-dummy, eval = TRUE, echo = FALSE, fig.height = 5} ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = s )) +   geom_line() +    geom_label(mapping = aes(label = qob, color = q4)) +   guides(label = FALSE, color = FALSE) +   scale_x_continuous("Year of birth", breaks = 1930:1940) +   scale_y_continuous("Years of Education", breaks = seq(12.2, 13.2, by = 0.2),                      limits = c(12.2, 13.2)) +   theme_bw()</code></p>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>,<span class="dv">8</span>))</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>ak91_age[<span class="st">'yob_qob'</span>] <span class="op">=</span> ak91_age[<span class="st">'yob'</span>] <span class="op">+</span> (ak91_age[<span class="st">'qob'</span>] <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> <span class="dv">4</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>sort_df <span class="op">=</span> ak91_age.sort_values(<span class="st">'yob_qob'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>ax.plot(sort_df[<span class="st">'yob_qob'</span>], sort_df[<span class="st">'s'</span>])</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="cf">for</span> i, txt <span class="kw">in</span> <span class="bu">enumerate</span>(sort_df[<span class="st">'qob'</span>].astype(<span class="st">'int'</span>)):</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    ax.annotate(txt, (sort_df[<span class="st">'yob_qob'</span>].iloc[i], sort_df[<span class="st">'s'</span>].iloc[i]), </span>
+<span id="cb3-10"><a href="#cb3-10"></a>    fontsize<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">'round,pad=0.2'</span>, </span>
+<span id="cb3-12"><a href="#cb3-12"></a>    fc<span class="op">=</span>sort_df[<span class="st">'q4'</span>].<span class="bu">map</span>({<span class="va">False</span>: <span class="st">'yellow'</span>, <span class="va">True</span>: <span class="st">'purple'</span>}).iloc[i], </span>
+<span id="cb3-13"><a href="#cb3-13"></a>    alpha<span class="op">=</span><span class="fl">0.8</span>))</span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb3-16"><a href="#cb3-16"></a>ax.set_xlabel(<span class="st">'Ano de Nascimento'</span>)</span>
+<span id="cb3-17"><a href="#cb3-17"></a>ax.set_ylabel(<span class="st">'Anos de Escolaridade'</span>)</span>
+<span id="cb3-18"><a href="#cb3-18"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img data-src="02-IV_pt_files/figure-revealjs/cell-7-output-1.png" width="1118" height="651"></p>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="impacto-da-vi-no-resultado" class="slide level2">
 <h2>Impacto da VI no resultado</h2>
-<p>E quanto aos ganhos para esses grupos?</p>
-<p><code>{r, eval = FALSE} ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = lnw)) +   geom_line() +   geom_label(mapping = aes(label = qob, color = q4)) +   scale_x_continuous("Year of birth", breaks = 1930:1940) +   scale_y_continuous("Log weekly wages") +   guides(label = FALSE, color = FALSE) +     theme_bw()</code></p>
-</section>
-<section id="impacto-da-vi-no-resultado-1" class="slide level2">
-<h2>Impacto da VI no resultado</h2>
+<p>E quanto aos salários para esses grupos?</p>
 <div class="columns">
 <div class="column" style="width:30%;">
-<p><br> <br> <br> 1. Nascidos no 4º trimestre estão entre os mais bem pagos por ano de nascimento.</p>
 <ol type="1">
-<li class="fragment">Em geral, os salários semanais parecem diminuir um pouco ao longo do tempo.</li>
+<li class="fragment"><p>Nascidos no 4º trimestre estão entre os mais bem pagos por ano de nascimento.</p></li>
+<li class="fragment"><p>Em geral, os salários semanais parecem diminuir um pouco ao longo do tempo.</p></li>
+<li class="fragment"><p>Visualização da <strong>forma reduzida</strong></p></li>
 </ol>
 </div><div class="column" style="width:70%;">
-<p><code>{r ak91-wage,echo = FALSE,fig.height = 5} ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = lnw)) +   geom_line() +   geom_label(mapping = aes(label = qob, color = q4)) +   scale_x_continuous("Year of birth", breaks = 1930:1940) +   scale_y_continuous("Log weekly wages") +   guides(label = FALSE, color = FALSE) +     theme_bw()</code></p>
+<div class="cell" data-execution_count="7">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>,<span class="dv">8</span>))</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>ax.plot(sort_df[<span class="st">'yob_qob'</span>], sort_df[<span class="st">'lnw'</span>])</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="cf">for</span> i, txt <span class="kw">in</span> <span class="bu">enumerate</span>(sort_df[<span class="st">'qob'</span>].astype(<span class="st">'int'</span>)):</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    ax.annotate(txt, (sort_df[<span class="st">'yob_qob'</span>].iloc[i], sort_df[<span class="st">'lnw'</span>].iloc[i]), </span>
+<span id="cb4-7"><a href="#cb4-7"></a>    fontsize<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    bbox<span class="op">=</span><span class="bu">dict</span>(boxstyle<span class="op">=</span><span class="st">'round,pad=0.2'</span>, </span>
+<span id="cb4-9"><a href="#cb4-9"></a>    fc<span class="op">=</span>sort_df[<span class="st">'q4'</span>].<span class="bu">map</span>({<span class="va">False</span>: <span class="st">'yellow'</span>, <span class="va">True</span>: <span class="st">'purple'</span>}).iloc[i], </span>
+<span id="cb4-10"><a href="#cb4-10"></a>    alpha<span class="op">=</span><span class="fl">0.8</span>))</span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb4-13"><a href="#cb4-13"></a>ax.set_xlabel(<span class="st">'Ano de Nascimento'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14"></a>ax.set_ylabel(<span class="st">'Log Salário Semanal'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img data-src="02-IV_pt_files/figure-revealjs/cell-8-output-1.png" width="1128" height="651"></p>
 </div>
 </div>
-</section>
-<section id="executando-estimativa-vi-no-r" class="slide level2">
-<h2>Executando estimativa VI no <code>R</code></h2>
-<p><br> <br></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li class="fragment"><p>Várias opções (como sempre com <code>R</code>! 😉)</p></li>
-<li class="fragment"><p>Usaremos a função <a href="https://declaredesign.org/r/estimatr/reference/iv_robust.html"><code>iv_robust</code></a> do pacote <code>estimatr</code>.</p></li>
-<li class="fragment"><p><em>Robusto</em>? Calcula erros padrão que estão corrigindo a heterocedasticidade. <a href="https://declaredesign.org/r/estimatr/articles/mathematical-notes.html">Detalhes aqui.</a></p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p>```{r mq2e, cache=TRUE} library(estimatr) # create a list of models mod &lt;- list()</p>
-<section id="standard-biased-ols" class="title-slide slide level1 center">
-<h1>standard (biased!) OLS</h1>
-<p>mod$ols &lt;- lm(lnw ~ s, data = ak91)</p>
-</section>
+</div>
+</div>
+<!-- ## Executando estimativa VI no `R`
 
-<section id="iv-born-in-q4-is-true" class="title-slide slide level1 center">
-<h1>IV: born in q4 is TRUE?</h1>
+<br>
+<br>
 
-</section>
+::::{.columns}
+:::{.column width="50%"}
+* Várias opções (como sempre com `R`! 😉)
 
-<section id="doing-iv-manually-in-2-stages." class="title-slide slide level1 center">
-<h1>doing IV manually in 2 stages.</h1>
-<p>mod<span class="math inline">\(stage_1 &lt;- lm(s ~ q4, data = ak91) ak91\)</span>shat &lt;- predict(mod<span class="math inline">\(stage_1) mod\)</span>stage_2 &lt;- lm(lnw ~ shat, data = ak91)</p>
-</section>
+* Usaremos a função [`iv_robust`](https://declaredesign.org/r/estimatr/reference/iv_robust.html) do pacote `estimatr`.
 
-<section id="run-2sls" class="title-slide slide level1 center">
-<h1>run 2SLS</h1>
+* *Robusto*? Calcula erros padrão que estão corrigindo a heterocedasticidade. [Detalhes aqui.](https://declaredesign.org/r/estimatr/articles/mathematical-notes.html)
+:::
 
-</section>
+:::{.column width="50%"}
 
-<section id="doing-iv-all-in-one-go" class="title-slide slide level1 center">
-<h1>doing IV all in one go</h1>
 
-</section>
 
-<section id="notice-the-formula" class="title-slide slide level1 center">
-<h1>notice the formula!</h1>
+```{r mq2e, cache=TRUE}
+library(estimatr)
+# create a list of models
+mod <- list()
 
-</section>
+# standard (biased!) OLS
+mod$ols <- lm(lnw ~ s, data = ak91)
 
-<section id="formula-y-x-z" class="title-slide slide level1 center">
-<h1>formula = y ~ x | z</h1>
-<p>mod$MQ2E &lt;- iv_robust(lnw ~ s | q4, data = ak91, diagnostics = TRUE)</p>
-<pre><code>
+# IV: born in q4 is TRUE?
+# doing IV manually in 2 stages.
+mod$stage_1 <- lm(s ~ q4, data = ak91)
+ak91$shat <- predict(mod$stage_1)  
+mod$stage_2 <- lm(lnw ~ shat, data = ak91)
+
+# run 2SLS
+# doing IV all in one go
+# notice the formula!
+# formula = y ~ x | z
+mod$MQ2E  <- iv_robust(lnw ~ s | q4,
+                       data = ak91,
+                       diagnostics = TRUE)
+```
+
 
 
 :::
-::::
+:::: -->
+</section>
+<section id="executando-estimativa-vi-no-python" class="slide level2">
+<h2>Executando estimativa VI no <code>Python</code></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>A melhor biblioteca para implementar estimativas de VI no <code>Python</code> é o <a href="https://bashtage.github.io/linearmodels/"><code>linearmodels</code></a>.</p></li>
+<li class="fragment"><p>Usaremos a função <code>IV2SLS</code> que inclui a sintaxe de formula, também usada no <a href="https://www.statsmodels.org/stable/index.html"><code>statsmodels</code></a></p></li>
+<li class="fragment"><p><em>Robusto</em>? Calcula <strong>por padrão</strong> erros corrigidos para heterocedasticidade. Argumento <code>cov_type</code>. <a href="#/sec-robust">Section&nbsp;6.1</a></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-execution_count="8">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">import</span> linearmodels.iv <span class="im">as</span> iv</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># Standard (biased!) OLS</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>ols <span class="op">=</span> iv.IV2SLS.from_formula(<span class="st">'lnw ~ 1+s'</span>, data<span class="op">=</span>ak91).fit()</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># IV: born in q4 is TRUE?</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co"># doing IV manually in 2 stages.</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>stage_1 <span class="op">=</span> iv.IV2SLS.from_formula(<span class="st">'s ~ 1+q4'</span>, data <span class="op">=</span> ak91).fit()</span>
+<span id="cb5-9"><a href="#cb5-9"></a>ak91[<span class="st">'shat'</span>] <span class="op">=</span> stage_1.predict()  </span>
+<span id="cb5-10"><a href="#cb5-10"></a>stage_2 <span class="op">=</span> iv.IV2SLS.from_formula(<span class="st">'lnw ~ 1+shat'</span>, data <span class="op">=</span> ak91).fit()</span>
+<span id="cb5-11"><a href="#cb5-11"></a></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co"># Run 2SLS. Doing IV all in one go</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co"># Notice the formula y ~ [x ~ z]</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>MQ2E <span class="op">=</span> iv.IV2SLS.from_formula(<span class="st">'lnw ~ 1 + [s ~ q4]'</span>, data <span class="op">=</span> ak91).fit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+<!-- ## Executando estimativa VI no `R`
 
-
-## Executando estimativa VI no `R`
-
-&lt;br&gt;
-&lt;br&gt;
+<br>
+<br>
 
 ::::{.columns}
 :::{.column width="50%"}
@@ -1177,39 +1243,174 @@ Cov(z,y) = \beta_1 Cov(z,x)
 ```{r, eval = FALSE}
 library(estimatr)
 # create a list of models
-mod &lt;- list()
+mod <- list()
 
 # standard (biased!) OLS
-mod$ols &lt;- lm(lnw ~ s, data = ak91)
+mod$ols <- lm(lnw ~ s, data = ak91)
 
 # IV: born in q4 is TRUE?
 # doing IV manually in 2 stages.
-mod$stage_1 &lt;- lm(s ~ q4, data = ak91)
-ak91$shat &lt;- predict(mod$stage_1) #&lt;&lt;
-modmod$stage_2 &lt;- lm(lnw ~ shat, data = ak91)
+mod$stage_1 <- lm(s ~ q4, data = ak91)
+ak91$shat <- predict(mod$stage_1) #<<
+modmod$stage_2 <- lm(lnw ~ shat, data = ak91)
 
 # run 2SLS
 # doing IV all in one go
 # notice the formula!
 # formula = y ~ x | z
-mod$MQ2E  &lt;- iv_robust(lnw ~ s | q4,
+mod$MQ2E  <- iv_robust(lnw ~ s | q4,
                        data = ak91,
-                       diagnostics = TRUE)</code></pre>
-</section>
+                       diagnostics = TRUE)
+```
 
-</div>
-</div>
+
+
+:::
+::::
+ -->
 </section>
 <section id="resultados" class="slide level2">
 <h2>Resultados</h2>
 <div class="columns">
 <div class="column" style="width:70%;">
-<p><code>{r ms1, echo = FALSE} glance_custom.iv_robust &lt;- function(x){   f = x$diagnostic_first_stage_fstatistic   if (is.null(f)) {     return()   } else {     out &lt;- tibble::tibble(`1. Stage F:` = f["value"])     return(out)   } } library(huxtable) tab = msummary(models = mod,                stars = TRUE,                statistic = 'std.error',                gof_omit = 'DF|Deviance|AIC|BIC|R2 Adj.|p.value|F$|se_type|statistic|Log.Lik.|Num.Obs.|N',                output = "huxtable" ) tab %&gt;%   set_bottom_border(row = 9, col = everywhere) %&gt;%   set_tb_padding(3.5)</code></p>
+
+<!-- ```{r ms1, echo = FALSE}
+glance_custom.iv_robust <- function(x){
+  f = x$diagnostic_first_stage_fstatistic
+  if (is.null(f)) {
+    return()
+  } else {
+    out <- tibble::tibble(`1. Stage F:` = f["value"])
+    return(out)
+  }
+}
+library(huxtable)
+tab = msummary(models = mod,
+               stars = TRUE,
+               statistic = 'std.error',
+               gof_omit = 'DF|Deviance|AIC|BIC|R2 Adj.|p.value|F$|se_type|statistic|Log.Lik.|Num.Obs.|N',
+               output = "huxtable"
+)
+tab %>%
+  set_bottom_border(row = 9, col = everywhere) %>%
+  set_tb_padding(3.5)
+``` -->
+<div class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="38">
+<style type="text/css">
+</style>
+
+<table id="T_cb82b" data-quarto-postprocess="true" style="font-size: 18pt; text-align: center">
+<thead>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th">Model</th>
+<th id="T_cb82b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">OLS</th>
+<th id="T_cb82b_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Stage 1</th>
+<th id="T_cb82b_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Stage 2</th>
+<th id="T_cb82b_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">MQ2E</th>
+</tr>
+<tr class="odd">
+<th class="index_name level1" data-quarto-table-cell-role="th">Dep. Var.</th>
+<th id="T_cb82b_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">lnw</th>
+<th id="T_cb82b_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">s</th>
+<th id="T_cb82b_level1_col2" class="col_heading level1 col2" data-quarto-table-cell-role="th">lnw</th>
+<th id="T_cb82b_level1_col3" class="col_heading level1 col3" data-quarto-table-cell-role="th">lnw</th>
+</tr>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th"></th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="blank col1" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="blank col2" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="blank col3" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_cb82b_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">s</td>
+<td id="T_cb82b_row0_col0" class="data row0 col0">0.0709***</td>
+<td id="T_cb82b_row0_col1" class="data row0 col1"></td>
+<td id="T_cb82b_row0_col2" class="data row0 col2"></td>
+<td id="T_cb82b_row0_col3" class="data row0 col3">0.0740***</td>
+</tr>
+<tr class="even">
+<td id="T_cb82b_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th"></td>
+<td id="T_cb82b_row1_col0" class="data row1 col0">(0.0004)</td>
+<td id="T_cb82b_row1_col1" class="data row1 col1"></td>
+<td id="T_cb82b_row1_col2" class="data row1 col2"></td>
+<td id="T_cb82b_row1_col3" class="data row1 col3">(0.0280)</td>
+</tr>
+<tr class="odd">
+<td id="T_cb82b_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">q4</td>
+<td id="T_cb82b_row2_col0" class="data row2 col0"></td>
+<td id="T_cb82b_row2_col1" class="data row2 col1">0.0921***</td>
+<td id="T_cb82b_row2_col2" class="data row2 col2"></td>
+<td id="T_cb82b_row2_col3" class="data row2 col3"></td>
+</tr>
+<tr class="even">
+<td id="T_cb82b_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th"></td>
+<td id="T_cb82b_row3_col0" class="data row3 col0"></td>
+<td id="T_cb82b_row3_col1" class="data row3 col1">(0.0132)</td>
+<td id="T_cb82b_row3_col2" class="data row3 col2"></td>
+<td id="T_cb82b_row3_col3" class="data row3 col3"></td>
+</tr>
+<tr class="odd">
+<td id="T_cb82b_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">shat</td>
+<td id="T_cb82b_row4_col0" class="data row4 col0"></td>
+<td id="T_cb82b_row4_col1" class="data row4 col1"></td>
+<td id="T_cb82b_row4_col2" class="data row4 col2">0.0740**</td>
+<td id="T_cb82b_row4_col3" class="data row4 col3"></td>
+</tr>
+<tr class="even">
+<td id="T_cb82b_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th"></td>
+<td id="T_cb82b_row5_col0" class="data row5 col0"></td>
+<td id="T_cb82b_row5_col1" class="data row5 col1"></td>
+<td id="T_cb82b_row5_col2" class="data row5 col2">(0.0298)</td>
+<td id="T_cb82b_row5_col3" class="data row5 col3"></td>
+</tr>
+<tr class="odd">
+<td id="T_cb82b_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">====================</td>
+<td id="T_cb82b_row6_col0" class="data row6 col0">=============</td>
+<td id="T_cb82b_row6_col1" class="data row6 col1">=============</td>
+<td id="T_cb82b_row6_col2" class="data row6 col2">=============</td>
+<td id="T_cb82b_row6_col3" class="data row6 col3">=============</td>
+</tr>
+<tr class="even">
+<td id="T_cb82b_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">Instruments</td>
+<td id="T_cb82b_row7_col0" class="data row7 col0"></td>
+<td id="T_cb82b_row7_col1" class="data row7 col1"></td>
+<td id="T_cb82b_row7_col2" class="data row7 col2"></td>
+<td id="T_cb82b_row7_col3" class="data row7 col3">q4</td>
+</tr>
+<tr class="odd">
+<td id="T_cb82b_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">Estimator</td>
+<td id="T_cb82b_row8_col0" class="data row8 col0">OLS</td>
+<td id="T_cb82b_row8_col1" class="data row8 col1">OLS</td>
+<td id="T_cb82b_row8_col2" class="data row8 col2">OLS</td>
+<td id="T_cb82b_row8_col3" class="data row8 col3">IV-2SLS</td>
+</tr>
+<tr class="even">
+<td id="T_cb82b_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">R-squared</td>
+<td id="T_cb82b_row9_col0" class="data row9 col0">0.1173</td>
+<td id="T_cb82b_row9_col1" class="data row9 col1">0.0001</td>
+<td id="T_cb82b_row9_col2" class="data row9 col2">1.865e-05</td>
+<td id="T_cb82b_row9_col3" class="data row9 col3">0.1171</td>
+</tr>
+<tr class="odd">
+<td id="T_cb82b_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">No. Observations</td>
+<td id="T_cb82b_row10_col0" class="data row10 col0">329509</td>
+<td id="T_cb82b_row10_col1" class="data row10 col1">329509</td>
+<td id="T_cb82b_row10_col2" class="data row10 col2">329509</td>
+<td id="T_cb82b_row10_col3" class="data row10 col3">329509</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div><div class="column" style="width:30%;">
 <ol type="1">
 <li class="fragment"><p>MQO viesado para baixo (erro de medição)</p></li>
-<li class="fragment"><p>Primeira Fase: VI <code>q4</code> é estatisticamente significativo</p></li>
-<li class="fragment"><p>O segundo estágio tem a mesma estimativa pontual que <code>MQ2E</code>, mas um erro padrão diferente (segundo estágio um está errado)</p></li>
+<li class="fragment"><p>Primeiro Estágio: VI <code>q4</code> é estatisticamente significativo</p></li>
+<li class="fragment"><p>O segundo estágio tem a mesma estimativa pontual que <code>MQ2E</code>, mas um erro padrão diferente (segundo estágio está errado)</p></li>
 </ol>
 </div>
 </div>
@@ -1227,10 +1428,7 @@ mod$MQ2E  &lt;- iv_robust(lnw ~ s | q4,
 <ul>
 <li class="fragment"><p>VI é consistente sob determinadas premissas.</p></li>
 <li class="fragment"><p>No entanto, <em>mesmo</em> que tenhamos apenas <span class="math inline">\(Cor(z,u)\)</span> muito pequenos, podemos errar</p></li>
-<li class="fragment"><p>Pequena correlação entre <span class="math inline">\(x\)</span> e <span class="math inline">\(z\)</span> pode produzir estimativas <strong>inconsistentes</strong>.</p></li>
-</ul>
-<p><span class="math display">\[\text{plim}(\hat{\beta}_{1,IV}) = \beta_1 + \frac{Cor(z,u)}{Cor(z,x)} \cdot \frac{\sigma_u}{\sigma_x}\]</span></p>
-<ul>
+<li class="fragment"><p>Pequena correlação entre <span class="math inline">\(x\)</span> e <span class="math inline">\(z\)</span> pode produzir estimativas <strong>inconsistentes</strong>. <span class="math display">\[\text{plim}(\hat{\beta}_{1,IV}) = \beta_1 + \frac{Cor(z,u)}{Cor(z,x)} \cdot \frac{\sigma_u}{\sigma_x}\]</span></p></li>
 <li class="fragment"><p>Mesmo que <span class="math inline">\(Cor(z,u)\)</span> seja muito pequena</p></li>
 <li class="fragment"><p>Um <strong>instrumento fraco</strong> é aquele com pequeno valor absoluto para <span class="math inline">\(Cor(z,x)\)</span></p></li>
 <li class="fragment"><p>Mesmo com um tamanho de amostra grande, nosso estimador <em>não</em> convergirá para o verdadeiro parâmetro populacional <span class="math inline">\(\beta_1\)</span>.</p></li>
@@ -1241,32 +1439,133 @@ mod$MQ2E  &lt;- iv_robust(lnw ~ s | q4,
 <p>Para ilustrar esse ponto, vamos supor que queremos analisar o impacto do número de maços de cigarros fumados por dia por mulheres grávidas (<em>packs</em>) no peso ao nascer de seus filhos (<em>bwght</em>):</p>
 <p><span class="math display">\[\log(bwght) = \beta_0 + \beta_1 packs + u\]</span></p>
 <p>Estamos preocupados que o comportamento de fumar esteja correlacionado com uma série de outras variáveis relacionadas à saúde que estão em <span class="math inline">\(u\)</span> e que podem afetar o peso ao nascer da criança.</p>
-<p>Então, procuramos um IV. Suponha que usemos o preço dos cigarros (<em>cigprice</em>), supondo que o preço dos cigarros não esteja correlacionado com fatores em <span class="math inline">\(u\)</span>. Vamos executar o primeiro estágio de <em>cigprice</em> em <em>packs</em> e então vamos mostrar as estimativas de MQ2E:</p>
+<p>Então, procuramos uma <strong>VI</strong>. Suponha que usemos o <strong>preço dos cigarros</strong> (<em>cigprice</em>), supondo que o preço dos cigarros não esteja correlacionado com fatores em <span class="math inline">\(u\)</span>. Vamos executar o primeiro estágio de <em>cigprice</em> em <em>packs</em> e então vamos mostrar as estimativas de MQ2E:</p>
 </section>
 <section id="vi-com-um-instrumento-fraco-2" class="slide level2">
 <h2>VI com um instrumento fraco</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {r bw} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>data(bwght, package = "wooldridge")</span>
-<span id="cb4-2"><a href="#cb4-2"></a>mods &lt;- list()</span>
-<span id="cb4-3"><a href="#cb4-3"></a>mods$Estagio_1 &lt;- lm(packs ~ cigprice, data = bwght)</span>
-<span id="cb4-4"><a href="#cb4-4"></a>mods$VI &lt;- estimatr::iv_robust(log(bwght) ~  packs | cigprice, data = bwght, </span>
-<span id="cb4-5"><a href="#cb4-5"></a>                               diagnostics = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>{r,echo = FALSE} tbl &lt;- modelsummary(mods, gof_omit = 'DF|Deviance|AIC|BIC|R2 Adj.|p.value|F$|se_type|statistic|Log.Lik.|Num.Obs.|N', output = "huxtable") %&gt;%     set_bottom_border(row = 7, col = everywhere) %&gt;%     set_bold(1, everywhere) %&gt;%     set_tb_padding(5) font_size(tbl) &lt;- 15 tbl</code></p>
+
+<!-- 
+
+
+```dhpowq
+data(bwght, package = "wooldridge")
+mods <- list()
+mods$Estagio_1 <- lm(packs ~ cigprice, data = bwght)
+mods$VI <- estimatr::iv_robust(log(bwght) ~  packs | cigprice, data = bwght, 
+                               diagnostics = TRUE)
+```
+
+```{r,echo = FALSE}
+tbl <- modelsummary(mods, gof_omit = 'DF|Deviance|AIC|BIC|R2 Adj.|p.value|F$|se_type|statistic|Log.Lik.|Num.Obs.|N', output = "huxtable") %>%
+    set_bottom_border(row = 7, col = everywhere) %>%
+    set_bold(1, everywhere) %>%
+    set_tb_padding(5)
+font_size(tbl) <- 15
+tbl
+``` -->
+<div class="cell" data-execution_count="11">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="im">import</span> wooldridge <span class="im">as</span> woo</span>
+<span id="cb6-2"><a href="#cb6-2"></a>bwght <span class="op">=</span> woo.dataWoo(<span class="st">'bwght'</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>estagio_1 <span class="op">=</span> iv.IV2SLS.from_formula(<span class="st">'packs ~ 1 + cigprice'</span>, data <span class="op">=</span> bwght).fit()</span>
+<span id="cb6-4"><a href="#cb6-4"></a>vi <span class="op">=</span> iv.IV2SLS.from_formula(<span class="st">'np.log(bwght) ~ 1 + [packs ~ cigprice]'</span>, data <span class="op">=</span> bwght).fit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="40">
+<style type="text/css">
+</style>
+
+<table id="T_ea0fc" data-quarto-postprocess="true" style="font-size: 18pt; text-align: center">
+<thead>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th">Model</th>
+<th id="T_ea0fc_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Estágio 1</th>
+<th id="T_ea0fc_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">VI</th>
+</tr>
+<tr class="odd">
+<th class="index_name level1" data-quarto-table-cell-role="th">Dep. Var.</th>
+<th id="T_ea0fc_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">packs</th>
+<th id="T_ea0fc_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">np.log(bwght)</th>
+</tr>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th"></th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="blank col1" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_ea0fc_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">cigprice</td>
+<td id="T_ea0fc_row0_col0" class="data row0 col0">0.0003</td>
+<td id="T_ea0fc_row0_col1" class="data row0 col1"></td>
+</tr>
+<tr class="even">
+<td id="T_ea0fc_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th"></td>
+<td id="T_ea0fc_row1_col0" class="data row1 col0">(0.0008)</td>
+<td id="T_ea0fc_row1_col1" class="data row1 col1"></td>
+</tr>
+<tr class="odd">
+<td id="T_ea0fc_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">packs</td>
+<td id="T_ea0fc_row2_col0" class="data row2 col0"></td>
+<td id="T_ea0fc_row2_col1" class="data row2 col1">2.9887</td>
+</tr>
+<tr class="even">
+<td id="T_ea0fc_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th"></td>
+<td id="T_ea0fc_row3_col0" class="data row3 col0"></td>
+<td id="T_ea0fc_row3_col1" class="data row3 col1">(8.9832)</td>
+</tr>
+<tr class="odd">
+<td id="T_ea0fc_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">====================</td>
+<td id="T_ea0fc_row4_col0" class="data row4 col0">=============</td>
+<td id="T_ea0fc_row4_col1" class="data row4 col1">=================</td>
+</tr>
+<tr class="even">
+<td id="T_ea0fc_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">Instruments</td>
+<td id="T_ea0fc_row5_col0" class="data row5 col0"></td>
+<td id="T_ea0fc_row5_col1" class="data row5 col1">cigprice</td>
+</tr>
+<tr class="odd">
+<td id="T_ea0fc_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">Estimator</td>
+<td id="T_ea0fc_row6_col0" class="data row6 col0">OLS</td>
+<td id="T_ea0fc_row6_col1" class="data row6 col1">IV-2SLS</td>
+</tr>
+<tr class="even">
+<td id="T_ea0fc_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">R-squared</td>
+<td id="T_ea0fc_row7_col0" class="data row7 col0">9.417e-05</td>
+<td id="T_ea0fc_row7_col1" class="data row7 col1">-23.230</td>
+</tr>
+<tr class="odd">
+<td id="T_ea0fc_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">No. Observations</td>
+<td id="T_ea0fc_row8_col0" class="data row8 col0">1388</td>
+<td id="T_ea0fc_row8_col1" class="data row8 col1">1388</td>
+</tr>
+<tr class="even">
+<td id="T_ea0fc_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">F-statistic</td>
+<td id="T_ea0fc_row9_col0" class="data row9 col0">0.1213</td>
+<td id="T_ea0fc_row9_col1" class="data row9 col1">0.1107</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 <section id="vi-com-um-instrumento-fraco-3" class="slide level2">
 <h2>VI com um instrumento fraco</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li class="fragment"><p>As primeiras colunas mostram: primeiro estágio muito fraco. <em>cigprice</em> parece ter zero impacto nos maços!</p></li>
+<li class="fragment"><p>A primeira coluna mostra: primeiro estágio muito fraco. <em>cigprice</em> parece ter zero impacto na quantidade de maços consumidos!</p></li>
 <li class="fragment"><p><span class="math inline">\(R^2\)</span> é zero.</p></li>
-<li class="fragment"><p>O que é que usamos nesta VI, no entanto?</p></li>
+<li class="fragment"><p>Por quê usamos esta VI?</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <ul>
 <li class="fragment"><p>na segunda coluna: impacto muito grande e positivo(!) dos maços fumados no peso ao nascer. 🤔</p></li>
 <li class="fragment"><p>Enorme erro padrão.</p></li>
 <li class="fragment"><p>Um <span class="math inline">\(R^2\)</span> de -23?!</p></li>
-<li class="fragment"><p>F-stat do primeiro estágio: 0,121. Corresponde a um valor p de <code>r round(mods[["VI"]]$diagnostic_first_stage_fstatistic["p.value"],3)</code> : nós <strong>não podemos</strong> rejeitar a H0 de um primeiro estágio insignificante.</p></li>
+<li class="fragment"><p>F-stat do primeiro estágio: 0,121. Corresponde a um valor p de 0.728 : nós <strong>não podemos</strong> rejeitar a H0 de um primeiro estágio insignificante.</p></li>
 <li class="fragment"><p>Então: abordagem <strong>inválida</strong>. ❌</p></li>
 </ul>
 </div>
@@ -1283,36 +1582,41 @@ mod$MQ2E  &lt;- iv_robust(lnw ~ s | q4,
 </section>
 <section id="variáveis-de-controle-adicionais-1" class="slide level2">
 <h2>Variáveis de Controle Adicionais</h2>
-<p>``<code>{r mq2e2, cache=TRUE} # we keep adding to our</code>mod` list: mod<span class="math inline">\(ols_yr &lt;- update(mod\)</span>ols, . ~ . + yob_fct) # previous OLS model</p>
-</section></section>
-<section id="add-exogenous-vars-on-both-sides-of-the" class="title-slide slide level1 center">
-<h1>add exogenous vars on both sides of the <code>|</code> !</h1>
-<p>mod$MQ2E_yr &lt;- iv_robust(lnw ~ s + yob_fct | q4 + yob_fct, data = ak91, diagnostics = TRUE )</p>
+<!-- ```{r mq2e2, cache=TRUE}
+# we keep adding to our `mod` list:
+mod$ols_yr  <- update(mod$ols, . ~ . + yob_fct)  #  previous OLS model
+
+# add exogenous vars on both sides of the `|` !
+mod$MQ2E_yr <- iv_robust(lnw ~ s  + yob_fct | q4 + yob_fct, 
+                         data = ak91, diagnostics = TRUE ) 
+
+# use all quarters as IVs
+mod$MQ2E_all <- iv_robust(lnw ~ s  + yob_fct | qob_fct + yob_fct, 
+                          data = ak91, diagnostics = TRUE  )
+``` -->
+<div class="cell" data-execution_count="13">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>ols_yr <span class="op">=</span> iv.IV2SLS.from_formula(<span class="st">'lnw ~ 1+s+yob_fct'</span>, data<span class="op">=</span>ak91).fit()</span>
+<span id="cb7-2"><a href="#cb7-2"></a>mq2e_yr <span class="op">=</span> iv.IV2SLS.from_formula(<span class="st">'lnw ~ 1+yob_fct+[s ~ q4]'</span>, data<span class="op">=</span>ak91).fit()</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co"># Use all quarters as IVs</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co"># mq2e_all = iv.IV2SLS.from_formula('lnw ~ 1+yob_fct+[s ~ qob_fct]', data=ak91).fit()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
+<section id="variáveis-de-controle-adicionais-2" class="slide level2">
+<h2>Variáveis de Controle Adicionais</h2>
 
-<section>
-<section id="use-all-quarters-as-ivs" class="title-slide slide level1 center">
-<h1>use all quarters as IVs</h1>
-<p>mod$MQ2E_all &lt;- iv_robust(lnw ~ s + yob_fct | qob_fct + yob_fct, data = ak91, diagnostics = TRUE )</p>
-<pre><code>
-
-
-
-
-## Variáveis de Controle Adicionais
-
-
-
-```{r, echo = FALSE}
+<!-- ```{r, echo = FALSE}
 # here is how to make the table:
-rows &lt;- data.frame(term = c("Instruments","Year of birth"),
+rows <- data.frame(term = c("Instruments","Year of birth"),
                    ols  = c("none","no"),
                    SLS  = c("Q4","no"),
                    ols_yr  = c("none","yes"),
                    SLS_yr  = c("Q4","yes"),
                    SLS_all  = c("All Quarters","yes")
                    )
-names(rows)[c(3,5,6)] &lt;- c("2SLS","2SLS_yr","2SLS_all")
+names(rows)[c(3,5,6)] <- c("2SLS","2SLS_yr","2SLS_all")
 tab = msummary(models = mod[c("ols","MQ2E","ols_yr","MQ2E_yr","MQ2E_all")], 
                statistic = 'std.error',
                gof_map = gm,
@@ -1320,29 +1624,94 @@ tab = msummary(models = mod[c("ols","MQ2E","ols_yr","MQ2E_yr","MQ2E_all")],
                coef_omit = 'yob_fct',
                output = 'huxtable')
 
-htab = tab %&gt;%
-  set_bottom_border(row = 6, col = everywhere) %&gt;%
-  set_bold(1, everywhere) %&gt;%
+htab = tab %>%
+  set_bottom_border(row = 6, col = everywhere) %>%
+  set_bold(1, everywhere) %>%
   set_tb_padding(4)
 
-htab</code></pre>
-</section>
-<section id="variáveis-de-controle-adicionais-2" class="slide level2">
-<h2>Variáveis de Controle Adicionais</h2>
+htab
+``` -->
 <div class="columns">
 <div class="column" style="width:70%;">
-<p><code>{r,echo = FALSE} htab</code></p>
+<div class="cell" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="42">
+<style type="text/css">
+</style>
+
+<table id="T_c5e77" data-quarto-postprocess="true" style="font-size: 18pt; text-align: center">
+<thead>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th">Model</th>
+<th id="T_c5e77_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">OLS</th>
+<th id="T_c5e77_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">MQ2E</th>
+<th id="T_c5e77_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">OLS + Year</th>
+<th id="T_c5e77_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">MQ2E + Year</th>
+</tr>
+<tr class="odd">
+<th class="index_name level1" data-quarto-table-cell-role="th">Dep. Var.</th>
+<th id="T_c5e77_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">lnw</th>
+<th id="T_c5e77_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">lnw</th>
+<th id="T_c5e77_level1_col2" class="col_heading level1 col2" data-quarto-table-cell-role="th">lnw</th>
+<th id="T_c5e77_level1_col3" class="col_heading level1 col3" data-quarto-table-cell-role="th">lnw</th>
+</tr>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th"></th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="blank col1" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="blank col2" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="blank col3" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_c5e77_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">s</td>
+<td id="T_c5e77_row0_col0" class="data row0 col0">0.0709***</td>
+<td id="T_c5e77_row0_col1" class="data row0 col1">0.0740***</td>
+<td id="T_c5e77_row0_col2" class="data row0 col2">0.0711***</td>
+<td id="T_c5e77_row0_col3" class="data row0 col3">0.0752***</td>
+</tr>
+<tr class="even">
+<td id="T_c5e77_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th"></td>
+<td id="T_c5e77_row1_col0" class="data row1 col0">(0.0004)</td>
+<td id="T_c5e77_row1_col1" class="data row1 col1">(0.0280)</td>
+<td id="T_c5e77_row1_col2" class="data row1 col2">(0.0004)</td>
+<td id="T_c5e77_row1_col3" class="data row1 col3">(0.0284)</td>
+</tr>
+<tr class="odd">
+<td id="T_c5e77_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">Estimator</td>
+<td id="T_c5e77_row2_col0" class="data row2 col0">OLS</td>
+<td id="T_c5e77_row2_col1" class="data row2 col1">IV-2SLS</td>
+<td id="T_c5e77_row2_col2" class="data row2 col2">OLS</td>
+<td id="T_c5e77_row2_col3" class="data row2 col3">IV-2SLS</td>
+</tr>
+<tr class="even">
+<td id="T_c5e77_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">Adj. R-squared</td>
+<td id="T_c5e77_row3_col0" class="data row3 col0">0.1173</td>
+<td id="T_c5e77_row3_col1" class="data row3 col1">0.1171</td>
+<td id="T_c5e77_row3_col2" class="data row3 col2">0.1177</td>
+<td id="T_c5e77_row3_col3" class="data row3 col3">0.1173</td>
+</tr>
+<tr class="odd">
+<td id="T_c5e77_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">No. Observations</td>
+<td id="T_c5e77_row4_col0" class="data row4 col0">329509</td>
+<td id="T_c5e77_row4_col1" class="data row4 col1">329509</td>
+<td id="T_c5e77_row4_col2" class="data row4 col2">329509</td>
+<td id="T_c5e77_row4_col3" class="data row4 col3">329509</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div><div class="column" style="width:30%;">
 <p><strong>Adicionando controle de ano</strong>…</p>
 <ul>
 <li class="fragment">deixa o MQO praticamente inalterado</li>
 <li class="fragment">ligeiro aumento na estimativa de MQ2E</li>
 </ul>
-<p><strong>Usando todos os trimestres como VI</strong>…</p>
-<ul>
-<li class="fragment">Aumenta muito a precisão da estimativa MQ2E!</li>
-<li class="fragment">A estimativa pontual é de 10,5% agora!</li>
-</ul>
+<!-- **Usando todos os trimestres como VI**...
+
+* Aumenta muito a precisão da estimativa MQ2E!
+* A estimativa pontual é de 10,5% agora! -->
 </div>
 </div>
 </section>
@@ -1424,10 +1793,7 @@ htab</code></pre>
 <h2>Instrumentos de Bartik</h2>
 <ul>
 <li class="fragment"><p>Um choque nacional (<em><strong>shifter</strong></em>), em diferentes indústrias, é “espalhado” localmente de forma diferente entre as localidades através de uma matriz de exposições (<em><strong>shares</strong></em>)</p></li>
-<li class="fragment"><p>Crescimento do salário em razão do crescimento no emprego, em uma localidade <span class="math inline">\(l\)</span></p></li>
-</ul>
-<p><span class="math display">\[y_l=\rho+\beta_1x_l+\epsilon_l\]</span></p>
-<ul>
+<li class="fragment"><p>Crescimento do salário em razão do crescimento no emprego, em uma localidade <span class="math inline">\(l\)</span> <span class="math display">\[y_l=\rho+\beta_1x_l+\epsilon_l\]</span></p></li>
 <li class="fragment"><p>Crescimento do emprego é <em>produto interno</em> da fração de cada indústria <span class="math inline">\(k\)</span> no emprego com o crescimento desta indústria. <span class="math inline">\(x_l=\sum_kz_{lk}g_{lk}\)</span></p></li>
 <li class="fragment"><p>Crescimento da indústria local é decomposto: <span class="math inline">\(g_{lk}=g_k+\tilde{g}_{lk}\)</span></p></li>
 <li class="fragment"><p>O <strong><em>Instrumento de Bartik</em></strong> é: <span class="math display">\[Z_l=\sum_k z_{lk}g_k\]</span></p></li>
@@ -1448,6 +1814,14 @@ htab</code></pre>
 <div class="footer">
 <p>[1]: Este slides foram baseados nas aulas de econometria da <a href="https://github.com/ScPoEcon/ScPoEconometrics-Slides">SciencesPo Department of Economics</a></p>
 </div>
+</section></section>
+<section>
+<section id="apêndice" class="title-slide slide level1 center">
+<h1>Apêndice</h1>
+
+</section>
+<section id="sec-robust" class="slide level2">
+<h2>Erros Padrão Robustos</h2>
 
 <img src="img/UdescEsag.jpeg" class="slide-logo r-stretch"><div class="footer footer-default">
 

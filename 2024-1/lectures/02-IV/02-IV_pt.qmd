@@ -27,6 +27,7 @@ jupyter: python3
 import networkx as nx
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 ```
 
 ## Preparando a cena
@@ -519,10 +520,12 @@ plt.show()
 
 ## Identificação
 
-\begin{align}
+$$
+\begin{aligned}
 Cov(z,y) &= Cov(z, \beta_0 + \beta_1 x + u) \\
          &= \beta_1 Cov(z,x) + Cov(z,u) 
-\end{align}
+\end{aligned}
+$$
 
 ::::{.columns}
 :::{.column width="50%"}
@@ -754,7 +757,7 @@ ak91.describe()
 ```{python}
 #| echo: true
 ak91['qob_fct'] = ak91['qob'].astype('category')
-ak91['q4'] = (ak91['qob'] == "4").astype(int)
+ak91['q4'] = (ak91['qob'] == 4.0).astype(int)
 ak91['yob_fct'] = ak91['yob'].astype('category')
 
 ak91_age = ak91.groupby(['qob', 'yob']).agg(lnw=('lnw', 'mean'), s=('s', 'mean')).reset_index()
@@ -766,26 +769,10 @@ ak91_age['q4'] = (ak91_age['qob'] == 4)
 
 Vamos reproduzir agora a primeira figura de AK91 sobre educação em função do trimestre de nascimento!
 
-```{r,eval = FALSE}
-ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = s)) +
-    geom_line() +
-    geom_label(mapping = aes(label = qob, color = q4)) +
-    guides(label = FALSE, color = FALSE) +
-    scale_x_continuous("Year of birth", breaks = 1930:1940) +
-    scale_y_continuous("Years of Education",
-        breaks = seq(12.2, 13.2, by = 0.2),
-        limits = c(12.2, 13.2)
-    ) +
-    theme_bw()
-```
-
-
-
-## Primeiro Estágio!
 
 ::::{.columns}
 :::{.column width="30%"}
-<br>
+
 1. Os números rotulados significam trimestre de nascimento.
 
 1. Nascidos no 4º trimestre **obtiveram** mais educação na maioria dos anos!
@@ -795,17 +782,27 @@ ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = s)) +
 
 :::{.column width="70%"}
 
-```{r ak91-dummy, eval = TRUE, echo = FALSE, fig.height = 5}
-ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = s )) +
-  geom_line() + 
-  geom_label(mapping = aes(label = qob, color = q4)) +
-  guides(label = FALSE, color = FALSE) +
-  scale_x_continuous("Year of birth", breaks = 1930:1940) +
-  scale_y_continuous("Years of Education", breaks = seq(12.2, 13.2, by = 0.2),
-                     limits = c(12.2, 13.2)) +
-  theme_bw()
-```
+```{python}
+#| echo: true
+fig, ax = plt.subplots(figsize=(14,8))
 
+ak91_age['yob_qob'] = ak91_age['yob'] + (ak91_age['qob'] - 1) / 4
+sort_df = ak91_age.sort_values('yob_qob')
+
+ax.plot(sort_df['yob_qob'], sort_df['s'])
+
+for i, txt in enumerate(sort_df['qob'].astype('int')):
+    ax.annotate(txt, (sort_df['yob_qob'].iloc[i], sort_df['s'].iloc[i]), 
+    fontsize=20,
+    bbox=dict(boxstyle='round,pad=0.2', 
+    fc=sort_df['q4'].map({False: 'yellow', True: 'purple'}).iloc[i], 
+    alpha=0.8))
+
+ax.grid(True)
+ax.set_xlabel('Ano de Nascimento')
+ax.set_ylabel('Anos de Escolaridade')
+plt.show()
+```
 :::
 
 ::::
@@ -813,50 +810,44 @@ ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = s )) +
 
 ## Impacto da VI no resultado
 
-E quanto aos ganhos para esses grupos?
-
-```{r, eval = FALSE}
-ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = lnw)) +
-  geom_line() +
-  geom_label(mapping = aes(label = qob, color = q4)) +
-  scale_x_continuous("Year of birth", breaks = 1930:1940) +
-  scale_y_continuous("Log weekly wages") +
-  guides(label = FALSE, color = FALSE) +  
-  theme_bw()
-```
-
-
-
-## Impacto da VI no resultado
+E quanto aos salários para esses grupos?
 
 ::::{.columns}
 :::{.column width="30%"}
-<br>
-<br>
-<br>
+
 1. Nascidos no 4º trimestre estão entre os mais bem pagos por ano de nascimento.
 
 1. Em geral, os salários semanais parecem diminuir um pouco ao longo do tempo.
+
+1. Visualização da **forma reduzida**
 :::
 
 :::{.column width="70%"}
 
+```{python}
+#| echo: true
+fig, ax = plt.subplots(figsize=(14,8))
 
-```{r ak91-wage,echo = FALSE,fig.height = 5}
-ggplot(ak91_age, aes(x = yob + (qob - 1) / 4, y = lnw)) +
-  geom_line() +
-  geom_label(mapping = aes(label = qob, color = q4)) +
-  scale_x_continuous("Year of birth", breaks = 1930:1940) +
-  scale_y_continuous("Log weekly wages") +
-  guides(label = FALSE, color = FALSE) +  
-  theme_bw()
+ax.plot(sort_df['yob_qob'], sort_df['lnw'])
+
+for i, txt in enumerate(sort_df['qob'].astype('int')):
+    ax.annotate(txt, (sort_df['yob_qob'].iloc[i], sort_df['lnw'].iloc[i]), 
+    fontsize=20,
+    bbox=dict(boxstyle='round,pad=0.2', 
+    fc=sort_df['q4'].map({False: 'yellow', True: 'purple'}).iloc[i], 
+    alpha=0.8))
+
+ax.grid(True)
+ax.set_xlabel('Ano de Nascimento')
+ax.set_ylabel('Log Salário Semanal')
+plt.show()
 ```
 
 :::
 ::::
 
 
-## Executando estimativa VI no `R`
+<!-- ## Executando estimativa VI no `R`
 
 <br>
 <br>
@@ -896,10 +887,44 @@ mod$MQ2E  <- iv_robust(lnw ~ s | q4,
 ```
 
 :::
+:::: -->
+
+## Executando estimativa VI no `Python`
+
+::::{.columns}
+:::{.column width="50%"}
+* A melhor biblioteca para implementar estimativas de VI no `Python` é o [`linearmodels`](https://bashtage.github.io/linearmodels/).
+
+* Usaremos a função `IV2SLS` que inclui a sintaxe de formula, também usada no [`statsmodels`](https://www.statsmodels.org/stable/index.html)
+
+* *Robusto*? Calcula **por padrão** erros corrigidos para heterocedasticidade. Argumento `cov_type`. @sec-robust
+:::
+
+:::{.column width="50%"}
+
+```{python}
+#| echo: true
+
+import linearmodels.iv as iv
+
+# Standard (biased!) OLS
+ols = iv.IV2SLS.from_formula('lnw ~ 1+s', data=ak91).fit()
+
+# IV: born in q4 is TRUE?
+# doing IV manually in 2 stages.
+stage_1 = iv.IV2SLS.from_formula('s ~ 1+q4', data = ak91).fit()
+ak91['shat'] = stage_1.predict()  
+stage_2 = iv.IV2SLS.from_formula('lnw ~ 1+shat', data = ak91).fit()
+
+# Run 2SLS. Doing IV all in one go
+# Notice the formula y ~ [x ~ z]
+MQ2E = iv.IV2SLS.from_formula('lnw ~ 1 + [s ~ q4]', data = ak91).fit()
+```
+
+:::
 ::::
 
-
-## Executando estimativa VI no `R`
+<!-- ## Executando estimativa VI no `R`
 
 <br>
 <br>
@@ -943,14 +968,14 @@ mod$MQ2E  <- iv_robust(lnw ~ s | q4,
 
 :::
 ::::
-
+ -->
 
 ## Resultados
 
 ::::{.columns}
 :::{.column width="70%"}
 
-```{r ms1, echo = FALSE}
+<!-- ```{r ms1, echo = FALSE}
 glance_custom.iv_robust <- function(x){
   f = x$diagnostic_first_stage_fstatistic
   if (is.null(f)) {
@@ -970,6 +995,35 @@ tab = msummary(models = mod,
 tab %>%
   set_bottom_border(row = 9, col = everywhere) %>%
   set_tb_padding(3.5)
+``` -->
+
+```{python}
+from io import StringIO
+import warnings
+
+def compare_df(x, fit_stats=['Estimator', 'R-squared', 'No. Observations'], params_slice=slice(11, None)):
+    with warnings.catch_warnings():
+        warnings.simplefilter(action='ignore', category=FutureWarning)
+        y = pd.read_csv(StringIO(iv.results.compare(x, stars=True, precision='std_errors').summary.as_csv()), skiprows=1, skipfooter=1, engine='python')
+    z = pd.DataFrame(
+        data=y.iloc[:, 1:].values,
+        index=y.iloc[:, 0].str.strip(),
+        columns=pd.MultiIndex.from_arrays(
+            arrays=[y.columns[1:], y.iloc[0][1:]],
+            names=['Model', 'Dep. Var.']
+        )
+    )
+    return pd.concat([z.iloc[params_slice], z.loc[fit_stats]])
+```
+
+```{python}
+df = compare_df(
+  {'OLS': ols, 'Stage 1': stage_1, 'Stage 2': stage_2, 'MQ2E': MQ2E})
+
+# style df to print in small font
+df.style.set_table_attributes(
+    'style="font-size: 18pt; text-align: center"'
+)
 ```
 
 :::
@@ -978,9 +1032,9 @@ tab %>%
 
 1. MQO viesado para baixo (erro de medição)
 
-1. Primeira Fase: VI `q4` é estatisticamente significativo
+1. Primeiro Estágio: VI `q4` é estatisticamente significativo
 
-1. O segundo estágio tem a mesma estimativa pontual que `MQ2E`, mas um erro padrão diferente (segundo estágio um está errado)
+1. O segundo estágio tem a mesma estimativa pontual que `MQ2E`, mas um erro padrão diferente (segundo estágio está errado)
 :::
 ::::
 
@@ -990,13 +1044,10 @@ tab %>%
 * Encontramos isso antes: é útil testar modelos restritos versus irrestritos entre si.
 
 
-
 * Aqui, estamos interessados em saber se nossos instrumentos são *conjuntamente* significativos. Claro, com apenas uma VI, isso não é mais informativo do que o t-stat dessa VI.
 
 
-
 * Este F-Stat compara o poder preditivo do primeiro estágio com e sem as VIs. Se eles tiverem poder preditivo muito semelhante, o F-stat será baixo e não poderemos rejeitar H0 de que nossas VIs são **conjuntamente insignificantes** no modelo do primeiro estágio. 😞
-
 
 
 ## VI com um instrumento fraco
@@ -1006,10 +1057,7 @@ tab %>%
 * No entanto, *mesmo* que tenhamos apenas $Cor(z,u)$ muito pequenos, podemos errar
 
 * Pequena correlação entre $x$ e $z$ pode produzir estimativas **inconsistentes**.
-
 $$\text{plim}(\hat{\beta}_{1,IV}) = \beta_1 + \frac{Cor(z,u)}{Cor(z,x)} \cdot \frac{\sigma_u}{\sigma_x}$$
-
-
 
 
 * Mesmo que $Cor(z,u)$ seja muito pequena
@@ -1029,13 +1077,13 @@ $$\log(bwght) = \beta_0 + \beta_1 packs + u$$
 
 Estamos preocupados que o comportamento de fumar esteja correlacionado com uma série de outras variáveis relacionadas à saúde que estão em $u$ e que podem afetar o peso ao nascer da criança. 
 
-Então, procuramos um IV. Suponha que usemos o preço dos cigarros (*cigprice*), supondo que o preço dos cigarros não esteja correlacionado com fatores em $u$. Vamos executar o primeiro estágio de *cigprice* em *packs* e então vamos mostrar as estimativas de MQ2E:
+Então, procuramos uma **VI**. Suponha que usemos o **preço dos cigarros** (*cigprice*), supondo que o preço dos cigarros não esteja correlacionado com fatores em $u$. Vamos executar o primeiro estágio de *cigprice* em *packs* e então vamos mostrar as estimativas de MQ2E:
 
 
 
 ## VI com um instrumento fraco
 
-
+<!-- 
 ```{r bw}
 data(bwght, package = "wooldridge")
 mods <- list()
@@ -1051,8 +1099,21 @@ tbl <- modelsummary(mods, gof_omit = 'DF|Deviance|AIC|BIC|R2 Adj.|p.value|F$|se_
     set_tb_padding(5)
 font_size(tbl) <- 15
 tbl
+``` -->
+
+```{python}
+#| echo: true
+import wooldridge as woo
+bwght = woo.dataWoo('bwght')
+estagio_1 = iv.IV2SLS.from_formula('packs ~ 1 + cigprice', data = bwght).fit()
+vi = iv.IV2SLS.from_formula('np.log(bwght) ~ 1 + [packs ~ cigprice]', data = bwght).fit()
 ```
 
+```{python}
+compare_df({'Estágio 1': estagio_1, 'VI': vi}, fit_stats=['Estimator', 'R-squared', 'No. Observations', 'F-statistic']).style.set_table_attributes(
+    'style="font-size: 18pt; text-align: center"'
+)
+```
 
 
 
@@ -1061,11 +1122,11 @@ tbl
 ::::{.columns}
 :::{.column width="50%"}
 
-* As primeiras colunas mostram: primeiro estágio muito fraco. *cigprice* parece ter zero impacto nos maços!
+* A primeira coluna mostra: primeiro estágio muito fraco. *cigprice* parece ter zero impacto na quantidade de maços consumidos!
 
 * $R^2$ é zero.
 
-* O que é que usamos nesta VI, no entanto?
+* Por quê usamos esta VI?
 :::
 
 
@@ -1078,7 +1139,7 @@ tbl
 
 * Um $R^2$ de -23?!
 
-* F-stat do primeiro estágio: 0,121. Corresponde a um valor p de `r round(mods[["VI"]]$diagnostic_first_stage_fstatistic["p.value"],3)` : nós **não podemos** rejeitar a H0 de um primeiro estágio insignificante.
+* F-stat do primeiro estágio: 0,121. Corresponde a um valor p de 0.728 : nós **não podemos** rejeitar a H0 de um primeiro estágio insignificante.
 
 * Então: abordagem **inválida**. ❌
 :::
@@ -1100,7 +1161,7 @@ tbl
 
 ## Variáveis de Controle Adicionais
 
-```{r mq2e2, cache=TRUE}
+<!-- ```{r mq2e2, cache=TRUE}
 # we keep adding to our `mod` list:
 mod$ols_yr  <- update(mod$ols, . ~ . + yob_fct)  #  previous OLS model
 
@@ -1111,13 +1172,19 @@ mod$MQ2E_yr <- iv_robust(lnw ~ s  + yob_fct | q4 + yob_fct,
 # use all quarters as IVs
 mod$MQ2E_all <- iv_robust(lnw ~ s  + yob_fct | qob_fct + yob_fct, 
                           data = ak91, diagnostics = TRUE  )
+``` -->
+
+```{python}
+#| echo: true
+ols_yr = iv.IV2SLS.from_formula('lnw ~ 1+s+yob_fct', data=ak91).fit()
+mq2e_yr = iv.IV2SLS.from_formula('lnw ~ 1+yob_fct+[s ~ q4]', data=ak91).fit()
+# Use all quarters as IVs
+# mq2e_all = iv.IV2SLS.from_formula('lnw ~ 1+yob_fct+[s ~ qob_fct]', data=ak91).fit()
 ```
-
-
 
 ## Variáveis de Controle Adicionais
 
-```{r, echo = FALSE}
+<!-- ```{r, echo = FALSE}
 # here is how to make the table:
 rows <- data.frame(term = c("Instruments","Year of birth"),
                    ols  = c("none","no"),
@@ -1140,17 +1207,19 @@ htab = tab %>%
   set_tb_padding(4)
 
 htab
-```
-
-
-
-## Variáveis de Controle Adicionais
+``` -->
 
 ::::{.columns}
 :::{.column width="70%"}
 
-```{r,echo = FALSE}
-htab
+
+```{python}
+compare_df(
+  {'OLS': ols, 'MQ2E': MQ2E, 'OLS + Year': ols_yr, 'MQ2E + Year': mq2e_yr}, 
+  fit_stats=['Estimator', 'Adj. R-squared', 'No. Observations'],
+  params_slice=slice(11,13)).style.set_table_attributes(
+    'style="font-size: 18pt; text-align: center"'
+)
 ```
 :::
 
@@ -1160,10 +1229,10 @@ htab
 * deixa o MQO praticamente inalterado
 * ligeiro aumento na estimativa de MQ2E
 
-**Usando todos os trimestres como VI**...
+<!-- **Usando todos os trimestres como VI**...
 
 * Aumenta muito a precisão da estimativa MQ2E!
-* A estimativa pontual é de 10,5% agora!
+* A estimativa pontual é de 10,5% agora! -->
 
 :::
 ::::
@@ -1254,7 +1323,6 @@ htab
 
 
 * Crescimento do salário em razão do crescimento no emprego, em uma localidade $l$
-
 $$y_l=\rho+\beta_1x_l+\epsilon_l$$
 
 * Crescimento do emprego é *produto interno* da fração de cada indústria $k$ no emprego com o crescimento desta indústria. $x_l=\sum_kz_{lk}g_{lk}$
@@ -1287,4 +1355,8 @@ $$y_l=\rho+\beta_1x_l+\epsilon_l$$
 [1]: Este slides foram baseados nas aulas de econometria da [SciencesPo Department of Economics](https://github.com/ScPoEcon/ScPoEconometrics-Slides)
 :::
 
+
+# Apêndice
+
+## Erros Padrão Robustos{#sec-robust}
 
