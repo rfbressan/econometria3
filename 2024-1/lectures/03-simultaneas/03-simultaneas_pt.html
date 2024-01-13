@@ -722,7 +722,7 @@ polpc&amp;=\alpha_2 assaspc+\beta_{20}+\beta_{21}rendapc+u_2
 <span id="cb2-33"><a href="#cb2-33"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div><div class="column">
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="31">
 <pre><code>Text(7.5, 7.5, '')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -762,7 +762,7 @@ lwage&amp;=\alpha_2 hours + \beta_{20}+ \beta_{21}educ+ \beta_{22}exper+\beta_{2
 </section>
 <section id="exemplo-mq2e-1" class="slide level2">
 <h2>Exemplo MQ2E</h2>
-<h3 id="oferta-de-trabalho-de-mulheres-casadas-que-trabalham-1">Oferta de Trabalho de Mulheres Casadas que Trabalham</h3>
+<h3 id="oferta-de-trabalho-de-mulheres-casadas---1º-estágio">Oferta de Trabalho de Mulheres Casadas - 1º Estágio</h3>
 <div class="cell columns column-output-location" data-execution_count="5">
 <div class="column">
 <details open="">
@@ -773,31 +773,28 @@ lwage&amp;=\alpha_2 hours + \beta_{20}+ \beta_{21}educ+ \beta_{22}exper+\beta_{2
 <span id="cb4-4"><a href="#cb4-4"></a>mroz <span class="op">=</span> woo.dataWoo(<span class="st">"mroz"</span>).dropna()</span>
 <span id="cb4-5"><a href="#cb4-5"></a></span>
 <span id="cb4-6"><a href="#cb4-6"></a>reg_1st <span class="op">=</span> iv.IV2SLS.from_formula(</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    <span class="st">"lwage ~ educ + age + kidslt6 + nwifeinc + exper + expersq"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    <span class="st">"lwage ~ 1 + educ + age + kidslt6 + nwifeinc + exper + expersq"</span>,</span>
 <span id="cb4-8"><a href="#cb4-8"></a>    data<span class="op">=</span>mroz,</span>
 <span id="cb4-9"><a href="#cb4-9"></a>).fit(cov_type<span class="op">=</span><span class="st">"robust"</span>)</span>
 <span id="cb4-10"><a href="#cb4-10"></a></span>
-<span id="cb4-11"><a href="#cb4-11"></a>df <span class="op">=</span> compare_df(</span>
-<span id="cb4-12"><a href="#cb4-12"></a>    {<span class="st">"1º Estágio"</span>: reg_1st},</span>
-<span id="cb4-13"><a href="#cb4-13"></a>    fit_stats<span class="op">=</span>[<span class="st">"Estimator"</span>, <span class="st">"Adj. R-squared"</span>, <span class="st">"No. Observations"</span>],</span>
-<span id="cb4-14"><a href="#cb4-14"></a>)</span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co"># style df to print in small font</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>df.style.set_table_attributes(<span class="st">'style="font-size: 18pt; text-align: center"'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-11"><a href="#cb4-11"></a>df <span class="op">=</span> compare_df({<span class="st">"1º Estágio"</span>: reg_1st})</span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co"># style df to print in small font</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>df.style.set_table_attributes(<span class="st">'style="font-size: 18pt; text-align: center"'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div><div class="column">
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div class="cell-output cell-output-display" data-execution_count="33">
 <style type="text/css">
 </style>
 
-<table id="T_a45d1" data-quarto-postprocess="true" style="font-size: 18pt; text-align: center">
+<table id="T_05e7a" data-quarto-postprocess="true" style="font-size: 18pt; text-align: center">
 <thead>
 <tr class="header">
 <th class="index_name level0" data-quarto-table-cell-role="th">Model</th>
-<th id="T_a45d1_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">1º Estágio</th>
+<th id="T_05e7a_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">1º Estágio</th>
 </tr>
 <tr class="odd">
 <th class="index_name level1" data-quarto-table-cell-role="th">Dep. Var.</th>
-<th id="T_a45d1_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">lwage</th>
+<th id="T_05e7a_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">lwage</th>
 </tr>
 <tr class="header">
 <th class="index_name level0" data-quarto-table-cell-role="th"></th>
@@ -806,64 +803,64 @@ lwage&amp;=\alpha_2 hours + \beta_{20}+ \beta_{21}educ+ \beta_{22}exper+\beta_{2
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_a45d1_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">educ</td>
-<td id="T_a45d1_row0_col0" class="data row0 col0">0.1011***</td>
+<td id="T_05e7a_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">educ</td>
+<td id="T_05e7a_row0_col0" class="data row0 col0">0.1011***</td>
 </tr>
 <tr class="even">
-<td id="T_a45d1_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th"></td>
-<td id="T_a45d1_row1_col0" class="data row1 col0">(0.0140)</td>
+<td id="T_05e7a_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th"></td>
+<td id="T_05e7a_row1_col0" class="data row1 col0">(0.0140)</td>
 </tr>
 <tr class="odd">
-<td id="T_a45d1_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">age</td>
-<td id="T_a45d1_row2_col0" class="data row2 col0">-0.0026</td>
+<td id="T_05e7a_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">age</td>
+<td id="T_05e7a_row2_col0" class="data row2 col0">-0.0026</td>
 </tr>
 <tr class="even">
-<td id="T_a45d1_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th"></td>
-<td id="T_a45d1_row3_col0" class="data row3 col0">(0.0059)</td>
+<td id="T_05e7a_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th"></td>
+<td id="T_05e7a_row3_col0" class="data row3 col0">(0.0059)</td>
 </tr>
 <tr class="odd">
-<td id="T_a45d1_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">kidslt6</td>
-<td id="T_a45d1_row4_col0" class="data row4 col0">-0.0532</td>
+<td id="T_05e7a_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">kidslt6</td>
+<td id="T_05e7a_row4_col0" class="data row4 col0">-0.0532</td>
 </tr>
 <tr class="even">
-<td id="T_a45d1_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th"></td>
-<td id="T_a45d1_row5_col0" class="data row5 col0">(0.1039)</td>
+<td id="T_05e7a_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th"></td>
+<td id="T_05e7a_row5_col0" class="data row5 col0">(0.1039)</td>
 </tr>
 <tr class="odd">
-<td id="T_a45d1_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">nwifeinc</td>
-<td id="T_a45d1_row6_col0" class="data row6 col0">0.0056**</td>
+<td id="T_05e7a_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">nwifeinc</td>
+<td id="T_05e7a_row6_col0" class="data row6 col0">0.0056**</td>
 </tr>
 <tr class="even">
-<td id="T_a45d1_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th"></td>
-<td id="T_a45d1_row7_col0" class="data row7 col0">(0.0027)</td>
+<td id="T_05e7a_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th"></td>
+<td id="T_05e7a_row7_col0" class="data row7 col0">(0.0027)</td>
 </tr>
 <tr class="odd">
-<td id="T_a45d1_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">exper</td>
-<td id="T_a45d1_row8_col0" class="data row8 col0">0.0419***</td>
+<td id="T_05e7a_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">exper</td>
+<td id="T_05e7a_row8_col0" class="data row8 col0">0.0419***</td>
 </tr>
 <tr class="even">
-<td id="T_a45d1_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th"></td>
-<td id="T_a45d1_row9_col0" class="data row9 col0">(0.0150)</td>
+<td id="T_05e7a_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th"></td>
+<td id="T_05e7a_row9_col0" class="data row9 col0">(0.0150)</td>
 </tr>
 <tr class="odd">
-<td id="T_a45d1_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">expersq</td>
-<td id="T_a45d1_row10_col0" class="data row10 col0">-0.0008*</td>
+<td id="T_05e7a_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">expersq</td>
+<td id="T_05e7a_row10_col0" class="data row10 col0">-0.0008*</td>
 </tr>
 <tr class="even">
-<td id="T_a45d1_level0_row11" class="row_heading level0 row11" data-quarto-table-cell-role="th"></td>
-<td id="T_a45d1_row11_col0" class="data row11 col0">(0.0004)</td>
+<td id="T_05e7a_level0_row11" class="row_heading level0 row11" data-quarto-table-cell-role="th"></td>
+<td id="T_05e7a_row11_col0" class="data row11 col0">(0.0004)</td>
 </tr>
 <tr class="odd">
-<td id="T_a45d1_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">Estimator</td>
-<td id="T_a45d1_row12_col0" class="data row12 col0">OLS</td>
+<td id="T_05e7a_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">Estimator</td>
+<td id="T_05e7a_row12_col0" class="data row12 col0">OLS</td>
 </tr>
 <tr class="even">
-<td id="T_a45d1_level0_row13" class="row_heading level0 row13" data-quarto-table-cell-role="th">Adj. R-squared</td>
-<td id="T_a45d1_row13_col0" class="data row13 col0">0.1514</td>
+<td id="T_05e7a_level0_row13" class="row_heading level0 row13" data-quarto-table-cell-role="th">Adj. R-squared</td>
+<td id="T_05e7a_row13_col0" class="data row13 col0">0.1514</td>
 </tr>
 <tr class="odd">
-<td id="T_a45d1_level0_row14" class="row_heading level0 row14" data-quarto-table-cell-role="th">No. Observations</td>
-<td id="T_a45d1_row14_col0" class="data row14 col0">428</td>
+<td id="T_05e7a_level0_row14" class="row_heading level0 row14" data-quarto-table-cell-role="th">No. Observations</td>
+<td id="T_05e7a_row14_col0" class="data row14 col0">428</td>
 </tr>
 </tbody>
 </table>
@@ -873,13 +870,133 @@ lwage&amp;=\alpha_2 hours + \beta_{20}+ \beta_{21}educ+ \beta_{22}exper+\beta_{2
 </section>
 <section id="exemplo-mq2e-2" class="slide level2">
 <h2>Exemplo MQ2E</h2>
-<h3 id="oferta-de-trabalho-de-mulheres-casadas-que-trabalham-2">Oferta de Trabalho de Mulheres Casadas que Trabalham</h3>
-<p>.panelset[ .panel[.panel-name[Código]</p>
-<p><code>{r exemplo-mq2e2, echo=TRUE} # Regressão MQO viesada reg_mqo &lt;- feols(hours~lwage+educ+age+kidslt6+nwifeinc,                   data = mroz, vcov = "HC1") # Regressão VI sobreidentificada reg_vi &lt;- feols(hours~educ+age+kidslt6+nwifeinc | lwage ~ exper+expersq,                   data = mroz, vcov = "HC1")</code></p>
-<p>]</p>
-<p>.panel[.panel-name[Resultados]</p>
-<p><code>{r exemplo-mq2e-tbl, echo=FALSE, results='markup'} modelsummary::msummary(list(MQO = reg_mqo, VI = reg_vi),                        fmt = 2,                        estimate = "{estimate} ({std.error})",                        statistic = NULL,                        coef_rename = c("fit_lwage" = "lwage"),                        gof_map = c("nobs")) # etable(reg_mqo, reg_vi)</code></p>
-<p>] ]</p>
+<h3 id="oferta-de-trabalho-de-mulheres-casadas---mq2e">Oferta de Trabalho de Mulheres Casadas - MQ2E</h3>
+<div class="cell columns column-output-location" data-execution_count="6">
+<div class="column">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>reg_mqo <span class="op">=</span> iv.IV2SLS.from_formula(</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="st">"hours ~ 1 + lwage + educ + age + kidslt6 + nwifeinc"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    data<span class="op">=</span>mroz,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>).fit(cov_type<span class="op">=</span><span class="st">"robust"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>reg_vi <span class="op">=</span> iv.IV2SLS.from_formula(</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="st">"hours ~ 1 + educ + age + kidslt6 + nwifeinc + [lwage ~ exper + expersq]"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    data<span class="op">=</span>mroz,</span>
+<span id="cb5-9"><a href="#cb5-9"></a>).fit(cov_type<span class="op">=</span><span class="st">"robust"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a></span>
+<span id="cb5-11"><a href="#cb5-11"></a>df <span class="op">=</span> compare_df({<span class="st">"MQO"</span>: reg_mqo, <span class="st">"VI"</span>: reg_vi})</span>
+<span id="cb5-12"><a href="#cb5-12"></a>df.style.set_table_attributes(<span class="st">'style="font-size: 18pt; text-align: center"'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div><div class="column">
+<div class="cell-output cell-output-display" data-execution_count="34">
+<style type="text/css">
+</style>
+
+<table id="T_da0fc" data-quarto-postprocess="true" style="font-size: 18pt; text-align: center">
+<thead>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th">Model</th>
+<th id="T_da0fc_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">MQO</th>
+<th id="T_da0fc_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">VI</th>
+</tr>
+<tr class="odd">
+<th class="index_name level1" data-quarto-table-cell-role="th">Dep. Var.</th>
+<th id="T_da0fc_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">hours</th>
+<th id="T_da0fc_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">hours</th>
+</tr>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th"></th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="blank col1" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_da0fc_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">lwage</td>
+<td id="T_da0fc_row0_col0" class="data row0 col0">-2.0468</td>
+<td id="T_da0fc_row0_col1" class="data row0 col1">1639.6***</td>
+</tr>
+<tr class="even">
+<td id="T_da0fc_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th"></td>
+<td id="T_da0fc_row1_col0" class="data row1 col0">(81.446)</td>
+<td id="T_da0fc_row1_col1" class="data row1 col1">(593.31)</td>
+</tr>
+<tr class="odd">
+<td id="T_da0fc_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">educ</td>
+<td id="T_da0fc_row2_col0" class="data row2 col0">-6.6219</td>
+<td id="T_da0fc_row2_col1" class="data row2 col1">-183.75***</td>
+</tr>
+<tr class="even">
+<td id="T_da0fc_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th"></td>
+<td id="T_da0fc_row3_col0" class="data row3 col0">(18.308)</td>
+<td id="T_da0fc_row3_col1" class="data row3 col1">(67.787)</td>
+</tr>
+<tr class="odd">
+<td id="T_da0fc_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">age</td>
+<td id="T_da0fc_row4_col0" class="data row4 col0">0.5623</td>
+<td id="T_da0fc_row4_col1" class="data row4 col1">-7.8061</td>
+</tr>
+<tr class="even">
+<td id="T_da0fc_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th"></td>
+<td id="T_da0fc_row5_col0" class="data row5 col0">(5.3231)</td>
+<td id="T_da0fc_row5_col1" class="data row5 col1">(10.487)</td>
+</tr>
+<tr class="odd">
+<td id="T_da0fc_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">kidslt6</td>
+<td id="T_da0fc_row6_col0" class="data row6 col0">-328.86***</td>
+<td id="T_da0fc_row6_col1" class="data row6 col1">-198.15</td>
+</tr>
+<tr class="even">
+<td id="T_da0fc_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th"></td>
+<td id="T_da0fc_row7_col0" class="data row7 col0">(125.79)</td>
+<td id="T_da0fc_row7_col1" class="data row7 col1">(208.42)</td>
+</tr>
+<tr class="odd">
+<td id="T_da0fc_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">nwifeinc</td>
+<td id="T_da0fc_row8_col0" class="data row8 col0">-5.9185*</td>
+<td id="T_da0fc_row8_col1" class="data row8 col1">-10.170*</td>
+</tr>
+<tr class="even">
+<td id="T_da0fc_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th"></td>
+<td id="T_da0fc_row9_col0" class="data row9 col0">(3.3613)</td>
+<td id="T_da0fc_row9_col1" class="data row9 col1">(5.2875)</td>
+</tr>
+<tr class="odd">
+<td id="T_da0fc_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">====================</td>
+<td id="T_da0fc_row10_col0" class="data row10 col0">==============</td>
+<td id="T_da0fc_row10_col1" class="data row10 col1">==============</td>
+</tr>
+<tr class="even">
+<td id="T_da0fc_level0_row11" class="row_heading level0 row11" data-quarto-table-cell-role="th">Instruments</td>
+<td id="T_da0fc_row11_col0" class="data row11 col0"></td>
+<td id="T_da0fc_row11_col1" class="data row11 col1">exper</td>
+</tr>
+<tr class="odd">
+<td id="T_da0fc_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th"></td>
+<td id="T_da0fc_row12_col0" class="data row12 col0"></td>
+<td id="T_da0fc_row12_col1" class="data row12 col1">expersq</td>
+</tr>
+<tr class="even">
+<td id="T_da0fc_level0_row13" class="row_heading level0 row13" data-quarto-table-cell-role="th">Estimator</td>
+<td id="T_da0fc_row13_col0" class="data row13 col0">OLS</td>
+<td id="T_da0fc_row13_col1" class="data row13 col1">IV-2SLS</td>
+</tr>
+<tr class="odd">
+<td id="T_da0fc_level0_row14" class="row_heading level0 row14" data-quarto-table-cell-role="th">Adj. R-squared</td>
+<td id="T_da0fc_row14_col0" class="data row14 col0">0.0247</td>
+<td id="T_da0fc_row14_col1" class="data row14 col1">-2.0433</td>
+</tr>
+<tr class="even">
+<td id="T_da0fc_level0_row15" class="row_heading level0 row15" data-quarto-table-cell-role="th">No. Observations</td>
+<td id="T_da0fc_row15_col0" class="data row15 col0">428</td>
+<td id="T_da0fc_row15_col1" class="data row15 col1">428</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </section>
 <section id="sistemas-com-mais-de-2-equações" class="slide level2">
 <h2>Sistemas com mais de 2 Equações</h2>
@@ -893,8 +1010,8 @@ y_3&amp;=\alpha_{32}y_2+\beta_{31}z_1+\beta_{32}z_2+\beta_{33}z_3+\beta_{34}z_4+
 <ul>
 <li class="fragment"><p>Geralmente complicado <em>mostrar que é identificada</em></p></li>
 <li class="fragment"><p>Fácil verificar equações que <strong>não são identificadas</strong></p></li>
-<li class="fragment"><p>Qual destas equações claramente não é identificada <code>r emo::ji("question")</code></p></li>
-<li class="fragment"><p>Na terceira equação .red[não existe VI possível] para <span class="math inline">\(y_2\)</span></p></li>
+<li class="fragment"><p>Qual destas equações claramente não é identificada <span class="emoji" data-emoji="question">❓</span></p></li>
+<li class="fragment"><p>Na terceira equação <strong>não existe VI possível</strong> para <span class="math inline">\(y_2\)</span></p></li>
 <li class="fragment"><p>As outras duas equações possuem VI potenciais (exógenas excluídas da eq. estrutural)</p></li>
 </ul>
 </section>
@@ -907,7 +1024,9 @@ y_3&amp;=\alpha_{32}y_2+\beta_{31}z_1+\beta_{32}z_2+\beta_{33}z_3+\beta_{34}z_4+
 <li class="fragment">K – número de variáveis exógenas no modelo</li>
 <li class="fragment">k – número de variáveis exógenas em uma dada equação</li>
 </ul>
+<div class="fragment">
 <p><span class="math inline">\(K – k \geq m – 1\)</span></p>
+</div>
 <ul>
 <li class="fragment"><strong>Observações:</strong>
 <ul>
@@ -930,23 +1049,20 @@ y_3&amp;=\alpha_{32}y_2+\beta_{31}z_1+\beta_{32}z_2+\beta_{33}z_3+\beta_{34}z_4+
 <li class="fragment"><p>Suponha que todos os <span class="math inline">\(\beta\)</span> sejam diferentes de zero</p></li>
 <li class="fragment"><p><span class="math inline">\(M=3\)</span>, <span class="math inline">\(K=4\)</span></p></li>
 <li class="fragment"><p>Eq. 1: <span class="math inline">\(m=3\)</span>, <span class="math inline">\(k=1\)</span>. Logo, <span class="math inline">\(4-1&gt;3-1\)</span>. Condição de ordem é atendida com desigualdade estrita. <strong>Equação é sobreidentificada</strong></p></li>
-<li class="fragment"><p>Eq. 2 <code>r emo::ji("question")</code></p></li>
+<li class="fragment"><p>Eq. 2 <span class="emoji" data-emoji="question">❓</span></p></li>
 </ul>
 </section>
 <section id="equações-simultâneas-com-séries-temporais" class="slide level2">
 <h2>Equações Simultâneas com Séries Temporais</h2>
 <ul>
 <li class="fragment"><p>Uma das aplicações mais antigas de SEM, grandes modelos macroeconômicos</p></li>
-<li class="fragment"><p>Modelo Keynesiano de demanda agregada (economia fechada)</p></li>
-</ul>
-<p><span class="math display">\[
+<li class="fragment"><p>Modelo Keynesiano de demanda agregada (economia fechada) <span class="math display">\[
 \begin{aligned}
 C_t&amp;=\beta_0+\beta_1(Y_t-T_t)+\beta_2 r_t+\beta_3 C_{t-1}+u_{1t}\\
 I_t&amp;=\gamma_0+\gamma_1r_t+\gamma_2 Y_{t-1}+u_{2t}\\
 Y_t&amp;\equiv C_t+I_t+G_t
 \end{aligned}
-\]</span></p>
-<ul>
+\]</span></p></li>
 <li class="fragment"><p><span class="math inline">\(C_t, I_t, Y_t\)</span> são endógenas</p></li>
 <li class="fragment"><p>Variáveis defasadas são chamadas de <strong><em>variáveis predeterminadas</em></strong></p></li>
 <li class="fragment"><p>Variáveis predeterminadas <em>podem ser consideradas exógenas</em> sob a condição de <strong>exogeneidade estrita</strong> dos erros. <span class="math inline">\(u_t\perp X_t\)</span> e <span class="math inline">\(u_t \perp Y_{t-i}, X_{t-i}, i=1,\ldots, T\)</span></p></li>
@@ -955,16 +1071,13 @@ Y_t&amp;\equiv C_t+I_t+G_t
 <section id="equações-simultâneas-com-séries-temporais-1" class="slide level2">
 <h2>Equações Simultâneas com Séries Temporais</h2>
 <ul>
-<li class="fragment">Como poderíamos estimar as equações deste modelo?</li>
-</ul>
-<p><span class="math display">\[
+<li class="fragment"><p>Como poderíamos estimar as equações deste modelo? <span class="math display">\[
 \begin{aligned}
 C_t&amp;=\beta_0+\beta_1(Y_t-T_t)+\beta_2 r_t+\beta_3 C_{t-1}+u_{1t}\\
 I_t&amp;=\gamma_0+\gamma_1r_t+\gamma_2 Y_{t-1}+u_{2t}\\
 Y_t&amp;\equiv C_t+I_t+G_t
 \end{aligned}
-\]</span></p>
-<ul>
+\]</span></p></li>
 <li class="fragment"><p>A equação do <strong>investimento</strong> <span class="math inline">\(I_t\)</span> possui apenas variáveis exógenas ou predeterminadas. Assumindo exogeneidade estrita, é possível estimar via MQO</p></li>
 <li class="fragment"><p>A equação do <strong>consumo</strong> <span class="math inline">\(C_t\)</span> necessita instrumentalização da renda <span class="math inline">\(Y_t\)</span>. MQ2E onde os <strong>instrumentos</strong> serão as variáveis exógenas e predeterminadas <strong>excluídas</strong> da equação</p></li>
 </ul>
@@ -986,36 +1099,92 @@ Y_t&amp;\equiv C_t+I_t+G_t
 <section id="exemplo-9" class="slide level2">
 <h2>Exemplo</h2>
 <h3 id="hipótese-da-renda-permanete-1">Hipótese da Renda Permanete</h3>
+<p>Como <span class="math inline">\(u_t\)</span> não é correlacionado com <span class="math inline">\(cc_{t-1}, cy_{t-1}\)</span> e <span class="math inline">\(r3_{t-1}\)</span>, estas são candidatas a variável instrumental</p>
+<div class="cell columns column-output-location" data-execution_count="7">
+<div class="column">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>consump <span class="op">=</span> woo.dataWoo(<span class="st">"consump"</span>).dropna()</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a>reg <span class="op">=</span> iv.IV2SLS.from_formula(</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="st">"gc ~ 1 + [gy + r3 ~ gc_1 + gy_1 + r3_1]"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    data<span class="op">=</span>consump,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>).fit(cov_type<span class="op">=</span><span class="st">"robust"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a>df <span class="op">=</span> compare_df({<span class="st">"MQ2E"</span>: reg}, fit_stats<span class="op">=</span>[<span class="st">"No. Observations"</span>])</span>
+<span id="cb6-9"><a href="#cb6-9"></a>df.style.set_table_attributes(<span class="st">'style="font-size: 20pt; text-align: center"'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div><div class="column">
+<div class="cell-output cell-output-display" data-execution_count="35">
+<style type="text/css">
+</style>
+
+<table id="T_8959f" data-quarto-postprocess="true" style="font-size: 20pt; text-align: center">
+<thead>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th">Model</th>
+<th id="T_8959f_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">MQ2E</th>
+</tr>
+<tr class="odd">
+<th class="index_name level1" data-quarto-table-cell-role="th">Dep. Var.</th>
+<th id="T_8959f_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">gc</th>
+</tr>
+<tr class="header">
+<th class="index_name level0" data-quarto-table-cell-role="th"></th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_8959f_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">gy</td>
+<td id="T_8959f_row0_col0" class="data row0 col0">0.5821***</td>
+</tr>
+<tr class="even">
+<td id="T_8959f_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th"></td>
+<td id="T_8959f_row1_col0" class="data row1 col0">(0.1376)</td>
+</tr>
+<tr class="odd">
+<td id="T_8959f_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">r3</td>
+<td id="T_8959f_row2_col0" class="data row2 col0">-0.0003</td>
+</tr>
+<tr class="even">
+<td id="T_8959f_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th"></td>
+<td id="T_8959f_row3_col0" class="data row3 col0">(0.0009)</td>
+</tr>
+<tr class="odd">
+<td id="T_8959f_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">====================</td>
+<td id="T_8959f_row4_col0" class="data row4 col0">=============</td>
+</tr>
+<tr class="even">
+<td id="T_8959f_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">Instruments</td>
+<td id="T_8959f_row5_col0" class="data row5 col0">gc_1</td>
+</tr>
+<tr class="odd">
+<td id="T_8959f_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th"></td>
+<td id="T_8959f_row6_col0" class="data row6 col0">gy_1</td>
+</tr>
+<tr class="even">
+<td id="T_8959f_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th"></td>
+<td id="T_8959f_row7_col0" class="data row7 col0">r3_1</td>
+</tr>
+<tr class="odd">
+<td id="T_8959f_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">No. Observations</td>
+<td id="T_8959f_row8_col0" class="data row8 col0">34</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 <ul>
-<li class="fragment">Como <span class="math inline">\(u_t\)</span> não é correlacionado com <span class="math inline">\(cc_{t-1}, cy_{t-1}\)</span> e <span class="math inline">\(r3_{t-1}\)</span>, estas são candidatas a variável instrumental</li>
-</ul>
-<p>.panelset[ .panel[.panel-name[Código]</p>
-<p>```{r hrp-model, echo=TRUE} library(wooldridge) data(“consump”)</p>
-<p>reg &lt;- feols(gc~1 | gy+r3 ~ gc_1+gy_1+r3_1, data = consump, vcov = “HC1”)</p>
-<pre><code>
-
-]
-
-.panel[.panel-name[Resultados]
-
-
-```{r , results='asis', echo=FALSE}
-modelsummary::msummary(reg,
-                       fmt = 5,
-                       estimate = "{estimate} ({std.error})",
-                       statistic = NULL,
-                       coef_rename = c("(Intercept)" = "Intercepto",
-                                       "fit_gy" = "gy",
-                                       "fit_r3" = "r3"),
-                       gof_map = c("nobs"))</code></pre>
-<ul>
-<li class="fragment">Neste caso <strong>rejeitamos a HRP pura</strong> ] ]</li>
+<li class="fragment">Neste caso <strong>rejeitamos a HRP pura</strong></li>
 </ul>
 </section>
 <section id="leitura-recomendada" class="slide level2">
 <h2><span class="emoji" data-emoji="books">📚</span> Leitura Recomendada</h2>
 <ul>
 <li class="fragment"><p>WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira.</p></li>
+<li class="fragment"><p>GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed.&nbsp;</p></li>
 <li class="fragment"><p>HANSEN, Bruce E. Econometrics. Manuscript, revision of February 2020.</p></li>
 <li class="fragment"><p>ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mostly harmless econometrics: An empiricist’s companion. Princeton university press, 2009.</p></li>
 </ul>

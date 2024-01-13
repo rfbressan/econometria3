@@ -446,7 +446,7 @@ $$
 
 ## Exemplo MQ2E
 
-### Oferta de Trabalho de Mulheres Casadas que Trabalham
+### Oferta de Trabalho de Mulheres Casadas - 1º Estágio
 
 
 ```{python}
@@ -456,7 +456,7 @@ import warnings
 
 def compare_df(
     x,
-    fit_stats=["Estimator", "R-squared", "No. Observations"],
+    fit_stats=["Estimator", "Adj. R-squared", "No. Observations"],
     params_slice=slice(11, None),
 ):
     with warnings.catch_warnings():
@@ -492,14 +492,11 @@ import linearmodels.iv as iv
 mroz = woo.dataWoo("mroz").dropna()
 
 reg_1st = iv.IV2SLS.from_formula(
-    "lwage ~ educ + age + kidslt6 + nwifeinc + exper + expersq",
+    "lwage ~ 1 + educ + age + kidslt6 + nwifeinc + exper + expersq",
     data=mroz,
 ).fit(cov_type="robust")
 
-df = compare_df(
-    {"1º Estágio": reg_1st},
-    fit_stats=["Estimator", "Adj. R-squared", "No. Observations"],
-)
+df = compare_df({"1º Estágio": reg_1st})
 # style df to print in small font
 df.style.set_table_attributes('style="font-size: 18pt; text-align: center"')
 ```
@@ -508,32 +505,26 @@ df.style.set_table_attributes('style="font-size: 18pt; text-align: center"')
 
 ## Exemplo MQ2E
 
-### Oferta de Trabalho de Mulheres Casadas que Trabalham
+### Oferta de Trabalho de Mulheres Casadas - MQ2E
 
-.panelset[
-.panel[.panel-name[Código]
-```{r exemplo-mq2e2, echo=TRUE}
-# Regressão MQO viesada
-reg_mqo <- feols(hours~lwage+educ+age+kidslt6+nwifeinc, 
-                 data = mroz, vcov = "HC1")
-# Regressão VI sobreidentificada
-reg_vi <- feols(hours~educ+age+kidslt6+nwifeinc | lwage ~ exper+expersq, 
-                 data = mroz, vcov = "HC1")
-```
-]
+```{python}
+# | echo: true
+# | code-fold: show
+# | output-location: column
 
-.panel[.panel-name[Resultados]
-```{r exemplo-mq2e-tbl, echo=FALSE, results='markup'}
-modelsummary::msummary(list(MQO = reg_mqo, VI = reg_vi),
-                       fmt = 2,
-                       estimate = "{estimate} ({std.error})",
-                       statistic = NULL,
-                       coef_rename = c("fit_lwage" = "lwage"),
-                       gof_map = c("nobs"))
-# etable(reg_mqo, reg_vi)
+reg_mqo = iv.IV2SLS.from_formula(
+    "hours ~ 1 + lwage + educ + age + kidslt6 + nwifeinc",
+    data=mroz,
+).fit(cov_type="robust")
+
+reg_vi = iv.IV2SLS.from_formula(
+    "hours ~ 1 + educ + age + kidslt6 + nwifeinc + [lwage ~ exper + expersq]",
+    data=mroz,
+).fit(cov_type="robust")
+
+df = compare_df({"MQO": reg_mqo, "VI": reg_vi})
+df.style.set_table_attributes('style="font-size: 18pt; text-align: center"')
 ```
-]
-]
 
 
 ## Sistemas com mais de 2 Equações
@@ -550,13 +541,9 @@ $$
 
 - Fácil verificar equações que **não são identificadas**
 
-- Qual destas equações claramente não é identificada `r emo::ji("question")`
+- Qual destas equações claramente não é identificada :question:
 
-
-
-- Na terceira equação .red[não existe VI possível] para $y_2$
-
-
+- Na terceira equação **não existe VI possível** para $y_2$
 
 - As outras duas equações possuem VI potenciais (exógenas excluídas da eq. estrutural)
 
@@ -571,9 +558,9 @@ $$
 - K – número de variáveis exógenas no modelo
 - k – número de variáveis exógenas em uma dada equação
 
+:::{.fragment}
 $K – k \geq m – 1$
-
-
+:::
 
 - **Observações:**
   + A variável dependente faz parte da contagem de endógenas
@@ -600,7 +587,7 @@ $$
 
 - Eq. 1: $m=3$, $k=1$. Logo, $4-1>3-1$. Condição de ordem é atendida com desigualdade estrita. **Equação é sobreidentificada**
 
-- Eq. 2 `r emo::ji("question")`
+- Eq. 2 :question:
 
 
 
@@ -609,7 +596,6 @@ $$
 - Uma das aplicações mais antigas de SEM, grandes modelos macroeconômicos
 
 - Modelo Keynesiano de demanda agregada (economia fechada)
-
 $$
 \begin{aligned}
 C_t&=\beta_0+\beta_1(Y_t-T_t)+\beta_2 r_t+\beta_3 C_{t-1}+u_{1t}\\
@@ -619,12 +605,9 @@ Y_t&\equiv C_t+I_t+G_t
 $$
 
 
-
 - $C_t, I_t, Y_t$ são endógenas
 
 - Variáveis defasadas são chamadas de ***variáveis predeterminadas***
-
-
 
 - Variáveis predeterminadas *podem ser consideradas exógenas* sob a condição de **exogeneidade estrita** dos erros. $u_t\perp X_t$ e $u_t \perp Y_{t-i}, X_{t-i}, i=1,\ldots, T$ 
 
@@ -633,7 +616,6 @@ $$
 ## Equações Simultâneas com Séries Temporais
 
 - Como poderíamos estimar as equações deste modelo?
-
 $$
 \begin{aligned}
 C_t&=\beta_0+\beta_1(Y_t-T_t)+\beta_2 r_t+\beta_3 C_{t-1}+u_{1t}\\
@@ -643,9 +625,7 @@ Y_t&\equiv C_t+I_t+G_t
 $$
 
 
-
 - A equação do **investimento** $I_t$ possui apenas variáveis exógenas ou predeterminadas. Assumindo exogeneidade estrita, é possível estimar via MQO
-
 
 
 - A equação do **consumo** $C_t$ necessita instrumentalização da renda $Y_t$. MQ2E onde os **instrumentos** serão as variáveis exógenas e predeterminadas **excluídas** da equação
@@ -676,37 +656,25 @@ $$cc_t=\beta_0+\beta_1 cy_t + \beta_2 r3_t + u_t$$
 ## Exemplo
 ### Hipótese da Renda Permanete
 
-- Como $u_t$ não é correlacionado com $cc_{t-1}, cy_{t-1}$ e $r3_{t-1}$, estas são candidatas a variável instrumental
+Como $u_t$ não é correlacionado com $cc_{t-1}, cy_{t-1}$ e $r3_{t-1}$, estas são candidatas a variável instrumental
 
+```{python}
+# | echo: true
+# | code-fold: show
+# | output-location: column
 
+consump = woo.dataWoo("consump").dropna()
 
-.panelset[
-.panel[.panel-name[Código]
-```{r hrp-model, echo=TRUE}
-library(wooldridge)
-data("consump")
+reg = iv.IV2SLS.from_formula(
+    "gc ~ 1 + [gy + r3 ~ gc_1 + gy_1 + r3_1]",
+    data=consump,
+).fit(cov_type="robust")
 
-reg <- feols(gc~1 | gy+r3 ~ gc_1+gy_1+r3_1,
-             data = consump, vcov = "HC1")
-```
-]
-
-.panel[.panel-name[Resultados]
-```{r , results='asis', echo=FALSE}
-modelsummary::msummary(reg,
-                       fmt = 5,
-                       estimate = "{estimate} ({std.error})",
-                       statistic = NULL,
-                       coef_rename = c("(Intercept)" = "Intercepto",
-                                       "fit_gy" = "gy",
-                                       "fit_r3" = "r3"),
-                       gof_map = c("nobs"))
+df = compare_df({"MQ2E": reg}, fit_stats=["No. Observations"])
+df.style.set_table_attributes('style="font-size: 20pt; text-align: center"')
 ```
 
 - Neste caso **rejeitamos a HRP pura**
-]
-]
-
 
 
 
@@ -714,6 +682,8 @@ modelsummary::msummary(reg,
 ## :books: Leitura Recomendada
 
 * WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. 
+
+* GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed. 
 
 * HANSEN, Bruce E. Econometrics. Manuscript, revision of February 2020.
 
