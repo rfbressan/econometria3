@@ -119,6 +119,8 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 * [Coding for Economists (Python)](https://aeturrell.github.io/coding-for-economists/intro.html)
 
+* [Mathematics for Economics](https://www.economicsnetwork.ac.uk/maths_refresher/)
+
 
 ## Avaliação
 

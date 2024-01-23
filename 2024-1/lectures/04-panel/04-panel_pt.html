@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="04-panel_pt_files/libs/clipboard/clipboard.min.js"></script>
+<script src="04-panel_pt_files/libs/quarto-html/tabby.min.js"></script>
+<script src="04-panel_pt_files/libs/quarto-html/popper.min.js"></script>
+<script src="04-panel_pt_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="04-panel_pt_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="04-panel_pt_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="04-panel_pt_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="04-panel_pt_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.3.361">
+
+  <meta name="author" content="Rafael Bressan">
+  <title>Econometria III</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="04-panel_pt_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="04-panel_pt_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="04-panel_pt_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="04-panel_pt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="04-panel_pt_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="04-panel_pt_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="04-panel_pt_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="04-panel_pt_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="04-panel_pt_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-image="img/UdescEsag.jpeg" data-background-position="top left" data-background-size="50%" class="quarto-title-block center">
+  <h1 class="title">Econometria III</h1>
+  <p class="subtitle">Dados em Painel</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Rafael Bressan 
+</div>
+</div>
+</div>
+
+</section>
+<section id="dados-de-cortes-transversais" class="slide level2">
+<h2>Dados de Cortes Transversais</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Até agora, lidamos com dados que se parecem com isso:</p>
+<div class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="62">
+<style type="text/css">
+</style>
+
+<table id="T_540e2" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th id="T_540e2_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Condado</th>
+<th id="T_540e2_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Criminalidade</th>
+<th id="T_540e2_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Prob. Prisão</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_540e2_row0_col0" class="data row0 col0">1</td>
+<td id="T_540e2_row0_col1" class="data row0 col1">0.039885</td>
+<td id="T_540e2_row0_col2" class="data row0 col2">0.289696</td>
+</tr>
+<tr class="even">
+<td id="T_540e2_row1_col0" class="data row1 col0">3</td>
+<td id="T_540e2_row1_col1" class="data row1 col1">0.016392</td>
+<td id="T_540e2_row1_col2" class="data row1 col2">0.202899</td>
+</tr>
+<tr class="odd">
+<td id="T_540e2_row2_col0" class="data row2 col0">5</td>
+<td id="T_540e2_row2_col1" class="data row2 col1">0.009337</td>
+<td id="T_540e2_row2_col2" class="data row2 col2">0.406593</td>
+</tr>
+<tr class="even">
+<td id="T_540e2_row3_col0" class="data row3 col0">7</td>
+<td id="T_540e2_row3_col1" class="data row3 col1">0.021916</td>
+<td id="T_540e2_row3_col2" class="data row3 col2">0.431095</td>
+</tr>
+<tr class="odd">
+<td id="T_540e2_row4_col0" class="data row4 col0">9</td>
+<td id="T_540e2_row4_col1" class="data row4 col1">0.007518</td>
+<td id="T_540e2_row4_col2" class="data row4 col2">0.631579</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Temos um identificador de unidade (como <code>Condado</code> aqui)</p></li>
+<li class="fragment"><p>Variáveis observáveis em cada unidade</p></li>
+<li class="fragment"><p>Geralmente chamado de conjunto de dados de <strong>seção transversal</strong> (<em>cross-section</em>)</p></li>
+<li class="fragment"><p>Fornece visualização de um momento instantâneo</p></li>
+<li class="fragment"><p>Cada linha é uma <em>observação</em>, cada coluna uma <em>variável</em></p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="dados-em-painel" class="slide level2">
+<h2>Dados em Painel</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Agora, vamos adicionar um índice de <code>tempo</code>: <code>Ano</code>.</p>
+<div class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="63">
+<style type="text/css">
+</style>
+
+<table id="T_acab5" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th id="T_acab5_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Condado</th>
+<th id="T_acab5_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Ano</th>
+<th id="T_acab5_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Criminalidade</th>
+<th id="T_acab5_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">Prob. Prisão</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_acab5_row0_col0" class="data row0 col0">1</td>
+<td id="T_acab5_row0_col1" class="data row0 col1">81</td>
+<td id="T_acab5_row0_col2" class="data row0 col2">0.039885</td>
+<td id="T_acab5_row0_col3" class="data row0 col3">0.289696</td>
+</tr>
+<tr class="even">
+<td id="T_acab5_row1_col0" class="data row1 col0">1</td>
+<td id="T_acab5_row1_col1" class="data row1 col1">82</td>
+<td id="T_acab5_row1_col2" class="data row1 col2">0.038345</td>
+<td id="T_acab5_row1_col3" class="data row1 col3">0.338111</td>
+</tr>
+<tr class="odd">
+<td id="T_acab5_row2_col0" class="data row2 col0">1</td>
+<td id="T_acab5_row2_col1" class="data row2 col1">83</td>
+<td id="T_acab5_row2_col2" class="data row2 col2">0.030305</td>
+<td id="T_acab5_row2_col3" class="data row2 col3">0.330449</td>
+</tr>
+<tr class="even">
+<td id="T_acab5_row3_col0" class="data row3 col0">1</td>
+<td id="T_acab5_row3_col1" class="data row3 col1">84</td>
+<td id="T_acab5_row3_col2" class="data row3 col2">0.034726</td>
+<td id="T_acab5_row3_col3" class="data row3 col3">0.362525</td>
+</tr>
+<tr class="odd">
+<td id="T_acab5_row4_col0" class="data row4 col0">1</td>
+<td id="T_acab5_row4_col1" class="data row4 col1">85</td>
+<td id="T_acab5_row4_col2" class="data row4 col2">0.036573</td>
+<td id="T_acab5_row4_col3" class="data row4 col3">0.325395</td>
+</tr>
+<tr class="even">
+<td id="T_acab5_row5_col0" class="data row5 col0">1</td>
+<td id="T_acab5_row5_col1" class="data row5 col1">86</td>
+<td id="T_acab5_row5_col2" class="data row5 col2">0.034752</td>
+<td id="T_acab5_row5_col3" class="data row5 col3">0.326062</td>
+</tr>
+<tr class="odd">
+<td id="T_acab5_row6_col0" class="data row6 col0">1</td>
+<td id="T_acab5_row6_col1" class="data row6 col1">87</td>
+<td id="T_acab5_row6_col2" class="data row6 col2">0.035604</td>
+<td id="T_acab5_row6_col3" class="data row6 col3">0.298270</td>
+</tr>
+<tr class="even">
+<td id="T_acab5_row7_col0" class="data row7 col0">3</td>
+<td id="T_acab5_row7_col1" class="data row7 col1">81</td>
+<td id="T_acab5_row7_col2" class="data row7 col2">0.016392</td>
+<td id="T_acab5_row7_col3" class="data row7 col3">0.202899</td>
+</tr>
+<tr class="odd">
+<td id="T_acab5_row8_col0" class="data row8 col0">3</td>
+<td id="T_acab5_row8_col1" class="data row8 col1">82</td>
+<td id="T_acab5_row8_col2" class="data row8 col2">0.019065</td>
+<td id="T_acab5_row8_col3" class="data row8 col3">0.162218</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Ao lado do identificador da unidade (<code>Condado</code>) temos agora <code>Ano</code></p></li>
+<li class="fragment"><p>Agora um par (<code>Condado</code>, <code>Ano</code>) indexa uma observação.</p></li>
+<li class="fragment"><p>Chamamos isso de conjunto de dados em <strong>painel</strong> ou <strong>longitudinal</strong></p></li>
+<li class="fragment"><p>Podemos rastrear unidades <em>ao longo do tempo</em>.</p></li>
+<li class="fragment"><p><strong>Seções transversais repetidas</strong> quando não são os mesmos indíviduos</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="taxas-de-criminalidade-e-probabilidade-de-prisão" class="slide level2">
+<h2>Taxas de Criminalidade e Probabilidade de Prisão</h2>
+<ul>
+<li class="fragment">Os dados acima podem ser carregados com</li>
+</ul>
+<div class="fragment">
+<div class="cell" data-execution_count="4">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> wooldridge <span class="im">as</span> woo</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>crime4 <span class="op">=</span> woo.dataWoo(<span class="st">"crime4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<ul>
+<li class="fragment"><p>Eles são de <a href="https://www.amherst.edu/media/view/121570/original/CornwellTrumbullCrime%2BElasticities.pdf">C. Cornwell e W. Trumball (1994), “Estimating the Economic Model of Crime with Panel Data”</a>.</p></li>
+<li class="fragment"><p>Uma pergunta aqui: <strong>qual é o tamanho do efeito dissuasor da aplicação da lei?</strong> Se você sabe que é mais provável que seja preso, será menos provável que cometa um crime?</p></li>
+<li class="fragment"><p>Isso é complicado: a criminalidade alta <em>causa</em> uma resposta policial mais forte, que atua como um impedimento? Ou o crime é baixo porque o impedimento é forte para começar?</p></li>
+<li class="fragment"><p>Isso às vezes é chamado de uma situação de <strong>modelo de equações simultâneas</strong>: a resposta da polícia afeta o crime, e o crime afeta a resposta da polícia <span class="math display">\[
+\begin{aligned}
+police &amp;= \alpha_0 + \alpha_1 crime \\
+crime &amp;= \beta_0 + \beta_1 police
+\end{aligned}
+\]</span></p></li>
+</ul>
+</section>
+<section id="taxas-de-criminalidade-e-probabilidade-de-prisão-1" class="slide level2">
+<h2>Taxas de Criminalidade e Probabilidade de Prisão</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>A maioria da literatura anterior a esse artigo estimava equações simultâneas de dados de corte transversal</p></li>
+<li class="fragment"><p>Cornwell e Trumball estão preocupados com a <strong>heterogeneidade não observada</strong> entre as jurisdições.</p></li>
+<li class="fragment"><p>Por quê? O que poderia dar errado?</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Vamos escolher 4 condados do nosso conjunto de dados</p></li>
+<li class="fragment"><p>Vejamos a relação entre taxa de criminalidade vs probabilidade de prisão</p></li>
+<li class="fragment"><p>Primeiro para todos eles juntos como uma única seção transversal</p></li>
+<li class="fragment"><p>Em seguida, aproveitando a estrutura do painel (ou seja, cada condado ao longo do tempo).</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="crime-vs-prisão-em-seção-transversal" class="slide level2">
+<h2>Crime vs Prisão em Seção Transversal</h2>
+<ul>
+<li class="fragment"><p>Subconjunto de dados para 4 condados</p></li>
+<li class="fragment"><p>plotar taxa de criminalidade versus probabilidade de prisão.</p></li>
+</ul>
+<div class="fragment">
+<div class="cell columns column-output-location" data-execution_count="5">
+<div class="column">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Subset the data for 4 counties</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>css <span class="op">=</span> crime4.loc[crime4[<span class="st">"county"</span>].isin([<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">145</span>, <span class="dv">23</span>])]</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># Create a figure and axes</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># Scatter plot</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>ax.scatter(css[<span class="st">"prbarr"</span>], css[<span class="st">"crmrte"</span>])</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># Linear regression line</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>slope, intercept <span class="op">=</span> np.polyfit(css[<span class="st">"prbarr"</span>], css[<span class="st">"crmrte"</span>], <span class="dv">1</span>)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>ax.plot(css[<span class="st">"prbarr"</span>], slope <span class="op">*</span> css[<span class="st">"prbarr"</span>] <span class="op">+</span> intercept, color<span class="op">=</span><span class="st">"red"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co"># Set labels and title</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>ax.set_xlabel(<span class="st">"Probabilidade de prisão"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15"></a>ax.set_ylabel(<span class="st">"Taxa de criminalidade"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co"># Display the plot</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div><div class="column">
+<div class="cell-output cell-output-display">
+<p><img data-src="04-panel_pt_files/figure-revealjs/cell-6-output-1.png" width="872" height="456"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="crime-vs-prisão-em-seção-transversal-1" class="slide level2">
+<h2>Crime vs Prisão em Seção Transversal</h2>
+<h3 id="relacionamento-positivo">Relacionamento positivo!</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Vemos uma linha inclinada para cima!</p></li>
+<li class="fragment"><p>Maior probabilidade de prisão está associada a maiores taxas de criminalidade.</p></li>
+<li class="fragment"><p>Quão forte é o efeito?</p></li>
+</ul>
+<div class="fragment">
+<div class="cell" data-execution_count="6">
+<div class="cell-output cell-output-stdout">
+<pre><code>Inclinação da reta: 0.0648</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Aumentar a probabilidade de prisão em 0,1 unidade (ou seja, 10 pontos percentuais), aumenta a taxa de criminalidade em 0,00648.</p></li>
+<li class="fragment"><p>Aumento de 10 p.p. na probabilidade de prisão (por exemplo, <code>prbarr</code> passa de 0,2 para 0,3) …</p></li>
+<li class="fragment"><p>… está associado a um aumento na taxa de criminalidade de 0,021 para 0,028, ou 33,33% de aumento na taxa de criminalidade.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="crime-vs-prisão-em-seção-transversal-2" class="slide level2">
+<h2>Crime vs Prisão em Seção Transversal</h2>
+<h3 id="ok-mas-o-que-isso-significa">Ok, mas o que isso <em>significa</em>?</h3>
+<ul>
+<li class="fragment"><p>Literalmente: condados onde existe maior probabilidade de ser preso também têm maior índice de criminalidade.</p></li>
+<li class="fragment"><p>Então, isso significa que polícia mais eficiente em prender criminosos e, portanto, a probabilidade de ser preso é mais alta, causa aumento de criminalidade?</p></li>
+<li class="fragment"><p>Do que depende a eficiência da polícia?</p></li>
+<li class="fragment"><p>O nível de pobreza em um condado importa para isso?</p></li>
+<li class="fragment"><p>As leis locais?</p></li>
+<li class="fragment"><p>🤯 Uau, parecem haver muitas coisas deixadas de fora desta simples análise.</p></li>
+</ul>
+</section>
+<section id="variação-intragrupo-e-entre-grupos" class="slide level2">
+<h2>Variação Intragrupo e Entre-grupos</h2>
+<p>Você ouvirá frequentemente os termos variação <em>intra</em> (<em>within</em>) e <em>entre</em> (<em>between</em>) em contextos de dados de painel.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Variação Intra</strong></p>
+<ul>
+<li class="fragment"><p>coisas que mudam <em>dentro de cada grupo</em> ao longo do tempo:</p></li>
+<li class="fragment"><p>aqui dissemos orçamentos policiais</p></li>
+<li class="fragment"><p>e os níveis de pobreza mudariam dentro de cada grupo e ao longo do tempo.</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Variação Entre</strong></p>
+<ul>
+<li class="fragment"><p>Coisas que são <strong>fixas</strong> para cada grupo ao longo do tempo:</p></li>
+<li class="fragment"><p>Leis e costumes locais</p></li>
+<li class="fragment"><p>Direitos Civis</p></li>
+<li class="fragment"><p>diferem apenas <strong>entre</strong> grupos</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="variação-intragrupo-e-entre-grupos-1" class="slide level2">
+<h2>Variação Intragrupo e Entre-grupos</h2>
+<div class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<p><img data-src="04-panel_pt_files/figure-revealjs/cell-8-output-1.png" width="1095" height="826"></p>
+</div>
+</div>
+</section>
+<section id="apresentando-o-efeito-fixo" class="slide level2">
+<h2>Apresentando o <em>Efeito Fixo</em></h2>
+<div class="columns">
+<div class="column" style="width:75%;">
+<p><img data-src="img/crime_rate_dag.png"></p>
+</div><div class="column" style="width:25%;">
+<ul>
+<li class="fragment"><p>Coletamos todas as características invariáveis no tempo e específicas do grupo no fator <code>Condado</code>.</p></li>
+<li class="fragment"><p>Controla todos os fatores que <em>não</em> variam ao longo do tempo dentro de cada unidade.</p></li>
+<li class="fragment"><p>Chamamos <code>Condado</code> de <strong>efeito fixo</strong>.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section>
+<section id="estimação-de-efeitos-fixos" class="title-slide slide level1 center">
+<h1>Estimação de Efeitos Fixos</h1>
+
+</section>
+<section id="variável-omitida-vi-e-dados-em-painel" class="slide level2">
+<h2>Variável Omitida, VI e Dados em Painel</h2>
+<p>Vimos <em>viés de variável omitida</em> (OVB). Por exemplo, se o modelo verdadeiro for: <span class="math display">\[
+y_i = \beta_0 + \beta_1 x_i + \underbrace{c_i + u_i}_{v_i}
+\]</span> se <span class="math inline">\(c_i\)</span> é não observável e <span class="math inline">\(Cov(x_i, c_i)\neq0 \Rightarrow E[v_i|x_i]\neq 0\)</span></p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Solução Seção Transversal</strong></p>
+<ul>
+<li class="fragment"><p>onde <span class="math inline">\(c_i\)</span> é variável omitida. <strong>Viés</strong>! <span class="emoji" data-emoji="sob">😭</span></p></li>
+<li class="fragment"><p>Encontre VI correlacionado com probabilidade de prisão, mas não condado</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Solução Dados em Painel</strong></p>
+<ul>
+<li class="fragment"><p><span class="math display">\[y_{it} = \beta_1 x_{it} + c_i + u_{it},\quad t=1,2,...T\]</span></p></li>
+<li class="fragment"><p><span class="math inline">\(c_i\)</span>: <em>efeito fixo individual</em> ou <em>heterogeneidade não observada</em>.</p></li>
+<li class="fragment"><p><span class="math inline">\(c_i\)</span>: é fixo ao longo do tempo (eg. costumes locais), mas pode ser correlacionado com <span class="math inline">\(x_{it}\)</span>!</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="regressão-com-variável-dummy" class="slide level2">
+<h2>Regressão com Variável <em>Dummy</em></h2>
+<ul>
+<li class="fragment"><p>Abordagem mais simples: inclua uma variável <em>dummy</em> para cada grupo <span class="math inline">\(i\)</span>.</p></li>
+<li class="fragment"><p>Isso é literalmente <em>controlar para o condado</em> <span class="math inline">\(i\)</span></p></li>
+<li class="fragment"><p>Cada <span class="math inline">\(i\)</span> tem seu próprio intercepto <span class="math inline">\(c_i\)</span></p></li>
+</ul>
+</section>
+<section id="regressão-com-variável-dummy-1" class="slide level2">
+<h2>Regressão com Variável <em>Dummy</em></h2>
+<p><span class="math display">\[y_{it} = \beta_1 x_{it} + c_i + u_{it},\quad t=1,2,...T\]</span></p>
+<div class="cell" data-execution_count="8">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>reg_dummy <span class="op">=</span> smf.ols(formula<span class="op">=</span><span class="st">"crmrte ~ -1 + prbarr + C(county)"</span>, data<span class="op">=</span>css).fit()</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>pd.concat(</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    [reg_dummy.params, reg_dummy.bse, reg_dummy.tvalues, reg_dummy.pvalues], axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>).rename(columns<span class="op">=</span>{<span class="dv">0</span>: <span class="st">"coef"</span>, <span class="dv">1</span>: <span class="st">"std err"</span>, <span class="dv">2</span>: <span class="st">"t"</span>, <span class="dv">3</span>: <span class="st">"P&gt;|t|"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="67">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">C(county)[1]</td>
+<td>0.044945</td>
+<td>0.004556</td>
+<td>9.866057</td>
+<td>9.853488e-10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">C(county)[3]</td>
+<td>0.019950</td>
+<td>0.002647</td>
+<td>7.535569</td>
+<td>1.178139e-07</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">C(county)[23]</td>
+<td>0.036447</td>
+<td>0.004004</td>
+<td>9.103045</td>
+<td>4.365553e-09</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">C(county)[145]</td>
+<td>0.038445</td>
+<td>0.004900</td>
+<td>7.845978</td>
+<td>5.977486e-08</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">prbarr</td>
+<td>-0.028376</td>
+<td>0.013629</td>
+<td>-2.082080</td>
+<td>4.864957e-02</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="regressão-com-variável-dummy-2" class="slide level2">
+<h2>Regressão com Variável <em>Dummy</em></h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<ul>
+<li class="fragment"><p><em>Dentro</em> de cada condado, relacionamento <strong>negativo</strong>!!</p></li>
+<li class="fragment"><p>Diferentes interceptos</p></li>
+<li class="fragment"><p>Coeficiente angular <strong><em>único</em></strong> <span class="math inline">\(\beta\)</span>. (as linhas são paralelas).</p></li>
+<li class="fragment"><p>Cada condado tem seu próprio intercepto <span class="math inline">\(c_i\)</span>.</p></li>
+</ul>
+</div><div class="column" style="width:75%;">
+<div class="cell" data-execution_count="9">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Get predicted line</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>css[<span class="st">"pred"</span>] <span class="op">=</span> reg_dummy.predict(css)</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># Plot regression lines</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>g <span class="op">=</span> sns.lmplot(</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    data<span class="op">=</span>css, x<span class="op">=</span><span class="st">"prbarr"</span>, y<span class="op">=</span><span class="st">"pred"</span>, scatter<span class="op">=</span><span class="va">False</span>, hue<span class="op">=</span><span class="st">"county"</span>, legend<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>g.figure.set_size_inches(<span class="dv">13</span>, <span class="dv">9</span>)</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co"># Create scatter plot with line for each county</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>sns.scatterplot(</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    data<span class="op">=</span>css, x<span class="op">=</span><span class="st">"prbarr"</span>, y<span class="op">=</span><span class="st">"crmrte"</span>, hue<span class="op">=</span><span class="st">"county"</span>, legend<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>g.axes[<span class="dv">0</span>, <span class="dv">0</span>]</span>
+<span id="cb5-11"><a href="#cb5-11"></a>)</span>
+<span id="cb5-12"><a href="#cb5-12"></a>plt.legend()</span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co"># Set plot labels</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>plt.xlabel(<span class="st">"Probabilidade de Prisão"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15"></a>plt.ylabel(<span class="st">"Taxa de Crime"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16"></a><span class="co"># plt.title("Regressão com Variável Dummy")</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a></span>
+<span id="cb5-18"><a href="#cb5-18"></a><span class="co"># Show the plot</span></span>
+<span id="cb5-19"><a href="#cb5-19"></a>sns.despine()</span>
+<span id="cb5-20"><a href="#cb5-20"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img data-src="04-panel_pt_files/figure-revealjs/cell-10-output-1.png" width="957" height="738"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="primeira-diferença" class="slide level2">
+<h2>Primeira Diferença</h2>
+<p>Se tivermos apenas dois períodos, <span class="math inline">\(T=2\)</span>, poderíamos apenas <strong><em>diferenciar</em></strong> os períodos</p>
+<p><span class="math display">\[\begin{align}y_{i1} &amp;= \beta_1 x_{i1} + c_i + u_{i1} \\y_{i2} &amp;= \beta_1 x_{i2} + c_i + u_{i2} \\&amp; \Rightarrow \\
+y_{i1}-y_{i2} &amp;= \beta_1 (x_{i1} - x_{i2}) + c_i-c_i + u_{i1}-u_{i2} \\\Delta y_{i} &amp;= \beta_1 \Delta x_{i} + \Delta u_{i}\end{align}\]</span></p>
+<p>E para recuperar o parâmetro de interesse <span class="math inline">\(\beta_1\)</span> rodamos</p>
+<p><code>{r,eval=FALSE} lm(deltay ~ deltax, diff_data)</code></p>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="a-transformação-intragrupo-within" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>Com <span class="math inline">\(T&gt;2\)</span> precisamos de uma abordagem diferente</p></li>
+<li class="fragment"><p>Um conceito importante é a chamada transformação <strong>intragrupo</strong> (<em>within</em>)</p></li>
+<li class="fragment"><p>Então, <em>controlando a identidade do grupo</em> e observando apenas a <strong><em>variação dentro</em></strong> deste grupo</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment">Seja <span class="math inline">\(\bar{x}_i\)</span> a média <em>ao longo do tempo</em> dos valores <span class="math inline">\(x\)</span> de <span class="math inline">\(i\)</span>:</li>
+</ul>
+<p><span class="math display">\[\bar{x}_i = \frac{1}{T} \sum_{t=1}^T x_{it}\]</span></p>
+<ol type="1">
+<li class="fragment">para todas as variáveis, calcule sua média no tempo para cada grupo <span class="math inline">\(i\)</span>: <span class="math inline">\(\bar{x}_i,\bar{y}_i\)</span> etc.</li>
+<li class="fragment">para cada <strong>observação</strong>, subtraia essa média de tempo do valor real e defina <span class="math inline">\(\ddot{x}_{it}=x_{it} - \bar{x}_i\)</span> e <span class="math inline">\(\ddot{y}_{it}=y_{it}-\bar{y}_i\)</span></li>
+<li class="fragment">Por fim, regresse <span class="math inline">\(\ddot{y}_{it}\)</span> em <span class="math inline">\(\ddot{x}_{it}\)</span></li>
+</ol>
+</div><hr><section id="a-transformação-intragrupo-within-1" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+<ul>
+<li class="fragment">Se <span class="math inline">\(y_{it} = \beta_1 x_{it} + c_i + u_{it}\)</span>, então</li>
+</ul>
+<table style="width:4%;">
+<colgroup>
+<col style="width: 4%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><span class="math display">\[
+\begin{align*}
+\bar{y}_i&amp;=\frac{1}{T}\sum_t y_{it}\\
+&amp;=\frac{1}{T}\left[ \beta_1\sum_t x_{it}+\sum_t c_{i}+\sum_t u_{it}\right]\\
+&amp;=\beta_1\bar{x}_i+c_i+\bar{u}_i
+\end{align*}
+\]</span> Logo,</td>
+</tr>
+<tr class="even">
+<td><span class="math display">\[
+\begin{align*}
+\ddot{y}_{it}&amp;=y_{it}-\bar{y}_i\\
+&amp;=\beta_1 x_{it} + c_i + u_{it} - \left(\beta_1\bar{x}_i+c_i+\bar{u}_i\right)\\
+&amp;=\beta_1\ddot{x}_{it} + \ddot{u}_{it}
+\end{align*}
+\]</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="a-transformação-intragrupo-within-2" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<section id="graus-de-liberdade" class="slide level2">
+<h2>Graus de liberdade</h2>
+<ul>
+<li class="fragment"><p><span class="math inline">\(\ddot{y}_{it}=\beta_1\ddot{x}_{1,it} + \beta_2\ddot{x}_{2,it} + \ldots + \beta_k\ddot{x}_{k,it} + \ddot{u}_{it}\)</span></p></li>
+<li class="fragment"><p>A princípio temos <span class="math inline">\(NT - k\)</span> graus de liberdade</p></li>
+</ul>
+<p>–</p>
+<ul>
+<li class="fragment"><code>r emo::ji("warning")</code> Isso não é verdade!!</li>
+</ul>
+<p>–</p>
+<ul>
+<li class="fragment"><p>Tivemos de calcular <span class="math inline">\(N\)</span> <strong>médias intragrupo</strong>. Perdemos esses graus de liberdade</p></li>
+<li class="fragment"><p><em>gl</em>: <span class="math inline">\(NT-N-k=N(T-1)-k\)</span></p></li>
+</ul>
+<p>–</p>
+<ul>
+<li class="fragment">Quanto mais efeitos fixos adicionarmos na regressão, mais <strong><em>gl</em></strong> iremos perder</li>
+</ul>
+<hr>
+</section>
+<section id="a-transformação-intragrupo-within-3" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<section id="hipóteses" class="slide level2">
+<h2>Hipóteses</h2>
+<p>Satisfeitas as seguintes hipóteses, o estimador de <strong>Efeitos Fixos</strong> será <strong><em>não viesado</em></strong></p>
+<ol type="1">
+<li class="fragment"><p>O modelo populacional é: <span class="math inline">\(y_{it}=X_{it}\beta+c_i+u_{it}\)</span>. Para cada <span class="math inline">\(i\)</span>, com <span class="math inline">\(t=1, \ldots, T\)</span> e <span class="math inline">\(c_i\)</span> é não observado.</p></li>
+<li class="fragment"><p><span class="math inline">\(\{y_{it}, X_{it}\}_{i=1}^N\)</span> é uma amostra aleatória para um dado <span class="math inline">\(t\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(X_{it}\)</span> possui variação na dimensão <span class="math inline">\(t\)</span></p></li>
+<li class="fragment"><p>Para cada <span class="math inline">\(t\)</span>, o valor esperado do erro <span class="math inline">\(u_{it}\)</span> condicional aos regressores em <strong><em>todos os períodos de tempo</em></strong> e ao efeito não observado, é zero: <span class="math inline">\(E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0\)</span> (<strong>exogeneidade estrita</strong>)</p></li>
+</ol>
+<p>–</p>
+<p>Se tivermos um painel curto <span class="math inline">\((N&gt;&gt;T)\)</span>, então podemos dizer que assintoticamente <span class="math inline">\((N\rightarrow\infty)\)</span> o estimador de Efeitos Fixos é <em>consistente</em>.</p>
+<hr>
+</section>
+<section id="a-transformação-intragrupo-within-4" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<section id="hipóteses-1" class="slide level2">
+<h2>Hipóteses</h2>
+<ul>
+<li class="fragment">Por que a hipótese de exogeneidade estrita é tão importante?</li>
+</ul>
+<p>–</p>
+<ul>
+<li class="fragment"><p><span class="math inline">\(E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0\)</span> implica em <span class="math inline">\(E[X_{is}u_{it}]=0\quad s,t = 1,\ldots, T\)</span></p></li>
+<li class="fragment"><p>Modelo transformado é <span class="math inline">\(\ddot{y}_{it}=\ddot{X}_{it}\beta+\ddot{u}_{it}\)</span></p></li>
+<li class="fragment"><p>MQO <strong>não viesado</strong> se <span class="math inline">\(E[\ddot{X}_{it}\ddot{u}_{it}]=0\)</span></p></li>
+</ul>
+<p>–</p>
+<ul>
+<li class="fragment"><p>Interpretação: uma vez que <span class="math inline">\(X_{it}\)</span> e <span class="math inline">\(c_i\)</span> estejam controlados na regressão, <strong><em>outros períodos</em></strong> para os regressores não importam!</p></li>
+<li class="fragment"><p><code>r emo::ji("warning")</code> .red[ATENÇÃO]</p>
+<ul>
+<li class="fragment">Isso não impede modelos de defasagem distribuída!</li>
+<li class="fragment">Modelos de variável dependente defasada estão excluídos</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="a-transformação-intragrupo-within-5" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<section id="hipóteses-2" class="slide level2">
+<h2>Hipóteses</h2>
+<ul>
+<li class="fragment">Por que a hipótese de exogeneidade estrita é tão importante?</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+E[\ddot{X}_{it}\ddot{u}_{it}]&amp;=E[(X_{it}-\bar{X}_i)(u_{it}-\bar{u}_i)]\\
+&amp;=E[X_{it}u_{it}]+E[X_{it}\bar{u}_i]+\ldots
+\end{align*}
+\]</span></p>
+<p>–</p>
+<ul>
+<li class="fragment"><span class="math inline">\(E[X_{it}u_{it}]= 0\)</span>, pois <span class="math inline">\(E[X_{is}u_{it}]=0\)</span> e <span class="math inline">\(s=t\)</span></li>
+</ul>
+<p>–</p>
+<ul>
+<li class="fragment"><span class="math inline">\(E[X_{it}\bar{u}_i]=\frac{1}{T}\lbrace E[X_{it}u_{i1}]+\ldots + E[X_{it}u_{iT}]\rbrace\)</span>
+<ul>
+<li class="fragment">Cada um dos valores esperados também é zero pela hipótese de exogeneidade estrita!</li>
+</ul></li>
+</ul>
+<p>–</p>
+<p>Ou seja, a hipótese de exogeneidade estrita, <span class="math inline">\(E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0\)</span> implica em <span class="math inline">\(E[X_{is}u_{it}]=0\quad s,t = 1,\ldots, T\)</span>, garante que no modelo transformado o MQO é não viesado</p>
+<hr>
+</section>
+<section id="a-transformação-intragrupo-within-6" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<section id="solução-manual-no-r" class="slide level2">
+<h2>Solução Manual no <code>R</code></h2>
+<p>Isso <em>funciona</em> para o nosso problema com o efeito fixo <span class="math inline">\(c_i\)</span> porque <span class="math inline">\(c_i\)</span> não varia no tempo por suposição! A média de uma constante é elas mesma, <span class="math inline">\(\bar c_i = c_i\)</span></p>
+<p>–</p>
+<p><span class="math display">\[y_{it}-\bar{y}_i = \beta_1 (x_{it} - \bar{x}_i) + c_i - \bar c_i + u_{it}-\bar{u}_i\]</span></p>
+<p>É fácil fazer você mesmo! Primeiro vamos calcular os valores centralizados:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>cdata &lt;- css %&gt;%</span>
+<span id="cb6-2"><a href="#cb6-2"></a>  group_by(county) %&gt;%</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  mutate(mean_crime = mean(crmrte),</span>
+<span id="cb6-4"><a href="#cb6-4"></a>         mean_prob = mean(prbarr)) %&gt;%</span>
+<span id="cb6-5"><a href="#cb6-5"></a>  mutate(demeaned_crime = crmrte - mean_crime,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>         demeaned_prob = prbarr - mean_prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="a-transformação-intragrupo-within-7" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<section id="solução-manual-no-r-1" class="slide level2">
+<h2>Solução Manual no <code>R</code></h2>
+<p>Em seguida, rodamos os modelos <strong><em>Pooled</em></strong> e <strong><em>Transformação Intragrupo</em></strong> com MQO simples:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a>mod$pooled &lt;- lm(crmrte ~ prbarr, data = cdata)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>mod$intra &lt;- lm(demeaned_crime ~ demeaned_prob, data = cdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="a-transformação-intragrupo-within-8" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<section id="solução-manual-no-r-2" class="slide level2">
+<h2>Solução Manual no <code>R</code></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><code>{r tab1,echo = FALSE} library(huxtable) ht = modelsummary::modelsummary(mod[c("pooled","dummy","intra")],                            statistic = 'std.error',                            coef_omit = "factor",                            gof_map = gofmap,                            output = "huxtable") %&gt;%   set_text_color(row = c(4,6), col = c(3,4), value = 'red') font_size(ht) &lt;- 14 ht</code></p>
+</div><p>–</p><div class="column" style="width:50%;">
+<ul>
+<li class="fragment"><p>A estimativa para <code>prbarr</code> é positiva no <strong><em>Pooled</em></strong></p></li>
+<li class="fragment"><p>Cuidando da heterogeneidade não observada <span class="math inline">\(c_i\)</span>…</p></li>
+<li class="fragment"><p>…seja incluindo uma <strong><em>dummy</em></strong> para cada <span class="math inline">\(i\)</span> ou transformação <strong><em>intragrupo</em></strong></p></li>
+<li class="fragment"><p>obtemos: <code>r round(coef(mod$intra)[2],3)</code> .</p></li>
+</ul>
+</div><hr><section id="a-transformação-intragrupo-within-9" class="title-slide slide level1 center">
+<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+
+</section>
+<section id="interpretando-as-estimativas" class="slide level2">
+<h2>Interpretando as estimativas</h2>
+<p><code>{r,echo = FALSE} panel_p = round(predict(mod$dummy,newdata = data.frame(prbarr = c(0.2,0.3), county = factor(1))),3)</code></p>
+<ul>
+<li class="fragment"><p>Como interpretar essas inclinações negativas?</p></li>
+<li class="fragment"><p>Olhamos para uma única unidade <span class="math inline">\(i\)</span> e perguntamos:</p></li>
+</ul>
+<blockquote>
+<p>se a probabilidade de prisão em <span class="math inline">\(i\)</span> aumentar em 10 pontos percentuais (ou seja, de 0,2 para 0,3) do ano <span class="math inline">\(t\)</span> para <span class="math inline">\(t+1\)</span>, esperamos que os crimes por pessoa caiam de <code>r panel_p[1]</code> para <code>r panel_p[2]</code>, ou por <code>r round(100 * diff(panel_p) / panel_p[1],2)</code> por cento.</p>
+</blockquote>
+<p><code>{r,echo = FALSE,fig.height = 3} pcolor</code></p>
+<hr>
+</section>
+<section id="estimativa-de-efeitos-fixos-no-r" class="title-slide slide level1 center">
+<h1>Estimativa de Efeitos Fixos no <code>R</code></h1>
+
+</section>
+<section id="use-um-pacote" class="slide level2">
+<h2>use um Pacote!</h2>
+<ul>
+<li class="fragment"><p>Na vida real, você dificilmente realizará a transformação intragrupo manualmente</p></li>
+<li class="fragment"><p>use um pacote!</p></li>
+<li class="fragment"><p>Existem várias opções (<a href="https://github.com/lrberge/fixest"><code>fixest</code></a> é o mais eficiente). Em nosso contexto:</p></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>mod$FE &lt;- fixest::feols(crmrte ~ prbarr | county, cdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li class="fragment"><p>Observe a configuração semelhante à <code>estimatr::iv_robust</code> <em>fórmula de duas partes</em>. Aqui os efeitos fixos vêm após o <code>|</code>.</p></li>
+<li class="fragment"><p>Além disso, podemos ter <em>mais de um efeito fixo</em>! Para um exemplo legal com <em>três</em> efeitos fixos veja a <a href="https://cran.r-project.org/web/packages/fixest/vignettes/fixest_walkthrough.html">vinheta</a> do pacote.</p></li>
+</ul>
+<hr>
+</section>
+<section id="estimativa-de-efeitos-fixos-no-r-1" class="title-slide slide level1 center">
+<h1>Estimativa de Efeitos Fixos no <code>R</code></h1>
+
+</section>
+<section id="use-um-pacote-1" class="slide level2">
+<h2>use um Pacote!</h2>
+<p>Nem só de <code>R</code> vive um econometrista! Alguns outros pacotes de EF também para <code>Stata</code> e <code>Python</code></p>
+<ul>
+<li class="fragment"><strong>R</strong>
+<ul>
+<li class="fragment"><a href="https://cran.r-project.org/web/packages/plm/index.html"><code>plm</code></a> (função plm)</li>
+<li class="fragment"><a href="https://cran.r-project.org/web/packages/lfe/"><code>lfe</code></a> (função felm)</li>
+</ul></li>
+<li class="fragment"><strong>Stata</strong>
+<ul>
+<li class="fragment"><a href="https://github.com/sergiocorreia/reghdfe"><code>reghdfe</code></a></li>
+</ul></li>
+<li class="fragment"><strong>Python</strong>
+<ul>
+<li class="fragment"><a href="https://www.statsmodels.org/stable/example_formulas.html"><code>Statsmodels</code></a> (<em>dummies</em> somente)</li>
+<li class="fragment"><a href="https://pypi.org/project/linearmodels/"><code>linearmodels</code></a> (EF em duas vias)</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="estimativa-de-efeitos-fixos-no-r-2" class="title-slide slide level1 center">
+<h1>Estimativa de Efeitos Fixos no <code>R</code></h1>
+
+</section>
+<section id="use-o-fixest" class="slide level2">
+<h2>use o <code>fixest</code> 🙂</h2>
+<p>.left-wide[</p>
+<p>```{r,echo = FALSE} ht = modelsummary::modelsummary(mod[c(“pooled”,“dummy”,“intra”,“FE”)], statistic = ‘std.error’, coef_omit = “factor”, gof_map = gofmap,output = “huxtable”)</p>
+<p>ht %&gt;% set_text_color(row = c(4,6,4), col = c(3,4,5), value = ‘red’)</p>
+<pre><code>
+
+:::
+
+.right-thin[
+
+* Mesmas estimativas! 😅
+
+* `fixest` calcula erros padrão **robustos por clusters**.
+
+* Suspeita que haja forte correlação nos resíduos *dentro* de cada condado (ao longo do tempo).
+
+:::
+
+
+---
+
+# Transformação Intragrupo Animada!
+
+.left-wide[
+
+
+
+```{r,echo = FALSE}
+knitr::include_graphics("../../img/gifs/panel.gif")</code></pre>
+</section>
+
+</div>
+<p>.right-thin[</p>
+<ul>
+<li class="fragment"><p>Transformação intragrupo <strong>centraliza</strong> os dados!</p></li>
+<li class="fragment"><p>Subtrair a média temporal de <span class="math inline">\(y\)</span> e <span class="math inline">\(x\)</span>, <em>retira</em> os fatores fixos no tempo relacionados ao <em>condado</em></p></li>
+<li class="fragment"><p>Apenas variação <em>dentro</em> do condado</p></li>
+<li class="fragment"><p>Créditos para <a href="http://nickchk.com">Nick C Huntington-Klein</a>.</p></li>
+</ul>
+</section>
+
+</div>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="leitura-recomendada" class="title-slide slide level1 center">
+<h1>Leitura Recomendada</h1>
+<ul>
+<li class="fragment"><p>WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. Capítulo 13 O Agrupamento de Cortes Transversais ao Longo do Tempo.</p></li>
+<li class="fragment"><p>GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed.&nbsp;Capítulo 16 Modelos de regressão com dados em painel</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>layout: false</p>
+<p>class: title-slide-final, middle background-image: url(../../img/logo/UdescEsag.jpeg) background-size: 350px background-position: 9% 19%</p>
+</section></section>
+<section id="até-a-próxima-aula" class="title-slide slide level1 center">
+<h1>ATÉ A PRÓXIMA AULA!</h1>
+<p>Com a Lista 1 feita! <code>r emo::ji("white_check_mark")</code></p>
+<p>.footnote[ [1]: Este slides foram baseados nas aulas de econometria da <a href="https://github.com/ScPoEcon/ScPoEconometrics-Slides">SciencesPo Department of Economics</a>]</p>
+<table>
+<colgroup>
+<col style="width: 76%">
+<col style="width: 23%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://github.com/rfbressan/econometria3_slides">.ScPored[<i class="fa fa-link fa-fw"></i>]</a></td>
+<td style="text-align: left;">Slides</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="http://github.com/rfbressan">.ScPored[<i class="fa fa-github fa-fw"></i>]</a></td>
+<td style="text-align: left;"><span class="citation" data-cites="rfbressan">@rfbressan</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/06-panel/lista_IV_pt.html">.ScPored[<i class="fa fa-list fa-fw"></i>]</a></td>
+<td style="text-align: left;">Lista de Exercícios IV</td>
+</tr>
+</tbody>
+</table>
+
+<img src="img/UdescEsag.jpeg" class="slide-logo r-stretch"><div class="footer footer-default">
+
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="04-panel_pt_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="04-panel_pt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="04-panel_pt_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="04-panel_pt_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="04-panel_pt_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="04-panel_pt_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="04-panel_pt_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="04-panel_pt_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="04-panel_pt_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="04-panel_pt_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="04-panel_pt_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
