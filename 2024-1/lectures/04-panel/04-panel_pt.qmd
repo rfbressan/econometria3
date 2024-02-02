@@ -433,14 +433,15 @@ y_{i1}-y_{i2} &= \beta_1 (x_{i1} - x_{i2}) + c_i-c_i + u_{i1}-u_{i2} \\\Delta y_
 
 E para recuperar o parâmetro de interesse $\beta_1$ rodamos
 
-```{r,eval=FALSE}
-lm(deltay ~ deltax, diff_data) 
+```{python}
+#| eval: false
+#| echo: true
+#| code-fold: show
+smf.ols(deltay ~ deltax, diff_data).fit() 
 ```
     
     
----
-
-# A Transformação Intragrupo (_Within_)
+## A Transformação Intragrupo (_Within_)
 
 ::::{.columns}
 :::{.column width="50%"}
@@ -455,7 +456,6 @@ lm(deltay ~ deltax, diff_data)
 :::{.column width="50%"}
 
 * Seja $\bar{x}_i$ a média *ao longo do tempo* dos valores $x$ de $i$:
-
 $$\bar{x}_i = \frac{1}{T} \sum_{t=1}^T x_{it}$$
 
 1. para todas as variáveis, calcule sua média no tempo para cada grupo $i$: $\bar{x}_i,\bar{y}_i$ etc.
@@ -463,13 +463,13 @@ $$\bar{x}_i = \frac{1}{T} \sum_{t=1}^T x_{it}$$
 1. Por fim, regresse $\ddot{y}_{it}$ em $\ddot{x}_{it}$
 :::
 
----
+::::
 
-# A Transformação Intragrupo (_Within_)
+## A Transformação Intragrupo (_Within_)
 
 - Se $y_{it} = \beta_1 x_{it} + c_i + u_{it}$, então
 
---
+:::{.fragment}
 $$
 \begin{align*}
 \bar{y}_i&=\frac{1}{T}\sum_t y_{it}\\
@@ -477,8 +477,9 @@ $$
 &=\beta_1\bar{x}_i+c_i+\bar{u}_i
 \end{align*}
 $$
-Logo,
+:::
 
+- Logo,
 $$
 \begin{align*}
 \ddot{y}_{it}&=y_{it}-\bar{y}_i\\
@@ -486,32 +487,28 @@ $$
 &=\beta_1\ddot{x}_{it} + \ddot{u}_{it}
 \end{align*}
 $$
----
 
-# A Transformação Intragrupo (_Within_)
-## Graus de liberdade
+
+## A Transformação Intragrupo (_Within_)
+### Graus de liberdade
 
 - $\ddot{y}_{it}=\beta_1\ddot{x}_{1,it} + \beta_2\ddot{x}_{2,it} + \ldots + \beta_k\ddot{x}_{k,it} + \ddot{u}_{it}$
 
 - A princípio temos $NT - k$ graus de liberdade
 
---
 
-- `r emo::ji("warning")` Isso não é verdade!!
-
---
+- :warning: **Isso não é verdade!!**
 
 - Tivemos de calcular $N$ **médias intragrupo**. Perdemos esses graus de liberdade
 
 - _gl_: $NT-N-k=N(T-1)-k$
 
---
 
 - Quanto mais efeitos fixos adicionarmos na regressão, mais ***gl*** iremos perder 
----
 
-# A Transformação Intragrupo (_Within_)
-## Hipóteses
+
+## A Transformação Intragrupo (_Within_)
+### Hipóteses
 
 Satisfeitas as seguintes hipóteses, o estimador de **Efeitos Fixos** será ***não viesado***
 
@@ -523,69 +520,62 @@ Satisfeitas as seguintes hipóteses, o estimador de **Efeitos Fixos** será ***n
 
 1. Para cada $t$, o valor esperado do erro $u_{it}$ condicional aos regressores em ***todos os períodos de tempo*** e ao efeito não observado, é zero: $E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0$ (**exogeneidade estrita**)
 
---
 
-Se tivermos um painel curto $(N>>T)$, então podemos dizer que assintoticamente $(N\rightarrow\infty)$ o estimador de Efeitos Fixos é _consistente_.
+- Se tivermos um painel curto $(N>>T)$, então podemos dizer que assintoticamente $(N\rightarrow\infty)$ o estimador de Efeitos Fixos é _consistente_.
 
----
 
-# A Transformação Intragrupo (_Within_)
-## Hipóteses
+
+## A Transformação Intragrupo (_Within_) 
+### Hipóteses
 
 - Por que a hipótese de exogeneidade estrita é tão importante?
-
---
 
 - $E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0$ implica em $E[X_{is}u_{it}]=0\quad s,t = 1,\ldots, T$
 
 - Modelo transformado é $\ddot{y}_{it}=\ddot{X}_{it}\beta+\ddot{u}_{it}$
 
-- MQO **não viesado** se $E[\ddot{X}_{it}\ddot{u}_{it}]=0$
-
---
+- MQO **não viesado** se $E[\ddot{X}_{it}\ddot{u}_{it}]=0\qquad$ 
 
 - Interpretação: uma vez que $X_{it}$ e  $c_i$ estejam controlados na regressão, ***outros períodos*** para os regressores não importam!
 
-- `r emo::ji("warning")` .red[ATENÇÃO]
+- :warning: <span style="color:red">ATENÇÃO</span>
   + Isso não impede modelos de defasagem distribuída! 
   + Modelos de variável dependente defasada estão excluídos
 
----
 
-# A Transformação Intragrupo (_Within_)
-## Hipóteses
+
+## A Transformação Intragrupo (_Within_)
+### Hipóteses
 
 - Por que a hipótese de exogeneidade estrita é tão importante?
 
+:::{.fragment}
 $$
 \begin{align*}
 E[\ddot{X}_{it}\ddot{u}_{it}]&=E[(X_{it}-\bar{X}_i)(u_{it}-\bar{u}_i)]\\
-&=E[X_{it}u_{it}]+E[X_{it}\bar{u}_i]+\ldots
+&=E[X_{it}u_{it}]-E[X_{it}\bar{u}_i]-E[\bar{X}_iu_{it}]+E[\bar{X}_i\bar{u}_i]
 \end{align*}
 $$
-
---
+:::
 
 - $E[X_{it}u_{it}]= 0$, pois $E[X_{is}u_{it}]=0$ e $s=t$
 
---
 
 - $E[X_{it}\bar{u}_i]=\frac{1}{T}\lbrace E[X_{it}u_{i1}]+\ldots + E[X_{it}u_{iT}]\rbrace$
   + Cada um dos valores esperados também é zero pela hipótese de exogeneidade estrita!
-  
---
 
-Ou seja, a hipótese de exogeneidade estrita, $E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0$ implica em $E[X_{is}u_{it}]=0\quad s,t = 1,\ldots, T$, garante que no modelo transformado o MQO é não viesado 
+- O mesmo vai ocorrer para os termos $E[\bar{X}_iu_{it}]$ e $E[\bar{X}_i\bar{u}_i]$
 
----
 
-# A Transformação Intragrupo (_Within_)
+- Ou seja, a hipótese de exogeneidade estrita, $E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0$ implica em $E[X_{is}u_{it}]=0\quad s,t = 1,\ldots, T$, e garante que no modelo transformado o MQO é não viesado 
 
-## Solução Manual no `R`
 
-Isso *funciona* para o nosso problema com o efeito fixo $c_i$ porque $c_i$ não varia no tempo por suposição! A média de uma constante é elas mesma, $\bar c_i = c_i$
+## A Transformação Intragrupo (_Within_)
 
---
+### Solução Manual no `R`
+
+Isso *funciona* para o nosso problema com o efeito fixo $c_i$ porque $c_i$ não varia no tempo por suposição! A média de uma constante é ela mesma, $\bar c_i = c_i$
+
 
 $$y_{it}-\bar{y}_i = \beta_1 (x_{it} - \bar{x}_i) + c_i - \bar c_i + u_{it}-\bar{u}_i$$
 
@@ -601,11 +591,11 @@ cdata <- css %>%
          demeaned_prob = prbarr - mean_prob)
 ```
 
----
 
-# A Transformação Intragrupo (_Within_)
 
-## Solução Manual no `R`
+## A Transformação Intragrupo (_Within_)
+
+### Solução Manual no `R`
 
 Em seguida, rodamos os modelos ***Pooled***  e ***Transformação Intragrupo*** com MQO simples:
 
@@ -614,11 +604,11 @@ mod$pooled <- lm(crmrte ~ prbarr, data = cdata)
 mod$intra <- lm(demeaned_crime ~ demeaned_prob, data = cdata)
 ```
 
----
 
-# A Transformação Intragrupo (_Within_)
 
-## Solução Manual no `R`
+## A Transformação Intragrupo (_Within_)
+
+### Solução Manual no `R`
 
 ::::{.columns}
 :::{.column width="50%"}
@@ -636,7 +626,6 @@ ht
 ```
 :::
 
---
 
 :::{.column width="50%"}
 
@@ -650,11 +639,11 @@ ht
 
 :::
 
----
+::::
 
-# A Transformação Intragrupo (_Within_)
+## A Transformação Intragrupo (_Within_)
 
-## Interpretando as estimativas
+### Interpretando as estimativas
 
 
 ```{r,echo = FALSE}
@@ -672,10 +661,10 @@ pcolor
 ```
 
 
----
 
-# Estimativa de Efeitos Fixos no `R`
-## use um Pacote!
+
+## Estimativa de Efeitos Fixos no `R`
+### use um Pacote!
 
 
 * Na vida real, você dificilmente realizará a transformação intragrupo manualmente
@@ -692,10 +681,10 @@ mod$FE <- fixest::feols(crmrte ~ prbarr | county, cdata)
 
 * Além disso, podemos ter *mais de um efeito fixo*! Para um exemplo legal com *três* efeitos fixos veja a [vinheta](https://cran.r-project.org/web/packages/fixest/vignettes/fixest_walkthrough.html) do pacote.
 
----
 
-# Estimativa de Efeitos Fixos no `R`
-## use um Pacote!
+
+## Estimativa de Efeitos Fixos no `R`
+### use um Pacote!
 
 Nem só de `R` vive um econometrista! Alguns outros pacotes de EF também para `Stata` e `Python`
 
@@ -710,12 +699,13 @@ Nem só de `R` vive um econometrista! Alguns outros pacotes de EF também para `
   + [`Statsmodels`](https://www.statsmodels.org/stable/example_formulas.html) (_dummies_ somente)
   + [`linearmodels`](https://pypi.org/project/linearmodels/) (EF em duas vias)
 
----
 
-# Estimativa de Efeitos Fixos no `R`
-## use o `fixest` 🙂
 
-.left-wide[
+## Estimativa de Efeitos Fixos no `R`
+### use o `fixest` 🙂
+
+::::{.columns}
+:::{.column width="75%"}
 ```{r,echo = FALSE}
 ht = modelsummary::modelsummary(mod[c("pooled","dummy","intra","FE")],
                            statistic = 'std.error',
@@ -728,7 +718,7 @@ ht %>%
 ```
 :::
 
-.right-thin[
+:::{.column width="25%"}
 
 * Mesmas estimativas! 😅
 
@@ -737,20 +727,20 @@ ht %>%
 * Suspeita que haja forte correlação nos resíduos *dentro* de cada condado (ao longo do tempo).
 
 :::
+::::
 
 
----
+## Transformação Intragrupo Animada!
 
-# Transformação Intragrupo Animada!
-
-.left-wide[
+::::{.columns}
+:::{.column width="75%"}
 
 ```{r,echo = FALSE}
 knitr::include_graphics("../../img/gifs/panel.gif")
 ```
 :::
 
-.right-thin[
+:::{.column width="25%"}
 
 * Transformação intragrupo **centraliza** os dados!
 
@@ -762,35 +752,18 @@ knitr::include_graphics("../../img/gifs/panel.gif")
 
 :::
 
----
+::::
 
-# Leitura Recomendada
+## :books: Leitura Recomendada
 
 * WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. Capítulo 13 O Agrupamento de Cortes Transversais ao Longo do Tempo.
 
 * GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed. Capítulo 16 Modelos de regressão com dados em painel
 
----
 
-layout: false
+## ATÉ A PRÓXIMA AULA!
 
-class: title-slide-final, middle
-background-image: url(../../img/logo/UdescEsag.jpeg)
-background-size: 350px
-background-position: 9% 19%
-
-# ATÉ A PRÓXIMA AULA!
-
-Com a Lista 1 feita! `r emo::ji("white_check_mark")`
 
 .footnote[
 [1]: Este slides foram baseados nas aulas de econometria da [SciencesPo Department of Economics](https://github.com/ScPoEcon/ScPoEconometrics-Slides)
 ]
-
-
-|                                                                                                            |                                   |
-| :--------------------------------------------------------------------------------------------------------- | :-------------------------------- |
-| <a href="https://github.com/rfbressan/econometria3_slides">.ScPored[<i class="fa fa-link fa-fw"></i>] | Slides |
-| <a href="http://github.com/rfbressan">.ScPored[<i class="fa fa-github fa-fw"></i>]                          | @rfbressan                      |
-| <a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/06-panel/lista_IV_pt.html">.ScPored[<i class="fa fa-list fa-fw"></i>] | Lista de Exercícios IV |
-

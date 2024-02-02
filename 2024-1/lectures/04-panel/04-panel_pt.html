@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="04-panel_pt_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="04-panel_pt_files/libs/clipboard/clipboard.min.js"></script>
 <script src="04-panel_pt_files/libs/quarto-html/tabby.min.js"></script>
 <script src="04-panel_pt_files/libs/quarto-html/popper.min.js"></script>
 <script src="04-panel_pt_files/libs/quarto-html/tippy.umd.min.js"></script>
@@ -8,7 +8,7 @@
 <link href="04-panel_pt_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="04-panel_pt_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="04-panel_pt_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.361">
+  <meta name="generator" content="quarto-1.4.549">
 
   <meta name="author" content="Rafael Bressan">
   <title>Econometria III</title>
@@ -31,7 +31,7 @@
     }
     /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -223,7 +223,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -387,7 +388,7 @@
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  
   <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
@@ -412,44 +413,44 @@ Rafael Bressan
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Até agora, lidamos com dados que se parecem com isso:</p>
-<div class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="62">
+<div id="6d0a8059" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="90">
 <style type="text/css">
 </style>
 
-<table id="T_540e2" data-quarto-postprocess="true">
+<table id="T_b1d1e" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_540e2_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Condado</th>
-<th id="T_540e2_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Criminalidade</th>
-<th id="T_540e2_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Prob. Prisão</th>
+<th id="T_b1d1e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Condado</th>
+<th id="T_b1d1e_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Criminalidade</th>
+<th id="T_b1d1e_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Prob. Prisão</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_540e2_row0_col0" class="data row0 col0">1</td>
-<td id="T_540e2_row0_col1" class="data row0 col1">0.039885</td>
-<td id="T_540e2_row0_col2" class="data row0 col2">0.289696</td>
+<td id="T_b1d1e_row0_col0" class="data row0 col0">1</td>
+<td id="T_b1d1e_row0_col1" class="data row0 col1">0.039885</td>
+<td id="T_b1d1e_row0_col2" class="data row0 col2">0.289696</td>
 </tr>
 <tr class="even">
-<td id="T_540e2_row1_col0" class="data row1 col0">3</td>
-<td id="T_540e2_row1_col1" class="data row1 col1">0.016392</td>
-<td id="T_540e2_row1_col2" class="data row1 col2">0.202899</td>
+<td id="T_b1d1e_row1_col0" class="data row1 col0">3</td>
+<td id="T_b1d1e_row1_col1" class="data row1 col1">0.016392</td>
+<td id="T_b1d1e_row1_col2" class="data row1 col2">0.202899</td>
 </tr>
 <tr class="odd">
-<td id="T_540e2_row2_col0" class="data row2 col0">5</td>
-<td id="T_540e2_row2_col1" class="data row2 col1">0.009337</td>
-<td id="T_540e2_row2_col2" class="data row2 col2">0.406593</td>
+<td id="T_b1d1e_row2_col0" class="data row2 col0">5</td>
+<td id="T_b1d1e_row2_col1" class="data row2 col1">0.009337</td>
+<td id="T_b1d1e_row2_col2" class="data row2 col2">0.406593</td>
 </tr>
 <tr class="even">
-<td id="T_540e2_row3_col0" class="data row3 col0">7</td>
-<td id="T_540e2_row3_col1" class="data row3 col1">0.021916</td>
-<td id="T_540e2_row3_col2" class="data row3 col2">0.431095</td>
+<td id="T_b1d1e_row3_col0" class="data row3 col0">7</td>
+<td id="T_b1d1e_row3_col1" class="data row3 col1">0.021916</td>
+<td id="T_b1d1e_row3_col2" class="data row3 col2">0.431095</td>
 </tr>
 <tr class="odd">
-<td id="T_540e2_row4_col0" class="data row4 col0">9</td>
-<td id="T_540e2_row4_col1" class="data row4 col1">0.007518</td>
-<td id="T_540e2_row4_col2" class="data row4 col2">0.631579</td>
+<td id="T_b1d1e_row4_col0" class="data row4 col0">9</td>
+<td id="T_b1d1e_row4_col1" class="data row4 col1">0.007518</td>
+<td id="T_b1d1e_row4_col2" class="data row4 col2">0.631579</td>
 </tr>
 </tbody>
 </table>
@@ -471,74 +472,74 @@ Rafael Bressan
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Agora, vamos adicionar um índice de <code>tempo</code>: <code>Ano</code>.</p>
-<div class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="63">
+<div id="74ba4d50" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="91">
 <style type="text/css">
 </style>
 
-<table id="T_acab5" data-quarto-postprocess="true">
+<table id="T_10ce2" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_acab5_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Condado</th>
-<th id="T_acab5_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Ano</th>
-<th id="T_acab5_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Criminalidade</th>
-<th id="T_acab5_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">Prob. Prisão</th>
+<th id="T_10ce2_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Condado</th>
+<th id="T_10ce2_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Ano</th>
+<th id="T_10ce2_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Criminalidade</th>
+<th id="T_10ce2_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">Prob. Prisão</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_acab5_row0_col0" class="data row0 col0">1</td>
-<td id="T_acab5_row0_col1" class="data row0 col1">81</td>
-<td id="T_acab5_row0_col2" class="data row0 col2">0.039885</td>
-<td id="T_acab5_row0_col3" class="data row0 col3">0.289696</td>
+<td id="T_10ce2_row0_col0" class="data row0 col0">1</td>
+<td id="T_10ce2_row0_col1" class="data row0 col1">81</td>
+<td id="T_10ce2_row0_col2" class="data row0 col2">0.039885</td>
+<td id="T_10ce2_row0_col3" class="data row0 col3">0.289696</td>
 </tr>
 <tr class="even">
-<td id="T_acab5_row1_col0" class="data row1 col0">1</td>
-<td id="T_acab5_row1_col1" class="data row1 col1">82</td>
-<td id="T_acab5_row1_col2" class="data row1 col2">0.038345</td>
-<td id="T_acab5_row1_col3" class="data row1 col3">0.338111</td>
+<td id="T_10ce2_row1_col0" class="data row1 col0">1</td>
+<td id="T_10ce2_row1_col1" class="data row1 col1">82</td>
+<td id="T_10ce2_row1_col2" class="data row1 col2">0.038345</td>
+<td id="T_10ce2_row1_col3" class="data row1 col3">0.338111</td>
 </tr>
 <tr class="odd">
-<td id="T_acab5_row2_col0" class="data row2 col0">1</td>
-<td id="T_acab5_row2_col1" class="data row2 col1">83</td>
-<td id="T_acab5_row2_col2" class="data row2 col2">0.030305</td>
-<td id="T_acab5_row2_col3" class="data row2 col3">0.330449</td>
+<td id="T_10ce2_row2_col0" class="data row2 col0">1</td>
+<td id="T_10ce2_row2_col1" class="data row2 col1">83</td>
+<td id="T_10ce2_row2_col2" class="data row2 col2">0.030305</td>
+<td id="T_10ce2_row2_col3" class="data row2 col3">0.330449</td>
 </tr>
 <tr class="even">
-<td id="T_acab5_row3_col0" class="data row3 col0">1</td>
-<td id="T_acab5_row3_col1" class="data row3 col1">84</td>
-<td id="T_acab5_row3_col2" class="data row3 col2">0.034726</td>
-<td id="T_acab5_row3_col3" class="data row3 col3">0.362525</td>
+<td id="T_10ce2_row3_col0" class="data row3 col0">1</td>
+<td id="T_10ce2_row3_col1" class="data row3 col1">84</td>
+<td id="T_10ce2_row3_col2" class="data row3 col2">0.034726</td>
+<td id="T_10ce2_row3_col3" class="data row3 col3">0.362525</td>
 </tr>
 <tr class="odd">
-<td id="T_acab5_row4_col0" class="data row4 col0">1</td>
-<td id="T_acab5_row4_col1" class="data row4 col1">85</td>
-<td id="T_acab5_row4_col2" class="data row4 col2">0.036573</td>
-<td id="T_acab5_row4_col3" class="data row4 col3">0.325395</td>
+<td id="T_10ce2_row4_col0" class="data row4 col0">1</td>
+<td id="T_10ce2_row4_col1" class="data row4 col1">85</td>
+<td id="T_10ce2_row4_col2" class="data row4 col2">0.036573</td>
+<td id="T_10ce2_row4_col3" class="data row4 col3">0.325395</td>
 </tr>
 <tr class="even">
-<td id="T_acab5_row5_col0" class="data row5 col0">1</td>
-<td id="T_acab5_row5_col1" class="data row5 col1">86</td>
-<td id="T_acab5_row5_col2" class="data row5 col2">0.034752</td>
-<td id="T_acab5_row5_col3" class="data row5 col3">0.326062</td>
+<td id="T_10ce2_row5_col0" class="data row5 col0">1</td>
+<td id="T_10ce2_row5_col1" class="data row5 col1">86</td>
+<td id="T_10ce2_row5_col2" class="data row5 col2">0.034752</td>
+<td id="T_10ce2_row5_col3" class="data row5 col3">0.326062</td>
 </tr>
 <tr class="odd">
-<td id="T_acab5_row6_col0" class="data row6 col0">1</td>
-<td id="T_acab5_row6_col1" class="data row6 col1">87</td>
-<td id="T_acab5_row6_col2" class="data row6 col2">0.035604</td>
-<td id="T_acab5_row6_col3" class="data row6 col3">0.298270</td>
+<td id="T_10ce2_row6_col0" class="data row6 col0">1</td>
+<td id="T_10ce2_row6_col1" class="data row6 col1">87</td>
+<td id="T_10ce2_row6_col2" class="data row6 col2">0.035604</td>
+<td id="T_10ce2_row6_col3" class="data row6 col3">0.298270</td>
 </tr>
 <tr class="even">
-<td id="T_acab5_row7_col0" class="data row7 col0">3</td>
-<td id="T_acab5_row7_col1" class="data row7 col1">81</td>
-<td id="T_acab5_row7_col2" class="data row7 col2">0.016392</td>
-<td id="T_acab5_row7_col3" class="data row7 col3">0.202899</td>
+<td id="T_10ce2_row7_col0" class="data row7 col0">3</td>
+<td id="T_10ce2_row7_col1" class="data row7 col1">81</td>
+<td id="T_10ce2_row7_col2" class="data row7 col2">0.016392</td>
+<td id="T_10ce2_row7_col3" class="data row7 col3">0.202899</td>
 </tr>
 <tr class="odd">
-<td id="T_acab5_row8_col0" class="data row8 col0">3</td>
-<td id="T_acab5_row8_col1" class="data row8 col1">82</td>
-<td id="T_acab5_row8_col2" class="data row8 col2">0.019065</td>
-<td id="T_acab5_row8_col3" class="data row8 col3">0.162218</td>
+<td id="T_10ce2_row8_col0" class="data row8 col0">3</td>
+<td id="T_10ce2_row8_col1" class="data row8 col1">82</td>
+<td id="T_10ce2_row8_col2" class="data row8 col2">0.019065</td>
+<td id="T_10ce2_row8_col3" class="data row8 col3">0.162218</td>
 </tr>
 </tbody>
 </table>
@@ -561,12 +562,12 @@ Rafael Bressan
 <li class="fragment">Os dados acima podem ser carregados com</li>
 </ul>
 <div class="fragment">
-<div class="cell" data-execution_count="4">
-<details open="">
+<div id="b3e5f480" class="cell" data-execution_count="4">
+<details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> wooldridge <span class="im">as</span> woo</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>crime4 <span class="op">=</span> woo.dataWoo(<span class="st">"crime4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a><span class="im">import</span> wooldridge <span class="im">as</span> woo</span>
+<span id="cb1-2"><a href=""></a></span>
+<span id="cb1-3"><a href=""></a>crime4 <span class="op">=</span> woo.dataWoo(<span class="st">"crime4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -608,32 +609,36 @@ crime &amp;= \beta_0 + \beta_1 police
 <li class="fragment"><p>plotar taxa de criminalidade versus probabilidade de prisão.</p></li>
 </ul>
 <div class="fragment">
-<div class="cell columns column-output-location" data-execution_count="5">
+<div id="b7858774" class="cell columns column-output-location" data-execution_count="5">
 <div class="column">
-<details open="">
+<details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Subset the data for 4 counties</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>css <span class="op">=</span> crime4.loc[crime4[<span class="st">"county"</span>].isin([<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">145</span>, <span class="dv">23</span>])]</span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># Create a figure and axes</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># Scatter plot</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>ax.scatter(css[<span class="st">"prbarr"</span>], css[<span class="st">"crmrte"</span>])</span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># Linear regression line</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a>slope, intercept <span class="op">=</span> np.polyfit(css[<span class="st">"prbarr"</span>], css[<span class="st">"crmrte"</span>], <span class="dv">1</span>)</span>
-<span id="cb2-11"><a href="#cb2-11"></a>ax.plot(css[<span class="st">"prbarr"</span>], slope <span class="op">*</span> css[<span class="st">"prbarr"</span>] <span class="op">+</span> intercept, color<span class="op">=</span><span class="st">"red"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12"></a></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co"># Set labels and title</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>ax.set_xlabel(<span class="st">"Probabilidade de prisão"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15"></a>ax.set_ylabel(<span class="st">"Taxa de criminalidade"</span>)</span>
-<span id="cb2-16"><a href="#cb2-16"></a></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="co"># Display the plot</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="co"># Subset the data for 4 counties</span></span>
+<span id="cb2-2"><a href=""></a>css <span class="op">=</span> crime4.loc[crime4[<span class="st">"county"</span>].isin([<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">145</span>, <span class="dv">23</span>])]</span>
+<span id="cb2-3"><a href=""></a></span>
+<span id="cb2-4"><a href=""></a><span class="co"># Create a figure and axes</span></span>
+<span id="cb2-5"><a href=""></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb2-6"><a href=""></a><span class="co"># Scatter plot</span></span>
+<span id="cb2-7"><a href=""></a>ax.scatter(css[<span class="st">"prbarr"</span>], css[<span class="st">"crmrte"</span>])</span>
+<span id="cb2-8"><a href=""></a></span>
+<span id="cb2-9"><a href=""></a><span class="co"># Linear regression line</span></span>
+<span id="cb2-10"><a href=""></a>slope, intercept <span class="op">=</span> np.polyfit(css[<span class="st">"prbarr"</span>], css[<span class="st">"crmrte"</span>], <span class="dv">1</span>)</span>
+<span id="cb2-11"><a href=""></a>ax.plot(css[<span class="st">"prbarr"</span>], slope <span class="op">*</span> css[<span class="st">"prbarr"</span>] <span class="op">+</span> intercept, color<span class="op">=</span><span class="st">"red"</span>)</span>
+<span id="cb2-12"><a href=""></a></span>
+<span id="cb2-13"><a href=""></a><span class="co"># Set labels and title</span></span>
+<span id="cb2-14"><a href=""></a>ax.set_xlabel(<span class="st">"Probabilidade de prisão"</span>)</span>
+<span id="cb2-15"><a href=""></a>ax.set_ylabel(<span class="st">"Taxa de criminalidade"</span>)</span>
+<span id="cb2-16"><a href=""></a></span>
+<span id="cb2-17"><a href=""></a><span class="co"># Display the plot</span></span>
+<span id="cb2-18"><a href=""></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div><div class="column">
 <div class="cell-output cell-output-display">
+<div>
+<figure>
 <p><img data-src="04-panel_pt_files/figure-revealjs/cell-6-output-1.png" width="872" height="456"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -650,7 +655,7 @@ crime &amp;= \beta_0 + \beta_1 police
 <li class="fragment"><p>Quão forte é o efeito?</p></li>
 </ul>
 <div class="fragment">
-<div class="cell" data-execution_count="6">
+<div id="7ac648ba" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>Inclinação da reta: 0.0648</code></pre>
 </div>
@@ -701,9 +706,13 @@ crime &amp;= \beta_0 + \beta_1 police
 </section>
 <section id="variação-intragrupo-e-entre-grupos-1" class="slide level2">
 <h2>Variação Intragrupo e Entre-grupos</h2>
-<div class="cell" data-execution_count="7">
+<div id="395c4d67" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
+<div>
+<figure>
 <p><img data-src="04-panel_pt_files/figure-revealjs/cell-8-output-1.png" width="1095" height="826"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -761,18 +770,18 @@ y_i = \beta_0 + \beta_1 x_i + \underbrace{c_i + u_i}_{v_i}
 <section id="regressão-com-variável-dummy-1" class="slide level2">
 <h2>Regressão com Variável <em>Dummy</em></h2>
 <p><span class="math display">\[y_{it} = \beta_1 x_{it} + c_i + u_{it},\quad t=1,2,...T\]</span></p>
-<div class="cell" data-execution_count="8">
-<details open="">
+<div id="df1b7375" class="cell" data-execution_count="8">
+<details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
-<span id="cb4-2"><a href="#cb4-2"></a></span>
-<span id="cb4-3"><a href="#cb4-3"></a>reg_dummy <span class="op">=</span> smf.ols(formula<span class="op">=</span><span class="st">"crmrte ~ -1 + prbarr + C(county)"</span>, data<span class="op">=</span>css).fit()</span>
-<span id="cb4-4"><a href="#cb4-4"></a></span>
-<span id="cb4-5"><a href="#cb4-5"></a>pd.concat(</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    [reg_dummy.params, reg_dummy.bse, reg_dummy.tvalues, reg_dummy.pvalues], axis<span class="op">=</span><span class="dv">1</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a>).rename(columns<span class="op">=</span>{<span class="dv">0</span>: <span class="st">"coef"</span>, <span class="dv">1</span>: <span class="st">"std err"</span>, <span class="dv">2</span>: <span class="st">"t"</span>, <span class="dv">3</span>: <span class="st">"P&gt;|t|"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a>reg_dummy <span class="op">=</span> smf.ols(formula<span class="op">=</span><span class="st">"crmrte ~ -1 + prbarr + C(county)"</span>, data<span class="op">=</span>css).fit()</span>
+<span id="cb4-4"><a href=""></a></span>
+<span id="cb4-5"><a href=""></a>pd.concat(</span>
+<span id="cb4-6"><a href=""></a>    [reg_dummy.params, reg_dummy.bse, reg_dummy.tvalues, reg_dummy.pvalues], axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb4-7"><a href=""></a>).rename(columns<span class="op">=</span>{<span class="dv">0</span>: <span class="st">"coef"</span>, <span class="dv">1</span>: <span class="st">"std err"</span>, <span class="dv">2</span>: <span class="st">"t"</span>, <span class="dv">3</span>: <span class="st">"P&gt;|t|"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="67">
+<div class="cell-output cell-output-display" data-execution_count="95">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -852,32 +861,36 @@ y_i = \beta_0 + \beta_1 x_i + \underbrace{c_i + u_i}_{v_i}
 <li class="fragment"><p>Cada condado tem seu próprio intercepto <span class="math inline">\(c_i\)</span>.</p></li>
 </ul>
 </div><div class="column" style="width:75%;">
-<div class="cell" data-execution_count="9">
-<details>
+<div id="647de724" class="cell" data-execution_count="9">
+<details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Get predicted line</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>css[<span class="st">"pred"</span>] <span class="op">=</span> reg_dummy.predict(css)</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># Plot regression lines</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>g <span class="op">=</span> sns.lmplot(</span>
-<span id="cb5-5"><a href="#cb5-5"></a>    data<span class="op">=</span>css, x<span class="op">=</span><span class="st">"prbarr"</span>, y<span class="op">=</span><span class="st">"pred"</span>, scatter<span class="op">=</span><span class="va">False</span>, hue<span class="op">=</span><span class="st">"county"</span>, legend<span class="op">=</span><span class="va">False</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>)</span>
-<span id="cb5-7"><a href="#cb5-7"></a>g.figure.set_size_inches(<span class="dv">13</span>, <span class="dv">9</span>)</span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co"># Create scatter plot with line for each county</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a>sns.scatterplot(</span>
-<span id="cb5-10"><a href="#cb5-10"></a>    data<span class="op">=</span>css, x<span class="op">=</span><span class="st">"prbarr"</span>, y<span class="op">=</span><span class="st">"crmrte"</span>, hue<span class="op">=</span><span class="st">"county"</span>, legend<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>g.axes[<span class="dv">0</span>, <span class="dv">0</span>]</span>
-<span id="cb5-11"><a href="#cb5-11"></a>)</span>
-<span id="cb5-12"><a href="#cb5-12"></a>plt.legend()</span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co"># Set plot labels</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a>plt.xlabel(<span class="st">"Probabilidade de Prisão"</span>)</span>
-<span id="cb5-15"><a href="#cb5-15"></a>plt.ylabel(<span class="st">"Taxa de Crime"</span>)</span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="co"># plt.title("Regressão com Variável Dummy")</span></span>
-<span id="cb5-17"><a href="#cb5-17"></a></span>
-<span id="cb5-18"><a href="#cb5-18"></a><span class="co"># Show the plot</span></span>
-<span id="cb5-19"><a href="#cb5-19"></a>sns.despine()</span>
-<span id="cb5-20"><a href="#cb5-20"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href=""></a><span class="co"># Get predicted line</span></span>
+<span id="cb5-2"><a href=""></a>css[<span class="st">"pred"</span>] <span class="op">=</span> reg_dummy.predict(css)</span>
+<span id="cb5-3"><a href=""></a><span class="co"># Plot regression lines</span></span>
+<span id="cb5-4"><a href=""></a>g <span class="op">=</span> sns.lmplot(</span>
+<span id="cb5-5"><a href=""></a>    data<span class="op">=</span>css, x<span class="op">=</span><span class="st">"prbarr"</span>, y<span class="op">=</span><span class="st">"pred"</span>, scatter<span class="op">=</span><span class="va">False</span>, hue<span class="op">=</span><span class="st">"county"</span>, legend<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-6"><a href=""></a>)</span>
+<span id="cb5-7"><a href=""></a>g.figure.set_size_inches(<span class="dv">13</span>, <span class="dv">9</span>)</span>
+<span id="cb5-8"><a href=""></a><span class="co"># Create scatter plot with line for each county</span></span>
+<span id="cb5-9"><a href=""></a>sns.scatterplot(</span>
+<span id="cb5-10"><a href=""></a>    data<span class="op">=</span>css, x<span class="op">=</span><span class="st">"prbarr"</span>, y<span class="op">=</span><span class="st">"crmrte"</span>, hue<span class="op">=</span><span class="st">"county"</span>, legend<span class="op">=</span><span class="va">False</span>, ax<span class="op">=</span>g.axes[<span class="dv">0</span>, <span class="dv">0</span>]</span>
+<span id="cb5-11"><a href=""></a>)</span>
+<span id="cb5-12"><a href=""></a>plt.legend()</span>
+<span id="cb5-13"><a href=""></a><span class="co"># Set plot labels</span></span>
+<span id="cb5-14"><a href=""></a>plt.xlabel(<span class="st">"Probabilidade de Prisão"</span>)</span>
+<span id="cb5-15"><a href=""></a>plt.ylabel(<span class="st">"Taxa de Crime"</span>)</span>
+<span id="cb5-16"><a href=""></a><span class="co"># plt.title("Regressão com Variável Dummy")</span></span>
+<span id="cb5-17"><a href=""></a></span>
+<span id="cb5-18"><a href=""></a><span class="co"># Show the plot</span></span>
+<span id="cb5-19"><a href=""></a>sns.despine()</span>
+<span id="cb5-20"><a href=""></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
+<div>
+<figure>
 <p><img data-src="04-panel_pt_files/figure-revealjs/cell-10-output-1.png" width="957" height="738"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -889,16 +902,15 @@ y_i = \beta_0 + \beta_1 x_i + \underbrace{c_i + u_i}_{v_i}
 <p><span class="math display">\[\begin{align}y_{i1} &amp;= \beta_1 x_{i1} + c_i + u_{i1} \\y_{i2} &amp;= \beta_1 x_{i2} + c_i + u_{i2} \\&amp; \Rightarrow \\
 y_{i1}-y_{i2} &amp;= \beta_1 (x_{i1} - x_{i2}) + c_i-c_i + u_{i1}-u_{i2} \\\Delta y_{i} &amp;= \beta_1 \Delta x_{i} + \Delta u_{i}\end{align}\]</span></p>
 <p>E para recuperar o parâmetro de interesse <span class="math inline">\(\beta_1\)</span> rodamos</p>
-<p><code>{r,eval=FALSE} lm(deltay ~ deltax, diff_data)</code></p>
+<div id="12ce4080" class="cell" data-execution_count="10">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>smf.ols(deltay <span class="op">~</span> deltax, diff_data).fit() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="a-transformação-intragrupo-within" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
-</section>
+<section id="a-transformação-intragrupo-within" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -908,76 +920,55 @@ y_{i1}-y_{i2} &amp;= \beta_1 (x_{i1} - x_{i2}) + c_i-c_i + u_{i1}-u_{i2} \\\Delt
 </ul>
 </div><div class="column" style="width:50%;">
 <ul>
-<li class="fragment">Seja <span class="math inline">\(\bar{x}_i\)</span> a média <em>ao longo do tempo</em> dos valores <span class="math inline">\(x\)</span> de <span class="math inline">\(i\)</span>:</li>
+<li class="fragment">Seja <span class="math inline">\(\bar{x}_i\)</span> a média <em>ao longo do tempo</em> dos valores <span class="math inline">\(x\)</span> de <span class="math inline">\(i\)</span>: <span class="math display">\[\bar{x}_i = \frac{1}{T} \sum_{t=1}^T x_{it}\]</span></li>
 </ul>
-<p><span class="math display">\[\bar{x}_i = \frac{1}{T} \sum_{t=1}^T x_{it}\]</span></p>
 <ol type="1">
 <li class="fragment">para todas as variáveis, calcule sua média no tempo para cada grupo <span class="math inline">\(i\)</span>: <span class="math inline">\(\bar{x}_i,\bar{y}_i\)</span> etc.</li>
 <li class="fragment">para cada <strong>observação</strong>, subtraia essa média de tempo do valor real e defina <span class="math inline">\(\ddot{x}_{it}=x_{it} - \bar{x}_i\)</span> e <span class="math inline">\(\ddot{y}_{it}=y_{it}-\bar{y}_i\)</span></li>
 <li class="fragment">Por fim, regresse <span class="math inline">\(\ddot{y}_{it}\)</span> em <span class="math inline">\(\ddot{x}_{it}\)</span></li>
 </ol>
-</div><hr><section id="a-transformação-intragrupo-within-1" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
+</div>
+</div>
+</section>
+<section id="a-transformação-intragrupo-within-1" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
 <ul>
 <li class="fragment">Se <span class="math inline">\(y_{it} = \beta_1 x_{it} + c_i + u_{it}\)</span>, então</li>
 </ul>
-<table style="width:4%;">
-<colgroup>
-<col style="width: 4%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><span class="math display">\[
+<div class="fragment">
+<p><span class="math display">\[
 \begin{align*}
 \bar{y}_i&amp;=\frac{1}{T}\sum_t y_{it}\\
 &amp;=\frac{1}{T}\left[ \beta_1\sum_t x_{it}+\sum_t c_{i}+\sum_t u_{it}\right]\\
 &amp;=\beta_1\bar{x}_i+c_i+\bar{u}_i
 \end{align*}
-\]</span> Logo,</td>
-</tr>
-<tr class="even">
-<td><span class="math display">\[
+\]</span></p>
+</div>
+<ul>
+<li class="fragment">Logo, <span class="math display">\[
 \begin{align*}
 \ddot{y}_{it}&amp;=y_{it}-\bar{y}_i\\
 &amp;=\beta_1 x_{it} + c_i + u_{it} - \left(\beta_1\bar{x}_i+c_i+\bar{u}_i\right)\\
 &amp;=\beta_1\ddot{x}_{it} + \ddot{u}_{it}
 \end{align*}
-\]</span></td>
-</tr>
-</tbody>
-</table>
+\]</span></li>
+</ul>
 </section>
-<section id="a-transformação-intragrupo-within-2" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
-</section>
-<section id="graus-de-liberdade" class="slide level2">
-<h2>Graus de liberdade</h2>
+<section id="a-transformação-intragrupo-within-2" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
+<h3 id="graus-de-liberdade">Graus de liberdade</h3>
 <ul>
 <li class="fragment"><p><span class="math inline">\(\ddot{y}_{it}=\beta_1\ddot{x}_{1,it} + \beta_2\ddot{x}_{2,it} + \ldots + \beta_k\ddot{x}_{k,it} + \ddot{u}_{it}\)</span></p></li>
 <li class="fragment"><p>A princípio temos <span class="math inline">\(NT - k\)</span> graus de liberdade</p></li>
-</ul>
-<p>–</p>
-<ul>
-<li class="fragment"><code>r emo::ji("warning")</code> Isso não é verdade!!</li>
-</ul>
-<p>–</p>
-<ul>
+<li class="fragment"><p><span class="emoji" data-emoji="warning">⚠️</span> <strong>Isso não é verdade!!</strong></p></li>
 <li class="fragment"><p>Tivemos de calcular <span class="math inline">\(N\)</span> <strong>médias intragrupo</strong>. Perdemos esses graus de liberdade</p></li>
 <li class="fragment"><p><em>gl</em>: <span class="math inline">\(NT-N-k=N(T-1)-k\)</span></p></li>
+<li class="fragment"><p>Quanto mais efeitos fixos adicionarmos na regressão, mais <strong><em>gl</em></strong> iremos perder</p></li>
 </ul>
-<p>–</p>
-<ul>
-<li class="fragment">Quanto mais efeitos fixos adicionarmos na regressão, mais <strong><em>gl</em></strong> iremos perder</li>
-</ul>
-<hr>
 </section>
-<section id="a-transformação-intragrupo-within-3" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
-</section>
-<section id="hipóteses" class="slide level2">
-<h2>Hipóteses</h2>
+<section id="a-transformação-intragrupo-within-3" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
+<h3 id="hipóteses">Hipóteses</h3>
 <p>Satisfeitas as seguintes hipóteses, o estimador de <strong>Efeitos Fixos</strong> será <strong><em>não viesado</em></strong></p>
 <ol type="1">
 <li class="fragment"><p>O modelo populacional é: <span class="math inline">\(y_{it}=X_{it}\beta+c_i+u_{it}\)</span>. Para cada <span class="math inline">\(i\)</span>, com <span class="math inline">\(t=1, \ldots, T\)</span> e <span class="math inline">\(c_i\)</span> é não observado.</p></li>
@@ -985,117 +976,89 @@ y_{i1}-y_{i2} &amp;= \beta_1 (x_{i1} - x_{i2}) + c_i-c_i + u_{i1}-u_{i2} \\\Delt
 <li class="fragment"><p><span class="math inline">\(X_{it}\)</span> possui variação na dimensão <span class="math inline">\(t\)</span></p></li>
 <li class="fragment"><p>Para cada <span class="math inline">\(t\)</span>, o valor esperado do erro <span class="math inline">\(u_{it}\)</span> condicional aos regressores em <strong><em>todos os períodos de tempo</em></strong> e ao efeito não observado, é zero: <span class="math inline">\(E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0\)</span> (<strong>exogeneidade estrita</strong>)</p></li>
 </ol>
-<p>–</p>
-<p>Se tivermos um painel curto <span class="math inline">\((N&gt;&gt;T)\)</span>, então podemos dizer que assintoticamente <span class="math inline">\((N\rightarrow\infty)\)</span> o estimador de Efeitos Fixos é <em>consistente</em>.</p>
-<hr>
-</section>
-<section id="a-transformação-intragrupo-within-4" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
-</section>
-<section id="hipóteses-1" class="slide level2">
-<h2>Hipóteses</h2>
 <ul>
-<li class="fragment">Por que a hipótese de exogeneidade estrita é tão importante?</li>
+<li class="fragment">Se tivermos um painel curto <span class="math inline">\((N&gt;&gt;T)\)</span>, então podemos dizer que assintoticamente <span class="math inline">\((N\rightarrow\infty)\)</span> o estimador de Efeitos Fixos é <em>consistente</em>.</li>
 </ul>
-<p>–</p>
+</section>
+<section id="a-transformação-intragrupo-within-4" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
+<h3 id="hipóteses-1">Hipóteses</h3>
 <ul>
+<li class="fragment"><p>Por que a hipótese de exogeneidade estrita é tão importante?</p></li>
 <li class="fragment"><p><span class="math inline">\(E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0\)</span> implica em <span class="math inline">\(E[X_{is}u_{it}]=0\quad s,t = 1,\ldots, T\)</span></p></li>
 <li class="fragment"><p>Modelo transformado é <span class="math inline">\(\ddot{y}_{it}=\ddot{X}_{it}\beta+\ddot{u}_{it}\)</span></p></li>
-<li class="fragment"><p>MQO <strong>não viesado</strong> se <span class="math inline">\(E[\ddot{X}_{it}\ddot{u}_{it}]=0\)</span></p></li>
-</ul>
-<p>–</p>
-<ul>
+<li class="fragment"><p>MQO <strong>não viesado</strong> se <span class="math inline">\(E[\ddot{X}_{it}\ddot{u}_{it}]=0\qquad\)</span></p></li>
 <li class="fragment"><p>Interpretação: uma vez que <span class="math inline">\(X_{it}\)</span> e <span class="math inline">\(c_i\)</span> estejam controlados na regressão, <strong><em>outros períodos</em></strong> para os regressores não importam!</p></li>
-<li class="fragment"><p><code>r emo::ji("warning")</code> .red[ATENÇÃO]</p>
+<li class="fragment"><p><span class="emoji" data-emoji="warning">⚠️</span> <span style="color:red">ATENÇÃO</span></p>
 <ul>
 <li class="fragment">Isso não impede modelos de defasagem distribuída!</li>
 <li class="fragment">Modelos de variável dependente defasada estão excluídos</li>
 </ul></li>
 </ul>
-<hr>
 </section>
-<section id="a-transformação-intragrupo-within-5" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
-</section>
-<section id="hipóteses-2" class="slide level2">
-<h2>Hipóteses</h2>
+<section id="a-transformação-intragrupo-within-5" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
+<h3 id="hipóteses-2">Hipóteses</h3>
 <ul>
 <li class="fragment">Por que a hipótese de exogeneidade estrita é tão importante?</li>
 </ul>
+<div class="fragment">
 <p><span class="math display">\[
 \begin{align*}
 E[\ddot{X}_{it}\ddot{u}_{it}]&amp;=E[(X_{it}-\bar{X}_i)(u_{it}-\bar{u}_i)]\\
-&amp;=E[X_{it}u_{it}]+E[X_{it}\bar{u}_i]+\ldots
+&amp;=E[X_{it}u_{it}]-E[X_{it}\bar{u}_i]-E[\bar{X}_iu_{it}]+E[\bar{X}_i\bar{u}_i]
 \end{align*}
 \]</span></p>
-<p>–</p>
+</div>
 <ul>
-<li class="fragment"><span class="math inline">\(E[X_{it}u_{it}]= 0\)</span>, pois <span class="math inline">\(E[X_{is}u_{it}]=0\)</span> e <span class="math inline">\(s=t\)</span></li>
-</ul>
-<p>–</p>
-<ul>
-<li class="fragment"><span class="math inline">\(E[X_{it}\bar{u}_i]=\frac{1}{T}\lbrace E[X_{it}u_{i1}]+\ldots + E[X_{it}u_{iT}]\rbrace\)</span>
+<li class="fragment"><p><span class="math inline">\(E[X_{it}u_{it}]= 0\)</span>, pois <span class="math inline">\(E[X_{is}u_{it}]=0\)</span> e <span class="math inline">\(s=t\)</span></p></li>
+<li class="fragment"><p><span class="math inline">\(E[X_{it}\bar{u}_i]=\frac{1}{T}\lbrace E[X_{it}u_{i1}]+\ldots + E[X_{it}u_{iT}]\rbrace\)</span></p>
 <ul>
 <li class="fragment">Cada um dos valores esperados também é zero pela hipótese de exogeneidade estrita!</li>
 </ul></li>
+<li class="fragment"><p>O mesmo vai ocorrer para os termos <span class="math inline">\(E[\bar{X}_iu_{it}]\)</span> e <span class="math inline">\(E[\bar{X}_i\bar{u}_i]\)</span></p></li>
+<li class="fragment"><p>Ou seja, a hipótese de exogeneidade estrita, <span class="math inline">\(E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0\)</span> implica em <span class="math inline">\(E[X_{is}u_{it}]=0\quad s,t = 1,\ldots, T\)</span>, e garante que no modelo transformado o MQO é não viesado</p></li>
 </ul>
-<p>–</p>
-<p>Ou seja, a hipótese de exogeneidade estrita, <span class="math inline">\(E[u_{it}\mid X_{i1},\ldots, X_{iT}, c_i]=0\)</span> implica em <span class="math inline">\(E[X_{is}u_{it}]=0\quad s,t = 1,\ldots, T\)</span>, garante que no modelo transformado o MQO é não viesado</p>
-<hr>
 </section>
-<section id="a-transformação-intragrupo-within-6" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
-</section>
-<section id="solução-manual-no-r" class="slide level2">
-<h2>Solução Manual no <code>R</code></h2>
+<section id="a-transformação-intragrupo-within-6" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
+<h3 id="solução-manual-no-r">Solução Manual no <code>R</code></h3>
 <p>Isso <em>funciona</em> para o nosso problema com o efeito fixo <span class="math inline">\(c_i\)</span> porque <span class="math inline">\(c_i\)</span> não varia no tempo por suposição! A média de uma constante é elas mesma, <span class="math inline">\(\bar c_i = c_i\)</span></p>
-<p>–</p>
 <p><span class="math display">\[y_{it}-\bar{y}_i = \beta_1 (x_{it} - \bar{x}_i) + c_i - \bar c_i + u_{it}-\bar{u}_i\]</span></p>
 <p>É fácil fazer você mesmo! Primeiro vamos calcular os valores centralizados:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>cdata &lt;- css %&gt;%</span>
-<span id="cb6-2"><a href="#cb6-2"></a>  group_by(county) %&gt;%</span>
-<span id="cb6-3"><a href="#cb6-3"></a>  mutate(mean_crime = mean(crmrte),</span>
-<span id="cb6-4"><a href="#cb6-4"></a>         mean_prob = mean(prbarr)) %&gt;%</span>
-<span id="cb6-5"><a href="#cb6-5"></a>  mutate(demeaned_crime = crmrte - mean_crime,</span>
-<span id="cb6-6"><a href="#cb6-6"></a>         demeaned_prob = prbarr - mean_prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href=""></a>cdata &lt;- css %&gt;%</span>
+<span id="cb7-2"><a href=""></a>  group_by(county) %&gt;%</span>
+<span id="cb7-3"><a href=""></a>  mutate(mean_crime = mean(crmrte),</span>
+<span id="cb7-4"><a href=""></a>         mean_prob = mean(prbarr)) %&gt;%</span>
+<span id="cb7-5"><a href=""></a>  mutate(demeaned_crime = crmrte - mean_crime,</span>
+<span id="cb7-6"><a href=""></a>         demeaned_prob = prbarr - mean_prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="a-transformação-intragrupo-within-7" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
-</section>
-<section id="solução-manual-no-r-1" class="slide level2">
-<h2>Solução Manual no <code>R</code></h2>
+<section id="a-transformação-intragrupo-within-7" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
+<h3 id="solução-manual-no-r-1">Solução Manual no <code>R</code></h3>
 <p>Em seguida, rodamos os modelos <strong><em>Pooled</em></strong> e <strong><em>Transformação Intragrupo</em></strong> com MQO simples:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a>mod$pooled &lt;- lm(crmrte ~ prbarr, data = cdata)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>mod$intra &lt;- lm(demeaned_crime ~ demeaned_prob, data = cdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<hr>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href=""></a>mod$pooled &lt;- lm(crmrte ~ prbarr, data = cdata)</span>
+<span id="cb8-2"><a href=""></a>mod$intra &lt;- lm(demeaned_crime ~ demeaned_prob, data = cdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="a-transformação-intragrupo-within-8" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
-</section>
-<section id="solução-manual-no-r-2" class="slide level2">
-<h2>Solução Manual no <code>R</code></h2>
+<section id="a-transformação-intragrupo-within-8" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
+<h3 id="solução-manual-no-r-2">Solução Manual no <code>R</code></h3>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><code>{r tab1,echo = FALSE} library(huxtable) ht = modelsummary::modelsummary(mod[c("pooled","dummy","intra")],                            statistic = 'std.error',                            coef_omit = "factor",                            gof_map = gofmap,                            output = "huxtable") %&gt;%   set_text_color(row = c(4,6), col = c(3,4), value = 'red') font_size(ht) &lt;- 14 ht</code></p>
-</div><p>–</p><div class="column" style="width:50%;">
+</div><div class="column" style="width:50%;">
 <ul>
 <li class="fragment"><p>A estimativa para <code>prbarr</code> é positiva no <strong><em>Pooled</em></strong></p></li>
 <li class="fragment"><p>Cuidando da heterogeneidade não observada <span class="math inline">\(c_i\)</span>…</p></li>
 <li class="fragment"><p>…seja incluindo uma <strong><em>dummy</em></strong> para cada <span class="math inline">\(i\)</span> ou transformação <strong><em>intragrupo</em></strong></p></li>
 <li class="fragment"><p>obtemos: <code>r round(coef(mod$intra)[2],3)</code> .</p></li>
 </ul>
-</div><hr><section id="a-transformação-intragrupo-within-9" class="title-slide slide level1 center">
-<h1>A Transformação Intragrupo (<em>Within</em>)</h1>
-
+</div>
+</div>
 </section>
-<section id="interpretando-as-estimativas" class="slide level2">
-<h2>Interpretando as estimativas</h2>
+<section id="a-transformação-intragrupo-within-9" class="slide level2">
+<h2>A Transformação Intragrupo (<em>Within</em>)</h2>
+<h3 id="interpretando-as-estimativas">Interpretando as estimativas</h3>
 <p><code>{r,echo = FALSE} panel_p = round(predict(mod$dummy,newdata = data.frame(prbarr = c(0.2,0.3), county = factor(1))),3)</code></p>
 <ul>
 <li class="fragment"><p>Como interpretar essas inclinações negativas?</p></li>
@@ -1105,32 +1068,24 @@ E[\ddot{X}_{it}\ddot{u}_{it}]&amp;=E[(X_{it}-\bar{X}_i)(u_{it}-\bar{u}_i)]\\
 <p>se a probabilidade de prisão em <span class="math inline">\(i\)</span> aumentar em 10 pontos percentuais (ou seja, de 0,2 para 0,3) do ano <span class="math inline">\(t\)</span> para <span class="math inline">\(t+1\)</span>, esperamos que os crimes por pessoa caiam de <code>r panel_p[1]</code> para <code>r panel_p[2]</code>, ou por <code>r round(100 * diff(panel_p) / panel_p[1],2)</code> por cento.</p>
 </blockquote>
 <p><code>{r,echo = FALSE,fig.height = 3} pcolor</code></p>
-<hr>
 </section>
-<section id="estimativa-de-efeitos-fixos-no-r" class="title-slide slide level1 center">
-<h1>Estimativa de Efeitos Fixos no <code>R</code></h1>
-
-</section>
-<section id="use-um-pacote" class="slide level2">
-<h2>use um Pacote!</h2>
+<section id="estimativa-de-efeitos-fixos-no-r" class="slide level2">
+<h2>Estimativa de Efeitos Fixos no <code>R</code></h2>
+<h3 id="use-um-pacote">use um Pacote!</h3>
 <ul>
 <li class="fragment"><p>Na vida real, você dificilmente realizará a transformação intragrupo manualmente</p></li>
 <li class="fragment"><p>use um pacote!</p></li>
 <li class="fragment"><p>Existem várias opções (<a href="https://github.com/lrberge/fixest"><code>fixest</code></a> é o mais eficiente). Em nosso contexto:</p></li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>mod$FE &lt;- fixest::feols(crmrte ~ prbarr | county, cdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href=""></a>mod$FE &lt;- fixest::feols(crmrte ~ prbarr | county, cdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li class="fragment"><p>Observe a configuração semelhante à <code>estimatr::iv_robust</code> <em>fórmula de duas partes</em>. Aqui os efeitos fixos vêm após o <code>|</code>.</p></li>
 <li class="fragment"><p>Além disso, podemos ter <em>mais de um efeito fixo</em>! Para um exemplo legal com <em>três</em> efeitos fixos veja a <a href="https://cran.r-project.org/web/packages/fixest/vignettes/fixest_walkthrough.html">vinheta</a> do pacote.</p></li>
 </ul>
-<hr>
 </section>
-<section id="estimativa-de-efeitos-fixos-no-r-1" class="title-slide slide level1 center">
-<h1>Estimativa de Efeitos Fixos no <code>R</code></h1>
-
-</section>
-<section id="use-um-pacote-1" class="slide level2">
-<h2>use um Pacote!</h2>
+<section id="estimativa-de-efeitos-fixos-no-r-1" class="slide level2">
+<h2>Estimativa de Efeitos Fixos no <code>R</code></h2>
+<h3 id="use-um-pacote-1">use um Pacote!</h3>
 <p>Nem só de <code>R</code> vive um econometrista! Alguns outros pacotes de EF também para <code>Stata</code> e <code>Python</code></p>
 <ul>
 <li class="fragment"><strong>R</strong>
@@ -1148,22 +1103,19 @@ E[\ddot{X}_{it}\ddot{u}_{it}]&amp;=E[(X_{it}-\bar{X}_i)(u_{it}-\bar{u}_i)]\\
 <li class="fragment"><a href="https://pypi.org/project/linearmodels/"><code>linearmodels</code></a> (EF em duas vias)</li>
 </ul></li>
 </ul>
-<hr>
 </section>
-<section id="estimativa-de-efeitos-fixos-no-r-2" class="title-slide slide level1 center">
-<h1>Estimativa de Efeitos Fixos no <code>R</code></h1>
-
-</section>
-<section id="use-o-fixest" class="slide level2">
-<h2>use o <code>fixest</code> 🙂</h2>
-<p>.left-wide[</p>
+<section id="estimativa-de-efeitos-fixos-no-r-2" class="slide level2">
+<h2>Estimativa de Efeitos Fixos no <code>R</code></h2>
+<h3 id="use-o-fixest">use o <code>fixest</code> 🙂</h3>
+<div class="columns">
+<div class="column" style="width:75%;">
 <p>```{r,echo = FALSE} ht = modelsummary::modelsummary(mod[c(“pooled”,“dummy”,“intra”,“FE”)], statistic = ‘std.error’, coef_omit = “factor”, gof_map = gofmap,output = “huxtable”)</p>
 <p>ht %&gt;% set_text_color(row = c(4,6,4), col = c(3,4,5), value = ‘red’)</p>
 <pre><code>
 
 :::
 
-.right-thin[
+:::{.column width="25%"}
 
 * Mesmas estimativas! 😅
 
@@ -1172,76 +1124,45 @@ E[\ddot{X}_{it}\ddot{u}_{it}]&amp;=E[(X_{it}-\bar{X}_i)(u_{it}-\bar{u}_i)]\\
 * Suspeita que haja forte correlação nos resíduos *dentro* de cada condado (ao longo do tempo).
 
 :::
+::::
 
 
----
+## Transformação Intragrupo Animada!
 
-# Transformação Intragrupo Animada!
-
-.left-wide[
+::::{.columns}
+:::{.column width="75%"}
 
 
 
 ```{r,echo = FALSE}
 knitr::include_graphics("../../img/gifs/panel.gif")</code></pre>
-</section>
-
-</div>
-<p>.right-thin[</p>
+</div><div class="column" style="width:25%;">
 <ul>
 <li class="fragment"><p>Transformação intragrupo <strong>centraliza</strong> os dados!</p></li>
 <li class="fragment"><p>Subtrair a média temporal de <span class="math inline">\(y\)</span> e <span class="math inline">\(x\)</span>, <em>retira</em> os fatores fixos no tempo relacionados ao <em>condado</em></p></li>
 <li class="fragment"><p>Apenas variação <em>dentro</em> do condado</p></li>
 <li class="fragment"><p>Créditos para <a href="http://nickchk.com">Nick C Huntington-Klein</a>.</p></li>
 </ul>
-</section>
-
 </div>
-<section class="slide level2">
-
-</section></section>
-<section>
-<section id="leitura-recomendada" class="title-slide slide level1 center">
-<h1>Leitura Recomendada</h1>
+</div>
+</section>
+<section id="leitura-recomendada" class="slide level2">
+<h2><span class="emoji" data-emoji="books">📚</span> Leitura Recomendada</h2>
 <ul>
 <li class="fragment"><p>WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. Capítulo 13 O Agrupamento de Cortes Transversais ao Longo do Tempo.</p></li>
 <li class="fragment"><p>GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed.&nbsp;Capítulo 16 Modelos de regressão com dados em painel</p></li>
 </ul>
 </section>
-<section class="slide level2">
-
-<p>layout: false</p>
-<p>class: title-slide-final, middle background-image: url(../../img/logo/UdescEsag.jpeg) background-size: 350px background-position: 9% 19%</p>
-</section></section>
-<section id="até-a-próxima-aula" class="title-slide slide level1 center">
-<h1>ATÉ A PRÓXIMA AULA!</h1>
-<p>Com a Lista 1 feita! <code>r emo::ji("white_check_mark")</code></p>
+<section id="até-a-próxima-aula" class="slide level2">
+<h2>ATÉ A PRÓXIMA AULA!</h2>
 <p>.footnote[ [1]: Este slides foram baseados nas aulas de econometria da <a href="https://github.com/ScPoEcon/ScPoEconometrics-Slides">SciencesPo Department of Economics</a>]</p>
-<table>
-<colgroup>
-<col style="width: 76%">
-<col style="width: 23%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://github.com/rfbressan/econometria3_slides">.ScPored[<i class="fa fa-link fa-fw"></i>]</a></td>
-<td style="text-align: left;">Slides</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="http://github.com/rfbressan">.ScPored[<i class="fa fa-github fa-fw"></i>]</a></td>
-<td style="text-align: left;"><span class="citation" data-cites="rfbressan">@rfbressan</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/06-panel/lista_IV_pt.html">.ScPored[<i class="fa fa-list fa-fw"></i>]</a></td>
-<td style="text-align: left;">Lista de Exercícios IV</td>
-</tr>
-</tbody>
-</table>
-
-<img src="img/UdescEsag.jpeg" class="slide-logo r-stretch"><div class="footer footer-default">
+<div class="quarto-auto-generated-content">
+<p><img src="img/UdescEsag.jpeg" class="slide-logo"></p>
+<div class="footer footer-default">
 
 </div>
-</section>
+</div>
+</section></section>
     </div>
   </div>
 
@@ -1269,7 +1190,6 @@ knitr::include_graphics("../../img/gifs/panel.gif")</code></pre>
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1531,10 +1451,9 @@ knitr::include_graphics("../../img/gifs/panel.gif")</code></pre>
         // clear code selection
         e.clearSelection();
       });
-      function tippyHover(el, contentFn) {
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1544,8 +1463,17 @@ knitr::include_graphics("../../img/gifs/panel.gif")</code></pre>
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
