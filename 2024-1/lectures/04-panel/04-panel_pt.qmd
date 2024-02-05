@@ -31,6 +31,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import wooldridge as woo
 import great_tables as gt
+import statsmodels.formula.api as smf
+from statsmodels.iolib.summary2 import summary_col
 
 # Configure Seaborn
 sns.set_style("ticks")
@@ -371,10 +373,10 @@ $$y_{it} = \beta_1 x_{it} + c_i + u_{it},\quad t=1,2,...T$$
 
 import statsmodels.formula.api as smf
 
-reg_dummy = smf.ols(formula="crmrte ~ -1 + prbarr + C(county)", data=css).fit()
+mod_dummy = smf.ols(formula="crmrte ~ -1 + prbarr + C(county)", data=css).fit()
 
 pd.concat(
-    [reg_dummy.params, reg_dummy.bse, reg_dummy.tvalues, reg_dummy.pvalues], axis=1
+    [mod_dummy.params, mod_dummy.bse, mod_dummy.tvalues, mod_dummy.pvalues], axis=1
 ).rename(columns={0: "coef", 1: "std err", 2: "t", 3: "P>|t|"})
 ```
 
@@ -401,7 +403,7 @@ pd.concat(
 # | code-fold: true
 
 # Get predicted line
-css["pred"] = reg_dummy.predict(css)
+css["pred"] = mod_dummy.predict(css)
 # Plot regression lines
 g = sns.lmplot(
     data=css, x="prbarr", y="pred", scatter=False, hue="county", legend=False
@@ -572,16 +574,14 @@ $$
 
 ## A Transformação Intragrupo (_Within_)
 
-### Solução Manual no `R`
+### Solução Manual
 
-Isso *funciona* para o nosso problema com o efeito fixo $c_i$ porque $c_i$ não varia no tempo por suposição! A média de uma constante é ela mesma, $\bar c_i = c_i$
-
-
+- Isso *funciona* para o nosso problema com o efeito fixo $c_i$ porque $c_i$ não varia no tempo por suposição! A média de uma constante é ela mesma, $\bar c_i = c_i$
 $$y_{it}-\bar{y}_i = \beta_1 (x_{it} - \bar{x}_i) + c_i - \bar c_i + u_{it}-\bar{u}_i$$
 
 
-É fácil fazer você mesmo! Primeiro vamos calcular os valores centralizados:
-
+- É fácil fazer você mesmo! Primeiro vamos calcular os valores centralizados:
+<!-- 
 ```{r}
 cdata <- css %>%
   group_by(county) %>%
@@ -589,40 +589,63 @@ cdata <- css %>%
          mean_prob = mean(prbarr)) %>%
   mutate(demeaned_crime = crmrte - mean_crime,
          demeaned_prob = prbarr - mean_prob)
+``` -->
+
+:::{.fragment}
+```{python}
+#| echo: true
+#| code-fold: show
+css_transf = (css.groupby("county")[['crmrte', 'prbarr']]
+  .transform('mean')
+  .rename(
+    columns={"crmrte": "mean_crime", "prbarr": "mean_prob"}
+  )
+)
+
+cdata = (pd.concat([css, css_transf], axis=1)
+  .eval("""
+  demeaned_crime= crmrte - mean_crime
+  demeaned_prob= prbarr - mean_prob
+  """)
+  )
 ```
-
-
+:::
 
 ## A Transformação Intragrupo (_Within_)
 
-### Solução Manual no `R`
+### Solução Manual
 
-Em seguida, rodamos os modelos ***Pooled***  e ***Transformação Intragrupo*** com MQO simples:
-
+Em seguida, rodamos os modelos ***Agrupado***  e ***Transformação Intragrupo*** com MQO simples:
+<!-- 
 ```{r}
 mod$pooled <- lm(crmrte ~ prbarr, data = cdata)
 mod$intra <- lm(demeaned_crime ~ demeaned_prob, data = cdata)
-```
+``` -->
 
+```{python}
+#| echo: true
+#| code-fold: show
+mod_pooled = smf.ols(formula="crmrte ~ prbarr", data=cdata).fit()
+mod_intra = smf.ols(formula="demeaned_crime ~ -1 + demeaned_prob", data=cdata).fit()
+
+result = pd.DataFrame({
+  "Agrupado": [mod_pooled.params['prbarr'], mod_pooled.bse['prbarr']],
+  "Dummy": [mod_dummy.params['prbarr'], mod_dummy.bse['prbarr']],
+  "Intragrupo": [mod_intra.params['demeaned_prob'], mod_intra.bse['demeaned_prob']]
+}, index=["Prob. Prisao", "Erro Padrão"])
+result
+```
 
 
 ## A Transformação Intragrupo (_Within_)
 
-### Solução Manual no `R`
+### Solução Manual
 
 ::::{.columns}
 :::{.column width="50%"}
 
-```{r tab1,echo = FALSE}
-library(huxtable)
-ht = modelsummary::modelsummary(mod[c("pooled","dummy","intra")],
-                           statistic = 'std.error',
-                           coef_omit = "factor",
-                           gof_map = gofmap,
-                           output = "huxtable") %>%
-  set_text_color(row = c(4,6), col = c(3,4), value = 'red')
-font_size(ht) <- 14
-ht
+```{python}
+result
 ```
 :::
 
@@ -635,7 +658,7 @@ ht
 
 * ...seja incluindo uma ***dummy*** para cada $i$ ou transformação ***intragrupo*** 
 
-* obtemos: `r round(coef(mod$intra)[2],3)` .
+* obtemos: `{python} round(mod_intra.params['demeaned_prob'], 3)` .
 
 :::
 
