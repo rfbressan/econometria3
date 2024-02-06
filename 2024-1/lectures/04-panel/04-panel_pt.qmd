@@ -370,7 +370,6 @@ $$y_{it} = \beta_1 x_{it} + c_i + u_{it},\quad t=1,2,...T$$
 ```{python}
 # | echo: true
 # | code-fold: show
-
 import statsmodels.formula.api as smf
 
 mod_dummy = smf.ols(formula="crmrte ~ -1 + prbarr + C(county)", data=css).fit()
@@ -430,8 +429,11 @@ plt.show()
 
 Se tivermos apenas dois períodos, $T=2$, poderíamos apenas ***diferenciar*** os períodos
     
-$$\begin{align}y_{i1} &= \beta_1 x_{i1} + c_i + u_{i1} \\y_{i2} &= \beta_1 x_{i2} + c_i + u_{i2} \\& \Rightarrow \\
-y_{i1}-y_{i2} &= \beta_1 (x_{i1} - x_{i2}) + c_i-c_i + u_{i1}-u_{i2} \\\Delta y_{i} &= \beta_1 \Delta x_{i} + \Delta u_{i}\end{align}$$
+$$\begin{align}
+y_{i1} &= \beta_1 x_{i1} + c_i + u_{i1} \\y_{i2} &= \beta_1 x_{i2} + c_i + u_{i2} \\& \Rightarrow \\
+y_{i1}-y_{i2} &= \beta_1 (x_{i1} - x_{i2}) + c_i-c_i + u_{i1}-u_{i2} \\\Delta y_{i} &= \beta_1 \Delta x_{i} + \Delta u_{i}
+\end{align}
+$$
 
 E para recuperar o parâmetro de interesse $\beta_1$ rodamos
 
@@ -581,15 +583,6 @@ $$y_{it}-\bar{y}_i = \beta_1 (x_{it} - \bar{x}_i) + c_i - \bar c_i + u_{it}-\bar
 
 
 - É fácil fazer você mesmo! Primeiro vamos calcular os valores centralizados:
-<!-- 
-```{r}
-cdata <- css %>%
-  group_by(county) %>%
-  mutate(mean_crime = mean(crmrte),
-         mean_prob = mean(prbarr)) %>%
-  mutate(demeaned_crime = crmrte - mean_crime,
-         demeaned_prob = prbarr - mean_prob)
-``` -->
 
 :::{.fragment}
 ```{python}
@@ -616,11 +609,6 @@ cdata = (pd.concat([css, css_transf], axis=1)
 ### Solução Manual
 
 Em seguida, rodamos os modelos ***Agrupado***  e ***Transformação Intragrupo*** com MQO simples:
-<!-- 
-```{r}
-mod$pooled <- lm(crmrte ~ prbarr, data = cdata)
-mod$intra <- lm(demeaned_crime ~ demeaned_prob, data = cdata)
-``` -->
 
 ```{python}
 #| echo: true
@@ -649,7 +637,6 @@ result
 ```
 :::
 
-
 :::{.column width="50%"}
 
 * A estimativa para `prbarr` é positiva no ***Pooled***
@@ -664,54 +651,67 @@ result
 
 ::::
 
-## A Transformação Intragrupo (_Within_)
+## Interpretando as estimativas
 
-### Interpretando as estimativas
-
-
-```{r,echo = FALSE}
-panel_p = round(predict(mod$dummy,newdata = data.frame(prbarr = c(0.2,0.3), county = factor(1))),3)
+```{python}
+# Make two predictions when prbarr is 0.2 and 0.3 and county is 1
+panel_p = mod_dummy.predict(pd.DataFrame({"prbarr": [0.2, 0.3], "county": [1, 1]})).round(3)
 ```
+
 
 * Como interpretar essas inclinações negativas?
 
 * Olhamos para uma única unidade $i$ e perguntamos:
 
-> se a probabilidade de prisão em $i$ aumentar em 10 pontos percentuais (ou seja, de 0,2 para 0,3) do ano $t$ para $t+1$, esperamos que os crimes por pessoa caiam de `r panel_p[1]` para `r panel_p[2]`, ou por `r round(100 * diff(panel_p) / panel_p[1],2)` por cento.
+:::{.fragment}
+> se a probabilidade de prisão em $i$ aumentar em 10 pontos percentuais (ou seja, de 0,2 para 0,3) do ano $t$ para $t+1$, esperamos que os crimes por pessoa caiam de `{python} panel_p[0]` para `{python} panel_p[1]`, ou por `{python} round(100 * panel_p.diff()[1] / panel_p[0],2)` por cento.
+:::
 
-```{r,echo = FALSE,fig.height = 3}
-pcolor
+:::{.fragment}
+```{python}
+g.figure.set_size_inches(11, 6)
+g.fig
 ```
+:::
 
 
 
-
-## Estimativa de Efeitos Fixos no `R`
+## Estimativa de Efeitos Fixos no `Python`
 ### use um Pacote!
 
 
-* Na vida real, você dificilmente realizará a transformação intragrupo manualmente
+* Na **prática econométrica**, você dificilmente realizará a transformação intragrupo manualmente
 
 * use um pacote!
 
-* Existem várias opções ([`fixest`](https://github.com/lrberge/fixest) é o mais eficiente). Em nosso contexto:
+* Existem algumas opções em Python ([`linearmodels`](https://bashtage.github.io/linearmodels/index.html) é o mais eficiente). Em nosso contexto:
 
-```{r}
-mod$FE <- fixest::feols(crmrte ~ prbarr | county, cdata)
+```{python}
+# | echo: true
+# | code-fold: show
+from linearmodels.panel import PanelOLS
+
+# Dois indices são requeridos
+cdata = cdata.set_index(["county", "year"])
+
+mod_FE = PanelOLS.from_formula("crmrte ~ prbarr + EntityEffects", cdata).fit()
 ```
 
-* Observe a configuração semelhante à `estimatr::iv_robust` *fórmula de duas partes*. Aqui os efeitos fixos vêm após o `|`.
+* Observe a *fórmula* contendo a palavra `EntityEffects` depois dos regressores.
 
-* Além disso, podemos ter *mais de um efeito fixo*! Para um exemplo legal com *três* efeitos fixos veja a [vinheta](https://cran.r-project.org/web/packages/fixest/vignettes/fixest_walkthrough.html) do pacote.
+* O efeito fixo de entidade _i_ será estimado com base no `index` do `DataFrame`. Por isso o `set_index(["county", "year"])`.
+
+* Podemos ter dois tipos de efeitos fixos: `EntityEffects` e `TimeEffects`. Veja a [documentação](https://bashtage.github.io/linearmodels/panel/examples/using-formulas.html) para mais detalhes.
 
 
 
-## Estimativa de Efeitos Fixos no `R`
+## Estimativa de Efeitos Fixos no `Python`
 ### use um Pacote!
 
-Nem só de `R` vive um econometrista! Alguns outros pacotes de EF também para `Stata` e `Python`
+Nem só de `Python` vive um econometrista! Alguns outros pacotes de EF também para `R`, `Stata` e `Python`
 
 - **R**
+  + [`fixest`](https://cran.r-project.org/web/packages/fixest/index.html) (função feols) :trophy:
   + [`plm`](https://cran.r-project.org/web/packages/plm/index.html) (função plm)
   + [`lfe`](https://cran.r-project.org/web/packages/lfe/) (função felm)
   
@@ -720,47 +720,36 @@ Nem só de `R` vive um econometrista! Alguns outros pacotes de EF também para `
   
 - **Python**
   + [`Statsmodels`](https://www.statsmodels.org/stable/example_formulas.html) (_dummies_ somente)
-  + [`linearmodels`](https://pypi.org/project/linearmodels/) (EF em duas vias)
 
 
 
-## Estimativa de Efeitos Fixos no `R`
-### use o `fixest` 🙂
+## Estimativa de Efeitos Fixos no `Python`
+### use o `linearmodels`
 
-::::{.columns}
-:::{.column width="75%"}
-```{r,echo = FALSE}
-ht = modelsummary::modelsummary(mod[c("pooled","dummy","intra","FE")],
-                           statistic = 'std.error',
-                           coef_omit = "factor",
-                           gof_map = gofmap,output = "huxtable")
+:::{.fragment}
+```{python}
+result2 = result.copy()
+result2["LinearModels"] = [mod_FE.params.values[0], mod_FE.std_errors.values[0]]
 
-ht %>%
-    set_text_color(row = c(4,6,4), col = c(3,4,5), value = 'red')
-  
+# Style the table to increase the font size
+result2.style.set_table_attributes('style="font-size: 24pt; text-align: center"')
 ```
 :::
 
-:::{.column width="25%"}
 
 * Mesmas estimativas! 😅
 
-* `fixest` calcula erros padrão **robustos por clusters**.
+* `linearmodels` **não** calcula erros padrão **clusterizados** por _default_ (`fixest` faz).
 
-* Suspeita que haja forte correlação nos resíduos *dentro* de cada condado (ao longo do tempo).
-
-:::
-::::
-
+* `mod_FE = PanelOLS.from_formula("crmrte ~ prbarr + EntityEffects", cdata).fit(cov_type='clustered')` para corrigir isso.
 
 ## Transformação Intragrupo Animada!
 
 ::::{.columns}
 :::{.column width="75%"}
 
-```{r,echo = FALSE}
-knitr::include_graphics("../../img/gifs/panel.gif")
-```
+![](img/panel.gif)
+
 :::
 
 :::{.column width="25%"}
@@ -787,6 +776,6 @@ knitr::include_graphics("../../img/gifs/panel.gif")
 ## ATÉ A PRÓXIMA AULA!
 
 
-.footnote[
-[1]: Este slides foram baseados nas aulas de econometria da [SciencesPo Department of Economics](https://github.com/ScPoEcon/ScPoEconometrics-Slides)
-]
+:::{.footer}
+Este slides foram baseados nas aulas de econometria da [SciencesPo Department of Economics](https://github.com/ScPoEcon/ScPoEconometrics-Slides)
+:::
