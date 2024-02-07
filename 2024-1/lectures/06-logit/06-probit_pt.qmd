@@ -1,0 +1,930 @@
+---
+title: "Econometria III"
+subtitle: "Modelos de Escolha Qualitativa"
+title-slide-attributes:
+  data-background-image: "img/UdescEsag.jpeg"
+  data-background-size: 50%
+  data-background-position: top left
+  # data-background-opacity: "0.7"
+center-title-slide: true
+author: "Rafael Bressan"
+logo: "img/UdescEsag.jpeg"
+format: 
+  revealjs:
+    theme: [default, ../udesc.scss] 
+    code-fold: true
+    chalkboard: true
+    incremental: true
+    width: 1600
+    height: 900
+from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
+fontsize: "2.2em"
+# editor: source
+engine: knitr
+jupyter: python3
+---
+
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import wooldridge as woo
+
+import statsmodels.formula.api as smf
+
+from statsmodels.iolib.summary2 import summary_col
+
+# Configure Seaborn
+sns.set_style("ticks")
+sns.set_context("talk")
+```
+
+
+## Modelos de Escolha Qualitativa
+
+.pull-left[
+
+Até agora, nossos modelos ficaram assim:
+
+$$\begin{align}
+y &= b_0 + b_1 x + e \\
+e &\sim D\left(0,\sigma^2\right)
+\end{align}$$
+
+* A suposição de distribuição em $e$:
+
+* Em princípio implica que $y \in \mathbb{R}$.
+
+* Resultados de testes, renda, taxas de criminalidade, etc. são todos resultados contínuos. ✅
+]
+
+
+
+.pull-right[
+
+Mas alguns resultados são claramente binários (ou seja, `VERDADEIRO` ou `FALSO`):
+
+* Ou você trabalha ou não,
+
+* Ou você tem filhos ou não,
+
+* Ou você comprou um produto ou não,
+
+* Você jogou uma moeda e saiu cara ou coroa.
+]
+
+
+
+## Resultados Binários
+
+* Resultados restritos a `FALSO` vs `VERDADEIRO`, ou `0` vs `1`.
+
+* Teríamos $y \in \{0,1\}$.
+
+* Nessas situações, estamos principalmente interessados em estimar a **probabilidade de resposta** ou a **probabilidade de sucesso**:
+
+$$p(x) = \Pr(y=1 | x)$$
+* como $p(x)$ muda quando mudamos $x$?
+
+     >Se aumentarmos $x$ em uma unidade, como a probabilidade de $y=1$ mudaria?
+     
+
+
+## Lembrando o Experimento de Bernoulli
+
+.pull-left[
+Lembre-se da [Distribuição de Bernoulli?](https://en.wikipedia.org/wiki/Bernoulli_distribution): Chamamos uma variável aleatória $y \in \{0,1\}$ tal que
+
+$$\begin{align}
+\Pr(y = 1) &= p \\
+\Pr(y = 0) &= 1-p \\
+p &\in[0,1]
+\end{align}$$
+
+uma variável aleatória de *Bernoulli*.
+]
+
+
+
+.pull-right[
+Para nós: *condicione* essas probabilidades em uma covariada $x$
+
+$$\begin{align}
+\Pr(y = 1 | X = x) &= p(x) \\
+\Pr(y = 0 | X = x) &= 1-p(x) \\
+p(x) &\in[0,1]
+\end{align}$$
+
+* Particularmente: *valor esperado* (ou seja, a média) de $Y$ dado $x$
+
+$$
+E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
+$$
+
+* Muitas vezes modelamos **expectativas condicionais** 😉
+]
+
+
+## O Modelo de Probabilidade Linear (MPL)
+
+* A opção mais simples. Modele a probabilidade de resposta como
+
+$$
+\Pr(y = 1 | x) = p(x) = \beta_0 + \beta_1 x_1 + \dots + \beta_K x_K
+$$
+* Interpretação: *uma mudança de 1 unidade em $x_1$, digamos, resulta em uma mudança de $\beta_1$ em $p(x)$.*
+
+### Exemplo: Mroz (1987)
+
+* Participação feminina no mercado de trabalho
+
+* Como o status de `inlf` (*na força de trabalho*) depende da renda familiar da mulher solteira, sua educação, idade e número de filhos pequenos?
+
+
+## Mroz 1987
+
+```{r,fig.height = 4}
+data(mroz, package = "wooldridge")
+plot(factor(inlf) ~ age,
+  data = mroz,
+  ylevels = 2:1,
+  ylab = "in labor force?"
+)
+```
+
+
+
+
+## Rodando o MPL
+
+.pull-left[
+```{r}
+LPM <- lm(inlf ~ nwifeinc + educ + exper + I(exper^2) + age + I(age^2) + kidslt6,
+  data = mroz
+)
+broom::tidy(LPM)
+```
+]
+
+.pull-right[
+* **idêntico** aos nossos modelos de regressão linear anteriores
+
+* Apenas `inlf` assume somente dois valores, 0 ou 1.
+
+* Resultados: se a renda da mulher solteira aumenta em 10 (ou seja, 10.000 USD), $p(x)$ cai em 0,034 (isso é um efeito pequeno!),
+
+* uma criança pequena adicional reduziria a probabilidade de trabalho em 0,26 (isso é grande).
+
+* Até agora, tudo simples.️]
+
+
+
+## MPL: Prevendo probabilidades negativas?!
+
+
+.pull-left[
+```{r,echo = FALSE}
+pr <- predict(LPM)
+plot(pr[order(pr)], ylab = "P(inlf = 1)")
+abline(a = 0, b = 0, col = "red", lw = 3)
+abline(a = 1, b = 0, col = "red", lw = 3)
+```
+]
+
+.pull-right[
+<br>
+<br>
+* As previsões do MPL de $p(x)$ não são garantidas no intervalo unitário $[0,1]$.
+
+* Lembre-se: $e \sim D\left(0,\sigma^2\right)$
+
+* aqui, algumas probabilidades menores que zero!
+
+* Particularmente irritante se você quiser *previsões*: O que é probabilidade -0,3? 🤔]
+
+
+
+## MPL no modelo saturado: sem problemas!
+
+.left-wide[
+```{r,message=FALSE,warning=FALSE}
+mroz %<>%
+  # classify age into 3 and huswage into 2 classes
+  mutate(
+    age_fct = cut(age, breaks = 3, labels = FALSE),
+    huswage_fct = cut(huswage, breaks = 2, labels = FALSE)
+  ) %>%
+  mutate(classes = paste0("age_", age_fct, "_hus_", huswage_fct))
+
+LPM_saturated <- mroz %>%
+  lm(inlf ~ classes, data = .)
+broom::tidy(LPM_saturated)
+```
+
+]
+
+.right-thin[
+* *modelo saturado* : só tem variáveis explicativas binárias (_dummies_)
+
+* Cada classe: $p(x)$ *dentro daquela célula*.
+
+]
+
+
+
+## MPL no modelo saturado: sem problemas!
+
+.left-wide[
+```{r saturated,message=FALSE,warning=FALSE,fig.height = 5,echo = FALSE}
+mroz$pred <- predict(LPM_saturated)
+
+ggplot(mroz[order(mroz$pred), ], aes(x = 1:nrow(mroz), y = pred, color = classes)) +
+  geom_point() +
+  theme_bw() +
+  scale_y_continuous(limits = c(0, 1), name = "p(inlf)")
+```
+]
+
+.right-thin[
+
+* Cada segmento de linha: $p(x)$ *dentro daquela célula*.
+
+* Por exemplo. as mulheres da faixa etária mais jovem e de menor renda do marido (classe `age_1_hus_1`) têm a maior probabilidade de trabalhar (`r round(max(mroz$pred),3)`).
+]
+
+
+
+
+## Modelos de Resposta Binária Não-Lineares
+
+Nesta classe de modelos mudamos a forma como modelamos a probabilidade de resposta $p(x)$. Em vez da estrutura linear simples de cima, escrevemos
+
+$$
+\Pr(y = 1 | x) = p(x) = G \left(\beta_0 + \beta_1 x_1 + \dots + \beta_K x_K \right)
+$$
+
+
+* ***quase*** idêntico ao MPL!
+
+* exceto que o *índice linear* $\beta_0 + \beta_1 x_1 + \dots + \beta_K x_K$ agora está dentro da ***função de ligação*** $G(\cdot)$ (i.e. _link function_).
+
+* Propriedade principal de $G$: transforma qualquer $z\in \mathbb{R}$ em um número no intervalo $(0,1)$.
+
+* Isso resolve nosso problema de previsões fora do intervalo $\left[0, 1\right]$ para probabilidades.
+
+
+## Modelos de Resposta Binária Não-Lineares
+
+### $G$: *probit* e *logit*
+
+.left-wide[
+```{r cdfs,echo = FALSE,fig.height = 4}
+ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +
+  stat_function(fun = pnorm, aes(colour = "Probit"), size = 1) +
+  stat_function(fun = plogis, aes(colour = "Logit"), size = 1) +
+  theme_bw() +
+  scale_colour_manual(name = "Função G", values = c("red", "blue")) +
+  scale_y_continuous(name = "Pr(y = 1 | x)")
+```
+]
+
+.right-thin[
+
+<br>
+Para **probit** e **logit**:
+
+1. qualquer valor $x$ resulta em um valor $p(x)$ entre 0 e 1.
+
+1. estritamente crescentes.
+
+1. Logit tem *caudas mais longas*.
+
+]
+
+
+
+## Modelos de Resposta Binária Não-Lineares
+
+### $G$: *probit* e *logit*
+
+.left-wide[
+```{r cdfs2, echo = FALSE,fig.height = 4}
+ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +
+  stat_function(fun = pnorm, aes(colour = "Probit"), size = 1) +
+  stat_function(fun = plogis, aes(colour = "Logit"), size = 1) +
+  theme_bw() +
+  scale_colour_manual(name = "Função G", values = c("red", "blue")) +
+  scale_y_continuous(name = "Pr(y = 1 | x)")
+```
+]
+
+.right-thin[
+
+<br>
+**Probit**:
+
+* $G(z)=\Phi(z)$ Distribuição Normal
+
+**Logit**:
+
+* $G(z)=\Lambda(z)=\frac{1}{1+\exp(-z)}$ Distribuição Logística
+]
+
+
+## Modelos de Resposta Binária Não-Lineares
+
+### Rodando probit e logit no `R`: a função `glm`
+
+* Usamos a função `glm` para rodar um **modelo linear generalizado**
+
+* Isso *generaliza* nosso modelo linear padrão. Temos que especificar uma `família` e um `link`:
+
+```{r}
+probit <- glm(inlf ~ age,
+  data = mroz,
+  family = binomial(link = "probit")
+)
+
+logit <- glm(inlf ~ age,
+  data = mroz,
+  family = binomial(link = "logit")
+)
+```
+
+
+
+## Interpretação
+
+.pull-left[
+```{r}
+modelsummary::modelsummary(list("probit" = probit, "logit" = logit))
+```
+]
+
+.pull-right[
+* coeficiente de probit para `idade` é `r round(coef(probit)[2],3)`
+
+* logit: `r round(coef(logit)[2],3)` para logit,
+
+* impacto da idade na probabilidade de trabalhar é **negativo**
+
+* No entanto, **quão** negativo? Não podemos dizer!]
+
+
+
+## Interpretação
+
+$$
+\Pr(y = 1 | \text{age})= G \left(x \beta\right) = G \left(\beta_0 + \beta_1 \text{age} \right) 
+$$
+e o *efeito marginal* de `idade` na probabilidade de resposta é
+
+$$\frac{\partial{\Pr(y = 1 | \text{age})}}{ \partial{\text{age}}} = g \left(\beta_0 + \beta_1 \text{age} \right) \beta_1$$
+
+* $g$ é definida como $g(z) = \frac{dG}{dz}(z)$ - a primeira derivada de $G$ (sendo $G$ uma distribuição, $g$ é a função densidade).
+
+* dado que $G$ é não-linear, isso significa que $g$ não será constante. Você pode experimentar isso usando este [aplicativo aqui](https://floswald.shinyapps.io/marginal_effects_of_logit_probit/):
+
+
+
+
+## Interpretação
+
+***Não há um único efeito marginal*** nesses modelos, pois isso depende de *onde avaliamos* a expressão anterior. Na prática, existem duas abordagens comuns:
+
+1. reporte o **efeito parcial na média** (PEA): $$PEA(X_j)=g(\bar{x} \beta) \beta_j$$
+
+1. relate o **efeito parcial médio** (APE): $$APE(X_j)=\frac{1}{n} \sum_{i=1}^N g(x_i \beta) \beta_j$$
+
+Felizmente, existem pacotes disponíveis que nos ajudam a calcular esses efeitos marginais com bastante facilidade. Um deles se chama [`marginaleffects`](https://vincentarelbundock.github.io/marginaleffects/index.html), e o usamos da seguinte forma:
+
+
+
+## Interpretação
+
+```{r glms}
+f <- "inlf ~ age + kidslt6 + nwifeinc" # setup a formula
+glms <- list()
+glms$probit <- glm(
+  formula = f,
+  data = mroz,
+  family = binomial(link = "probit")
+)
+glms$logit <- glm(
+  formula = f,
+  data = mroz,
+  family = binomial(link = "logit")
+)
+# now the marginal effects versions
+mfx_mean <- lapply(glms, marginaleffects, newdata = "mean")
+mfx_avg <- lapply(glms, marginaleffects)
+```
+
+
+
+
+## Interpretação
+
+```{r, echo = FALSE}
+modelsummary(c(mfx_mean, mfx_avg),
+  output = "kableExtra",
+  stars = TRUE,
+  gof_omit = "AIC|BIC"
+) |>
+  kable_classic() |>
+  add_header_above(c(
+    " " = 1,
+    "PEA" = 2,
+    "APE" = 2
+  ))
+```
+
+
+layout: false
+class: separator, middle
+
+
+## Qualidade do Ajuste em Modelos Binários
+
+
+layout: true
+
+<div class="my-footer"><img src="../../img/logo/UdescEsag.jpeg" style="height: 60px;"/></div> 
+
+
+## Qualidade do Ajuste em Modelos Binários
+
+* Não existe $R^2$ universalmente aceito para modelos binários.
+
+* Podemos pensar em um *pseudo* $R^2$ que compara nosso modelo com outro sem regressores:
+
+```{r, eval=TRUE}
+glms$probit0 <- update(glms$probit, formula = . ~ 1)
+1 - as.vector(logLik(glms$probit) / logLik(glms$probit0))
+```
+
+
+
+* Mas isso não é super informativo (ao contrário do $R^2$). As alterações no valor da log-verossimilhança são altamente não lineares.
+
+
+## Qualidade do Ajuste em Modelos Binários
+
+* Vamos verificar **precisão** - qual é a proporção prevista corretamente! `round(fitted(x))` atribui `1` se a prob $> 0.5$ previsto.
+
+```{r, echo=TRUE}
+prop_tbl <- prop.table(table(
+  true = mroz$inlf,
+  pred = round(fitted(glms$probit))
+)) |>
+  as.data.table() |>
+  dcast(true ~ pred, value.var = "N")
+kbl(prop_tbl,
+  digits = 4,
+  caption = "Matriz de Confusão"
+) |>
+  add_header_above(c(
+    " " = 1,
+    "Pred" = 2
+  ))
+```
+
+
+
+## Curvas ROC (Receiver Operating Characteristics)
+
+```{r roc-names, echo=FALSE}
+tp <- prop_tbl[2, 3]
+fn <- prop_tbl[2, 2]
+p <- tp + fn
+tpr <- tp / p
+fp <- prop_tbl[1, 3]
+tn <- prop_tbl[1, 2]
+n <- fp + tn
+fpr <- fp / n
+
+base_kbl <- kbl(prop_tbl, digits = 4) |>
+  add_header_above(c(
+    " " = 1,
+    "Pred" = 2
+  ))
+```
+
+### [Nomenclatura](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
+
+.pull-left[
+**Taxa de Verdadeiros Positivos** (TPR, sensitividade, _recall_): $TP/P=$ `r tpr`  
+
+**Taxa de Falsos Positivos** (FPR): $FP/N=$ `r fpr`
+
+**Acurácia**: $(TP + TN)/ (P+N)=$ `r tp+tn`
+]
+
+
+.pull-right[
+
+```{r panels, echo=FALSE}
+xaringanExtra::use_panelset()
+```
+
+.panelset[
+.panel[.panel-name[TPR]
+```{r tpr, echo=FALSE}
+base_kbl |>
+  column_spec(2,
+    bold = FALSE,
+    background = ifelse(prop_tbl$`0` < 0.13, "darkgreen", "white"),
+    color = ifelse(prop_tbl$`0` < 0.13, "white", "black")
+  ) |>
+  column_spec(3,
+    bold = FALSE,
+    background = ifelse(prop_tbl$`1` > 0.44, "darkgreen", "white"),
+    color = ifelse(prop_tbl$`1` > 0.44, "white", "black")
+  )
+```
+
+<br>
+.center[Relacionado a **Poder**]
+]
+
+.panel[.panel-name[FPR]
+```{r fpr, echo=FALSE}
+base_kbl |>
+  column_spec(2,
+    bold = FALSE,
+    background = ifelse(prop_tbl$`0` > 0.13, "darkgreen", "white"),
+    color = ifelse(prop_tbl$`0` > 0.13, "white", "black")
+  ) |>
+  column_spec(3,
+    bold = FALSE,
+    background = ifelse(prop_tbl$`1` < 0.44, "darkgreen", "white"),
+    color = ifelse(prop_tbl$`1` < 0.44, "white", "black")
+  )
+```
+
+<br>
+.center[Relacionado a **Erro Tipo I**]
+]
+
+.panel[.panel-name[ACC]
+```{r acc, echo=FALSE}
+base_kbl |>
+  column_spec(2,
+    bold = FALSE,
+    background = ifelse(prop_tbl$`0` > 0.13, "darkgreen", "white"),
+    color = ifelse(prop_tbl$`0` > 0.13, "white", "black")
+  ) |>
+  column_spec(3,
+    bold = FALSE,
+    background = ifelse(prop_tbl$`1` > 0.44, "darkgreen", "white"),
+    color = ifelse(prop_tbl$`1` > 0.44, "white", "black")
+  )
+```
+]
+
+]
+]
+
+
+
+## Curvas ROC 
+
+* O corte de 0,5 é arbitrário. E se todas as probabilidades previstas forem $> 0,5$, mas nos dados houver cerca de 50% de zeros?
+
+* Vamos escolher um *corte arbitrário* $c \in (0,1)$ e verificar a precisão de cada valor. Isso dá uma visão melhor.
+
+
+## Curvas ROC
+
+
+* Podemos confrontar a **taxa de verdadeiros positivos** (TPR) com a **taxa de falsos positivos** (FPR), para cada valor de corte $c\in[0, 1]$.
+
+     1. TPR: número de mulheres corretamente previstas para trabalhar dividido pelo número de mulheres que trabalham.
+     
+     2. FPR: número de mulheres incorretamente previstas para trabalhar dividido pelo número de mulheres não trabalhadoras.
+    
+
+
+* Plotar ***FPR vs TPR*** para cada $c$ define a curva **ROC**.
+
+* Um bom modelo tem uma curva ROC no canto superior esquerdo: FPR = 0, TPR = 1.
+
+
+
+
+## Curvas ROC 
+
+.left-wide[
+```{r,fig.height = 3}
+pred_prob <- prediction(fitted(glms$probit), mroz$inlf)
+par(mfrow = c(1, 2), mar = lowtop)
+acc <- ROCR::performance(pred_prob, "acc")
+max_acc <- which.max(acc@y.values[[1]])
+plot(acc)
+points(acc@x.values[[1]][max_acc], acc@y.values[[1]][max_acc], col = "darkgreen")
+roc <- ROCR::performance(pred_prob, "tpr", "fpr")
+plot(roc)
+points(roc@x.values[[1]][max_acc], roc@y.values[[1]][max_acc], col = "darkgreen")
+abline(0, 1, lty = 2, col = "red")
+```
+]
+
+.right-thin[
+<br>
+<br>
+* Melhor precisão em torno de $c=0,54$
+
+* ROC sempre acima da linha de 45 graus. Melhor do que atribuição aleatória (jogar uma moeda)!
+
+]
+
+
+## Estimação de Máxima Verossimilhança
+
+* Ao invés de usar média e variância condicionais, usaremos a distribuição condicional completa
+
+* Amostra *iid* $\lbrace y_i, x_i \rbrace_{i=1}^N$. Queremos estimar a distribuição $f(y|x)$
+
+* **Hipótese:** esta distribuição é conhecida, a não ser por um número finito de parâmetros fixos.
+    + Impomos um modelo paramétrico para a densidade condicional
+    
+
+
+## Estimação de Máxima Verossimilhança
+
+### Exemplo Probit
+
+.pull-left[
+* $y_i^*=x_i\theta + \varepsilon_i$, sendo $\varepsilon_i\sim N(0,1)$
+
+* Não observamos $y_i^*$, apenas $y_i$
+]
+
+
+
+.pull-right[
+$$\begin{equation*}
+y_i = \begin{cases}
+1 \text{ se } y_i^* > 0\\ 
+0 \text{ se } y_i^* \leq 0
+\end{cases}
+\end{equation*}$$
+]
+
+
+
+## Estimação de Máxima Verossimilhança
+
+### Exemplo Probit
+
+* Dadas as especificações acima:
+
+.pull-left[
+$$\begin{align*}
+P(y_i=1|x_i)&=P(y_i* > 0|x_i)\\
+&=P(\varepsilon_i > -x_i\theta |x_i)\\
+&=1-\Phi(-x_i\theta)\\
+&=\Phi(x_i\theta)
+\end{align*}$$
+]
+
+.pull-right[
+$$\begin{align*}
+P(y_i=0|x_i)&=P(y_i* \leq 0|x_i)\\
+&=P(\varepsilon_i \leq -x_i\theta |x_i)\\
+&=\Phi(-x_i\theta)\\
+&=1-\Phi(x_i\theta)
+\end{align*}$$
+]
+
+
+## Estimação de Máxima Verossimilhança
+
+### Exemplo Probit
+
+* A função de probabilidade condicional pode ser escrita como:
+
+$$p(y_i|x_i)=\Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i}$$
+
+
+* Esta é a probabilidade de ocorrência de um ponto $(x_i, y_i)$. Para o conjunto de dados observados temos a ***função de verossimilhança***
+
+$$\ell(\theta)=\Pi_{i=1}^N \Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i}$$
+
+
+
+* Máxima Verossimilhança consiste em ***maximizar a função de verossimilhança*** em relação aos parâmetros, $\theta$.
+
+* Podemos maximizar a ***log-verossimilhança*** por praticidade. $\mathcal{L}(\theta)=\log(\ell(\theta))=\sum_{i=1}^N y_i\log(\Phi(x_i\theta))+(1-y_i)\log(1-\Phi(x_i\theta))$
+
+
+## Estimação de Máxima Verossimilhança
+
+### Exemplo Probit
+
+$$\hat\theta = \arg \max_{\theta} \mathcal{L}(\theta)$$
+
+* O vetor de ***score*** é dado pela derivada da log-verossimilhança em relação a cada um dos parâmetros
+
+$$s(\theta)=\nabla_\theta \mathcal{L}(\theta)=\left[\frac{\partial\mathcal{L}(\theta)}{\partial\theta_1}, \ldots, \frac{\partial\mathcal{L}(\theta)}{\partial\theta_k}\right]^{\prime}$$
+* A Hessiana é a matriz de segundas derivadas
+
+$$H(\theta)=\nabla^2_\theta \mathcal{L}(\theta)$$
+
+
+## Estimação de Máxima Verossimilhança
+
+### Exemplo Probit
+
+Exercício: Calcule o _score_ do modelo probit.
+
+
+## Estimação de Máxima Verossimilhança
+
+### Exemplo Probit - Solução
+
+$\mathcal{L}(\theta)=\sum_{i=1}^N y_i\log(\Phi(x_i\theta))+(1-y_i)\log(1-\Phi(x_i\theta))$
+
+
+
+$$\begin{align}
+s(\theta)&=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\phi(x_i \theta)}{\Phi(x_i \theta)} - (1-y_i)x_i\frac{\phi(x_i \theta)}{1-\Phi(x_i \theta)}\\
+&=\sum_{i=1}^N \frac{[1-\Phi(x_i \theta)]y_i x_i\phi(x_i \theta) - \Phi(x_i \theta)(1-y_i)x_i\phi(x_i \theta)}{\Phi(x_i \theta) [1-\Phi(x_i \theta)]}\\
+&=\sum_{i=1}^N \frac{x_i\phi(x_i \theta)}{\Phi(x_i \theta) [1-\Phi(x_i \theta)]}[y_i-\Phi(x_i \theta)]
+\end{align}$$
+
+
+
+## Estimação de Máxima Verossimilhança
+
+### Exemplo Exponencial
+
+- Suponha que tenhamos um conjunto simples de dados $\{x_i\}_{i=1}^N$ $iid$ e queremos ajustar uma distribuição exponencial
+
+
+
+- $x_i\sim Exp(\lambda)$. $f(x; \lambda)=\frac{1}{\lambda}e^{-x_i/\lambda}$. $x_i\geq 0$.
+
+ 
+
+- Qual é a função de log-verossimilhança?
+- Encontre o estimador de máxima verossimilhança $\hat\lambda_{mle}$
+
+
+
+## Estimação de Máxima Verossimilhança
+
+### Exemplo Exponencial
+
+- Função de verossimilhança: $L(\lambda)=\Pi_{i=1}^N f(x_i; \lambda)=\Pi_{i=1}^N \frac{1}{\lambda}e^{-x_i/\lambda}$
+
+
+
+- Log-verossimilhança: $\mathcal{L}(\lambda)=\sum_{i=1}^N \log \frac{1}{\lambda}e^{-x_i/\lambda}$
+
+
+
+- Ao final encontramos ...
+
+.pull-left[
+$$\hat\lambda_{mle}=\frac{1}{N}\sum_{i=1}^N x_i$$
+]
+
+.pull-right[
+.center[
+<img src="https://media.giphy.com/media/Jlirxn597uSeW7kPAQ/giphy.gif", height="250" />
+]
+]
+
+
+
+## Método dos Momentos Generalizado
+
+### Método dos Momentos (MM)
+
+* Podemos utilizar momentos populacionais para identificar parâmetros
+    + $E[u_i]=0$ é um exemplo
+
+* De fato, ***tanto MQO quanto VI*** podem ser entendidos como estimadores MM!
+
+* Quais são os momentos utilizados no MQO?
+
+
+
+* $E[u]=0$ e $E[xu]=0$, que são as equações normais do MQO
+
+* O MM resolve o análogo amostral destas equações
+
+
+
+## Método dos Momentos Generalizado
+
+### Método dos Momentos (MM)
+
+.left-wide[
+
+* Vamos considerar um _setup_ mais geral:
+* $\theta_0\in\mathbb{R}^p$ é um vetor dos parâmetros da população
+* $m(\theta_0)\equiv E[g(Z_i, \theta_0)]=0$, são as equações de momento
+* $g(Z_i, \theta)$ é uma função vetorial $r\times 1$
+* $Z_i\equiv (X_i, Y_i)$ é uma observação do conjunto de dados 
+* $\theta_0$ é a única solução para a equação de momento
+* MM vai resolver o análogo amostral:
+
+$$\hat{m}(\hat\theta)=\frac{1}{N}\sum_{i=1}^N g(Z_i, \hat\theta)=0$$
+]
+
+
+
+.right-thin[
+<!-- ![](https://media.giphy.com/media/ghuvaCOI6GOoTX0RmH/giphy.gif) -->
+![](https://media.giphy.com/media/YmnRIWXjSkct9ZZtNZ/giphy.gif)
+]
+
+
+## Método dos Momentos Generalizado
+
+### Clarificando
+
+.left-wide[
+* Considere o MQO. Podemos escrever duas equação de momento que identificam os parâmetros do modelo
+
+$$\hat{m}(\hat\beta)=\begin{cases}
+\frac{1}{N}\sum_{i=1}^N(y_i-\hat\beta_0-\hat\beta_1 x_i)=0\\
+\frac{1}{N}\sum_{i=1}^Nx_i(y_i-\hat\beta_0-\hat\beta_1 x_i)=0
+\end{cases}$$
+
+* O MM escreve momentos populacionais em termos dos parâmetros e resolve o sistema de equações, simples!
+]
+
+
+.right-thin[
+.center[![](https://media.giphy.com/media/111ebonMs90YLu/giphy.gif)]
+]
+
+
+## Método dos Momentos Generalizado
+
+### GMM
+
+* Podemos generalizar o método dos momentos. Daí o nome ***generalized method of moments*** - **GMM**
+
+* Minimizar a norma ${\displaystyle \|{\hat {m}}(\theta )\|_{W}^{2}={\hat {m}}(\theta )^{\mathsf {T}}\,W{\hat {m}}(\theta)}$
+
+* Onde $W$ é uma matriz positiva definida
+
+* ${\displaystyle {\hat {\theta }}=\operatorname {arg} \min _{\theta \in \Theta }{\bigg (}{\frac {1}{N}}\sum _{i=1}^{N}g(Z_{i},\theta ){\bigg )}^{\mathsf {T}}{W}{\bigg (}{\frac {1}{N}}\sum_{i=1}^{N}g(Z_{i},\theta ){\bigg )}}$
+
+
+* Especialmente útil quando temos mais equações de momento do que parâmetros
+
+
+## Método dos Momentos Generalizado
+
+### Aplicações de GMM
+
+* MQO, VI e MLE podem ser obtidos a partir de um GMM
+
+* Aplicações diversas em
+    + _Cross-Section_: modelos não-lineares com variáveis endógenas 
+    + Séries Temporais: correlação serial e heterocedasticidade
+    + Painel: extensões do modelo de efeitos fixos
+
+* Veja mais em [Wooldridge (2001) JEP](https://pubs.aeaweb.org/doi/pdfplus/10.1257/jep.15.4.87)
+
+
+
+## Leitura Recomendada
+
+* WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. Capítulo 17 Modelo com Variáveis Dependentes Limitadas e Correções da Seleção Amostral.
+
+* GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed. Capítulo 15 Modelos de regressão de resposta qualitativa
+
+* WOOLDRIDGE, Jeffrey M. Econometric Analysis of Cross Section and Panel Data. MIT press, 2010. Second Edition. Chapter 15 Binary Response Models
+
+
+
+layout: false
+
+class: title-slide-final, middle
+background-image: url(../../img/logo/UdescEsag.jpeg)
+background-size: 350px
+background-position: 9% 19%
+
+## ATÉ A PRÓXIMA AULA!
+
+<!-- Com a Lista 1 feita! `r emo::ji("white_check_mark")` -->
+
+.footnote[
+[1]: Este slides foram baseados nas aulas de econometria da [SciencesPo Department of Economics](https://github.com/ScPoEcon/ScPoEconometrics-Slides)
+]
+
+
+|                                                                                                            |                                   |
+| : | :-- |
+| <a href="https://github.com/rfbressan/econometria3_slides">.ScPored[<i class="fa fa-link fa-fw"></i>] | Slides |
+| <a href="http://github.com/rfbressan">.ScPored[<i class="fa fa-github fa-fw"></i>]                          | @rfbressan                      |
+| <a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/02-probit/lista_I_pt.html">.ScPored[<i class="fa fa-list fa-fw"></i>] | Lista de Exercícios I |
+
