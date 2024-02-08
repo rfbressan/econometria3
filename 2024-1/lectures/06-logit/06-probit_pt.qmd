@@ -20,7 +20,7 @@ format:
 from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
 fontsize: "2.2em"
 # editor: source
-engine: knitr
+engine: jupyter
 jupyter: python3
 ---
 
@@ -44,27 +44,29 @@ sns.set_context("talk")
 
 ## Modelos de Escolha Qualitativa
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 
 Até agora, nossos modelos ficaram assim:
-
-$$\begin{align}
+$$
+\begin{align}
 y &= b_0 + b_1 x + e \\
 e &\sim D\left(0,\sigma^2\right)
-\end{align}$$
+\end{align}
+$$
 
 * A suposição de distribuição em $e$:
 
 * Em princípio implica que $y \in \mathbb{R}$.
 
 * Resultados de testes, renda, taxas de criminalidade, etc. são todos resultados contínuos. ✅
-]
+:::
 
 
 
-.pull-right[
+:::{.column width="50%"}
 
-Mas alguns resultados são claramente binários (ou seja, `VERDADEIRO` ou `FALSO`):
+- Mas alguns resultados são claramente binários (ou seja, `VERDADEIRO` ou `FALSO`):
 
 * Ou você trabalha ou não,
 
@@ -73,8 +75,8 @@ Mas alguns resultados são claramente binários (ou seja, `VERDADEIRO` ou `FALSO
 * Ou você comprou um produto ou não,
 
 * Você jogou uma moeda e saiu cara ou coroa.
-]
-
+:::
+::::
 
 
 ## Resultados Binários
@@ -85,90 +87,101 @@ Mas alguns resultados são claramente binários (ou seja, `VERDADEIRO` ou `FALSO
 
 * Nessas situações, estamos principalmente interessados em estimar a **probabilidade de resposta** ou a **probabilidade de sucesso**:
 
+:::{.fragment}
 $$p(x) = \Pr(y=1 | x)$$
+
 * como $p(x)$ muda quando mudamos $x$?
 
      >Se aumentarmos $x$ em uma unidade, como a probabilidade de $y=1$ mudaria?
      
-
+:::
 
 ## Lembrando o Experimento de Bernoulli
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 Lembre-se da [Distribuição de Bernoulli?](https://en.wikipedia.org/wiki/Bernoulli_distribution): Chamamos uma variável aleatória $y \in \{0,1\}$ tal que
 
-$$\begin{align}
+$$
+\begin{align}
 \Pr(y = 1) &= p \\
 \Pr(y = 0) &= 1-p \\
 p &\in[0,1]
-\end{align}$$
+\end{align}
+$$
 
 uma variável aleatória de *Bernoulli*.
-]
+:::
 
 
 
-.pull-right[
-Para nós: *condicione* essas probabilidades em uma covariada $x$
+:::{.column width="50%"}
+*Condicione* essas probabilidades em uma covariada $x$
 
-$$\begin{align}
+$$
+\begin{align}
 \Pr(y = 1 | X = x) &= p(x) \\
 \Pr(y = 0 | X = x) &= 1-p(x) \\
 p(x) &\in[0,1]
-\end{align}$$
+\end{align}
+$$
 
 * Particularmente: *valor esperado* (ou seja, a média) de $Y$ dado $x$
-
 $$
 E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 $$
 
 * Muitas vezes modelamos **expectativas condicionais** 😉
-]
-
+:::
+::::
 
 ## O Modelo de Probabilidade Linear (MPL)
 
 * A opção mais simples. Modele a probabilidade de resposta como
-
 $$
 \Pr(y = 1 | x) = p(x) = \beta_0 + \beta_1 x_1 + \dots + \beta_K x_K
 $$
-* Interpretação: *uma mudança de 1 unidade em $x_1$, digamos, resulta em uma mudança de $\beta_1$ em $p(x)$.*
 
-### Exemplo: Mroz (1987)
+* Interpretação: uma mudança de 1 unidade em $x_1$, resulta em uma mudança de $\beta_1$ em $p(x)$.
+
+## Exemplo: Mroz (1987)
 
 * Participação feminina no mercado de trabalho
 
-* Como o status de `inlf` (*na força de trabalho*) depende da renda familiar da mulher solteira, sua educação, idade e número de filhos pequenos?
+* Como o status de `inlf` *(na força de trabalho)* depende da renda familiar da mulher solteira, sua educação, idade e número de filhos pequenos?
 
 
 ## Mroz 1987
 
-```{r,fig.height = 4}
-data(mroz, package = "wooldridge")
-plot(factor(inlf) ~ age,
-  data = mroz,
-  ylevels = 2:1,
-  ylab = "in labor force?"
+
+```{python}
+# | echo: true
+# | code-fold: show
+mroz = woo.dataWoo("mroz")
+# Filled histogram. Colors by inlf. Ages in bins of 2 years. Use seaborn
+sns.histplot(
+    mroz, x="age", hue="inlf", multiple="fill", bins=range(0, 100, 2), stat="density"
 )
+# Name axes: x = Idade, y = Proporção
+plt.xlabel("Idade")
+plt.ylabel("Proporção")
+
 ```
-
-
 
 
 ## Rodando o MPL
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 ```{r}
 LPM <- lm(inlf ~ nwifeinc + educ + exper + I(exper^2) + age + I(age^2) + kidslt6,
   data = mroz
 )
 broom::tidy(LPM)
 ```
-]
+:::
 
-.pull-right[
+:::{.column width="50%"}
 * **idêntico** aos nossos modelos de regressão linear anteriores
 
 * Apenas `inlf` assume somente dois valores, 0 ou 1.
@@ -177,23 +190,25 @@ broom::tidy(LPM)
 
 * uma criança pequena adicional reduziria a probabilidade de trabalho em 0,26 (isso é grande).
 
-* Até agora, tudo simples.️]
+* Até agora, tudo simples.️
+:::
 
 
 
 ## MPL: Prevendo probabilidades negativas?!
 
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 ```{r,echo = FALSE}
 pr <- predict(LPM)
 plot(pr[order(pr)], ylab = "P(inlf = 1)")
 abline(a = 0, b = 0, col = "red", lw = 3)
 abline(a = 1, b = 0, col = "red", lw = 3)
 ```
-]
+:::
 
-.pull-right[
+:::{.column width="50%"}
 <br>
 <br>
 * As previsões do MPL de $p(x)$ não são garantidas no intervalo unitário $[0,1]$.
@@ -202,7 +217,8 @@ abline(a = 1, b = 0, col = "red", lw = 3)
 
 * aqui, algumas probabilidades menores que zero!
 
-* Particularmente irritante se você quiser *previsões*: O que é probabilidade -0,3? 🤔]
+* Particularmente irritante se você quiser *previsões*: O que é probabilidade -0,3? 🤔
+:::
 
 
 
@@ -357,20 +373,22 @@ logit <- glm(inlf ~ age,
 
 ## Interpretação
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 ```{r}
 modelsummary::modelsummary(list("probit" = probit, "logit" = logit))
 ```
-]
+:::
 
-.pull-right[
+:::{.column width="50%"}
 * coeficiente de probit para `idade` é `r round(coef(probit)[2],3)`
 
 * logit: `r round(coef(logit)[2],3)` para logit,
 
 * impacto da idade na probabilidade de trabalhar é **negativo**
 
-* No entanto, **quão** negativo? Não podemos dizer!]
+* No entanto, **quão** negativo? Não podemos dizer!
+:::
 
 
 
@@ -514,16 +532,17 @@ base_kbl <- kbl(prop_tbl, digits = 4) |>
 
 ### [Nomenclatura](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 **Taxa de Verdadeiros Positivos** (TPR, sensitividade, _recall_): $TP/P=$ `r tpr`  
 
 **Taxa de Falsos Positivos** (FPR): $FP/N=$ `r fpr`
 
 **Acurácia**: $(TP + TN)/ (P+N)=$ `r tp+tn`
-]
+:::
 
 
-.pull-right[
+:::{.column width="50%"}
 
 ```{r panels, echo=FALSE}
 xaringanExtra::use_panelset()
@@ -656,22 +675,23 @@ abline(0, 1, lty = 2, col = "red")
 
 ### Exemplo Probit
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 * $y_i^*=x_i\theta + \varepsilon_i$, sendo $\varepsilon_i\sim N(0,1)$
 
 * Não observamos $y_i^*$, apenas $y_i$
-]
+:::
 
 
 
-.pull-right[
+:::{.column width="50%"}
 $$\begin{equation*}
 y_i = \begin{cases}
 1 \text{ se } y_i^* > 0\\ 
 0 \text{ se } y_i^* \leq 0
 \end{cases}
 \end{equation*}$$
-]
+:::
 
 
 
@@ -681,23 +701,25 @@ y_i = \begin{cases}
 
 * Dadas as especificações acima:
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 $$\begin{align*}
 P(y_i=1|x_i)&=P(y_i* > 0|x_i)\\
 &=P(\varepsilon_i > -x_i\theta |x_i)\\
 &=1-\Phi(-x_i\theta)\\
 &=\Phi(x_i\theta)
 \end{align*}$$
-]
+:::
 
-.pull-right[
+:::{.column width="50%"}
 $$\begin{align*}
 P(y_i=0|x_i)&=P(y_i* \leq 0|x_i)\\
 &=P(\varepsilon_i \leq -x_i\theta |x_i)\\
 &=\Phi(-x_i\theta)\\
 &=1-\Phi(x_i\theta)
 \end{align*}$$
-]
+:::
+::::
 
 
 ## Estimação de Máxima Verossimilhança
@@ -788,15 +810,16 @@ s(\theta)&=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\phi(x
 
 - Ao final encontramos ...
 
-.pull-left[
+::::{.columns}
+:::{.column width="50%"}
 $$\hat\lambda_{mle}=\frac{1}{N}\sum_{i=1}^N x_i$$
-]
+:::
 
-.pull-right[
+:::{.column width="50%"}
 .center[
 <img src="https://media.giphy.com/media/Jlirxn597uSeW7kPAQ/giphy.gif", height="250" />
-]
-]
+:::
+:::
 
 
 
