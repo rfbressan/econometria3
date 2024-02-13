@@ -5,33 +5,37 @@ from: markdown+emoji
 
 Neste curso você aprenderá algumas das principais ferramentas atualmente utilizadas em ***microeconometria***. Modelos com dados em painel, regressão com efeitos-fixos, diferença-em-diferenças, modelos de equações simultâneas, variáveis instrumentais e mínimos quadrados em dois estágios (MQ2E) e, modelos com variável dependente limitada.
  
-Você também aprenderá a usar a linguagem de programação `R` para fazer as manipulações de dados, estimações e testes de hipóteses, entretanto, este **não** é um curso de `R` e uma leitura complementar é sugerida. 
+Você também aprenderá a usar a linguagem de programação `Python` para fazer as manipulações de dados, estimações e testes de hipóteses, entretanto, este **não** é um curso de `Python` e uma leitura complementar é sugerida. 
 
 Este material é baseado no trabalho da equipe `ScPoEcon`, de `Edward Rubin`, de `Nick CH K` e o devido crédito é dado. O material foi traduzido para português e levemente adaptado para o ensino de econometria no Brasil. Os decks de slides originais podem ser encontrados em [ScPoEconometrics-Slides](https://github.com/ScPoEcon/Advanced-Metrics-slides), [EC 421](https://github.com/edrubin/EC421S19) e, [Nick](https://github.com/NickCH-K/EconometricsSlides)
 
 
 ## Pré-requisitos
 
-Você precisa ter feito os cursos de Econometria I e II na Esag (ou equivalente). Você também é incentivado durante o curso a se familiarizar com o conhecimento de [`R`](https://cran.r-project.org/) para aproveitar ao máximo todo o conteúdo ofertado neste curso.
+Você precisa ter feito os cursos de Econometria I e II na Esag (ou equivalente). Você também é incentivado durante o curso a se familiarizar com o conhecimento de [`Python`](https://www.python.org/) para aproveitar ao máximo todo o conteúdo ofertado neste curso.
 
 ## Visão geral
 
-Continuamos com nossa abordagem prática para aprender Econometria e `R`. Conheceremos um importante método para estabelecer relações casuais em dados não experimentais, chamado de “Variáveis Instrumentais”. Aprenderemos sobre dados em painel, ou seja, dados que rastreiam indivíduos ao longo do tempo. Veremos situações em que nossos variáveis dependentes são de natureza discreta, como “sujeito *i* escolhe a opção A (e não B)”, além de modelos de equações simultâneas, onde duas variáveis dependentes são determinadas concomitantemente.
+Continuamos com nossa abordagem prática para aprender Econometria e `Python`. Conheceremos um importante método para estabelecer relações casuais em dados não experimentais, chamado de “Variáveis Instrumentais”. Aprenderemos sobre dados em painel, ou seja, dados que rastreiam indivíduos ao longo do tempo. Veremos situações em que nossos variáveis dependentes são de natureza discreta, como “sujeito *i* escolhe a opção A (e não B)”, além de modelos de equações simultâneas, onde duas variáveis dependentes são determinadas concomitantemente.
 
 
 ## Programa e slides
 
 Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
-| Tópico                                                   | Slides                                                                                                              | Lista                                                                                                   | Laboratório                                                                                                       |
-|----------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| Aula 1: Causalidade                                      | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/01-causalidade/01-causality_pt.html)   |                                                                                                         | [Github Copilot](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/01_lab_intro_github.html)      |
-| Aula 2: Variáveis Instrumentais e Causalidade - Parte I  | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/03-IV/03-IV_pt.html)                   |                                                                                                         | [Intro R](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/01_lab_introducao.html)               |
-| Aula 3: Variáveis Instrumentais e Causalidade - Parte II | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/04-IV2/04-IV2_pt.html)                 | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_causalidade_vi.html) | [Variáveis Instrumentais](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/02_lab_VI.html)       |
-| Aula 4: Modelos de Equações Simultâneas                  | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/05-simultaneas/05-simultaneas_pt.html) | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_Simultaneas.html)    | [Equações Simultâneas](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/03_lab_Simultaneas.html) |
-| Aula 5: Dados em Painel - Parte I                        | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/06-panel/06-panel_pt.html)             | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_Painel.html)         | [Painel e Efeitos Fixos](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/04_lab_Painel_EF.html) |
-| Aula 6: Dados em Painel - Diferenças em Diferenças       | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/07-DID/07_DID_pt.html)                 | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_DID.html)            | [Diferenças em Diferenças](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/05_lab_DID_callaway.html)     |
-| Aula 7: Modelos de Escolha Qualitativa                   | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/02-probit/02-probit_pt.html)           | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_Probit.html)         | [Escolha Qualitativa](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/06_lab_Probit.html)       |
+| Tópico | Slides | Lista | Laboratório |
+|--------|--------|-------|-------------|
+| Aula 1: Causalidade | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/01-causalidade/01-causality_pt.html) |  | [Github Copilot](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/01_lab_intro_github.html) |
+
+| Aula 2: Variáveis Instrumentais | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/02-IV/02-IV_pt.html) |  | [Intro R](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/01_lab_introducao.html)               |
+
+| Aula 3: Modelos de Equações Simultâneas | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/03-simultaneas/03-simultaneas_pt.html) | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_Simultaneas.html)    | [Equações Simultâneas](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/03_lab_Simultaneas.html) |
+
+| Aula 4: Dados em Painel - Efeitos Fixos | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/04-panel/04-panel_pt.html)             | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_Painel.html)         | [Painel e Efeitos Fixos](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/04_lab_Painel_EF.html) |
+
+| Aula 5: Dados em Painel - Diferenças em Diferenças | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/05-DID/05_DID_pt.html)                 | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_DID.html)            | [Diferenças em Diferenças](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/05_lab_DID_callaway.html)     |
+
+| Aula 6: Modelos de Escolha Qualitativa | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/06-logit/06-logit_pt.html) | [HTML](https://raw.githack.com/rfbressan/econometria3_slides/master/psets/Questoes_Probit.html)         | [Escolha Qualitativa](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/06_lab_Probit.html)       |
 
 
 
@@ -44,6 +48,8 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 * BÉKÉS, Gábor; KÉZDI, Gábor. Data analysis for business, economics, and policy. Cambridge University Press, 2021.
 
 * GERTLER, Paul J. et al. Avaliação de Impacto na Prática, 2018. - 2. ed. Banco Mundial.
+
+* PEIXOTO, Betânia et al. Avaliação econômica de projetos sociais. Fundação Itaú Social, 3ª ed, 2017.
 
 * CUNNINGHAM, Scott. Causal Inference: The Mixtape, New Haven: Yale University Press, 2021. URL: https://mixtape.scunning.com/
 

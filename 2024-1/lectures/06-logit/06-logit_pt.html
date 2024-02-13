@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="06-probit_pt_files/libs/clipboard/clipboard.min.js"></script>
-<script src="06-probit_pt_files/libs/quarto-html/tabby.min.js"></script>
-<script src="06-probit_pt_files/libs/quarto-html/popper.min.js"></script>
-<script src="06-probit_pt_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="06-probit_pt_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="06-probit_pt_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="06-probit_pt_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="06-probit_pt_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="06-logit_pt_files/libs/clipboard/clipboard.min.js"></script>
+<script src="06-logit_pt_files/libs/quarto-html/tabby.min.js"></script>
+<script src="06-logit_pt_files/libs/quarto-html/popper.min.js"></script>
+<script src="06-logit_pt_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="06-logit_pt_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="06-logit_pt_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="06-logit_pt_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="06-logit_pt_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.549">
 
   <meta name="author" content="Rafael Bressan">
@@ -15,8 +15,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="06-probit_pt_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="06-probit_pt_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="06-logit_pt_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="06-logit_pt_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -95,13 +95,13 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="06-probit_pt_files/libs/revealjs/dist/theme/quarto.css">
-  <link href="06-probit_pt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="06-probit_pt_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="06-probit_pt_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="06-probit_pt_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="06-probit_pt_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="06-probit_pt_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="06-logit_pt_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="06-logit_pt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="06-logit_pt_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="06-logit_pt_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="06-logit_pt_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="06-logit_pt_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="06-logit_pt_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -500,7 +500,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 </section>
 <section id="mroz-1987" class="slide level2">
 <h2>Mroz 1987</h2>
-<div id="57e63195" class="cell" data-execution_count="2">
+<div id="473abcc1" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>mroz <span class="op">=</span> woo.dataWoo(<span class="st">"mroz"</span>)</span>
@@ -518,7 +518,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="06-probit_pt_files/figure-revealjs/cell-3-output-2.png" width="844" height="464"></p>
+<p><img data-src="06-logit_pt_files/figure-revealjs/cell-3-output-2.png" width="844" height="464"></p>
 </figure>
 </div>
 </div>
@@ -528,7 +528,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <h2>Rodando o MPL</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div id="70621f61" class="cell" data-execution_count="3">
+<div id="7f76f240" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a>lpm <span class="op">=</span> smf.ols(</span>
@@ -611,7 +611,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <h2>MPL: Prevendo probabilidades negativas?!</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div id="9821e044" class="cell" data-execution_count="4">
+<div id="03d6920f" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>pr <span class="op">=</span> lpm.predict()</span>
@@ -628,7 +628,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="06-probit_pt_files/figure-revealjs/cell-5-output-2.png" width="876" height="482"></p>
+<p><img data-src="06-logit_pt_files/figure-revealjs/cell-5-output-2.png" width="876" height="482"></p>
 </figure>
 </div>
 </div>
@@ -647,7 +647,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <h2>MPL no modelo saturado: sem problemas!</h2>
 <div class="columns">
 <div class="column" style="width:75%;">
-<div id="ec1e484d" class="cell" data-execution_count="5">
+<div id="667e5237" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>mroz[<span class="st">"age_fct"</span>] <span class="op">=</span> pd.cut(mroz[<span class="st">"age"</span>], bins<span class="op">=</span><span class="dv">3</span>, labels<span class="op">=</span><span class="va">False</span>)</span>
@@ -741,14 +741,14 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <h2>MPL no modelo saturado: sem problemas!</h2>
 <div class="columns">
 <div class="column" style="width:75%;">
-<div id="fd38d4ad" class="cell" data-execution_count="6">
+<div id="6fbc0dab" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>Text(0.5, 0, 'Coeficiente')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="06-probit_pt_files/figure-revealjs/cell-7-output-2.png" width="862" height="619"></p>
+<p><img data-src="06-logit_pt_files/figure-revealjs/cell-7-output-2.png" width="862" height="619"></p>
 </figure>
 </div>
 </div>
@@ -778,11 +778,11 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <h3 id="g-probit-e-logit"><span class="math inline">\(G\)</span>: <em>probit</em> e <em>logit</em></h3>
 <div class="columns">
 <div class="column" style="width:75%;">
-<div id="50283461" class="cell" data-execution_count="7">
+<div id="1ceda082" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="06-probit_pt_files/figure-revealjs/cell-8-output-1.png" width="844" height="456"></p>
+<p><img data-src="06-logit_pt_files/figure-revealjs/cell-8-output-1.png" width="844" height="456"></p>
 </figure>
 </div>
 </div>
@@ -802,11 +802,11 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <h3 id="g-probit-e-logit-1"><span class="math inline">\(G\)</span>: <em>probit</em> e <em>logit</em></h3>
 <div class="columns">
 <div class="column" style="width:70%;">
-<div id="ad723663" class="cell" data-execution_count="8">
+<div id="177bbf7d" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="06-probit_pt_files/figure-revealjs/cell-9-output-1.png" width="844" height="456"></p>
+<p><img data-src="06-logit_pt_files/figure-revealjs/cell-9-output-1.png" width="844" height="456"></p>
 </figure>
 </div>
 </div>
@@ -833,7 +833,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <li class="fragment"><p>Porém o <code>statsmodels</code> possui funções especializadas para probit e logit.</p></li>
 </ul>
 <div class="fragment">
-<div id="6ad19da4" class="cell" data-execution_count="9">
+<div id="4f27c505" class="cell" data-execution_count="9">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>probit <span class="op">=</span> smf.probit(<span class="st">"inlf ~ age"</span>, data<span class="op">=</span>mroz).fit()</span>
@@ -855,7 +855,7 @@ Optimization terminated successfully.
 <h2>Interpretação</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div id="948a9f19" class="cell" data-execution_count="10">
+<div id="96df2698" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display" data-execution_count="10">
 <table class="simpletable" data-quarto-postprocess="true">
 <tbody>
@@ -925,7 +925,7 @@ Standard errors in parentheses.<br>
 </section>
 <section id="efeitos-marginais" class="slide level2">
 <h2>Efeitos Marginais</h2>
-<div id="7fbdab63" class="cell" data-execution_count="11">
+<div id="7d82ef47" class="cell" data-execution_count="11">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="kw">def</span> get_mfx(model):</span>
@@ -958,7 +958,7 @@ Optimization terminated successfully.
 <section id="efeitos-marginais-1" class="slide level2">
 <h2>Efeitos Marginais</h2>
 <p><strong>Probit</strong></p>
-<div id="a01e3d66" class="cell" data-execution_count="12">
+<div id="14a412bb" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 <style scoped="">
@@ -1019,7 +1019,7 @@ Optimization terminated successfully.
 </div>
 </div>
 <p><strong>Logit</strong></p>
-<div id="5c427ad0" class="cell" data-execution_count="13">
+<div id="049084f3" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display" data-execution_count="13">
 <div>
 <style scoped="">
@@ -1087,7 +1087,7 @@ Optimization terminated successfully.
 <li class="fragment"><p>Podemos pensar em um <a href="https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.ProbitResults.html#statsmodels.discrete.discrete_model.ProbitResults"><em>pseudo</em> <span class="math inline">\(R^2\)</span></a> que compara nosso modelo com outro sem regressores:</p></li>
 </ul>
 <div class="fragment">
-<div id="72bd6e77" class="cell" data-execution_count="14">
+<div id="4c1abfcd" class="cell" data-execution_count="14">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>probit_reg.prsquared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1108,7 +1108,7 @@ Optimization terminated successfully.
 <li class="fragment"><p>Podemos atribuir a previsão <code>1</code> caso <span class="math inline">\(p(x) &gt; 0.5\)</span> e <code>0</code> caso contrário.</p></li>
 </ul>
 <div class="fragment">
-<div id="f43c0d75" class="cell" data-execution_count="15">
+<div id="3b98c1f1" class="cell" data-execution_count="15">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a>confusion_tbl <span class="op">=</span> probit_reg.pred_table(threshold<span class="op">=</span><span class="fl">0.5</span>) <span class="op">/</span> probit_reg.nobs</span>
@@ -1176,38 +1176,38 @@ Optimization terminated successfully.
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">TPR</a></li><li><a href="#tabset-1-2">FPR</a></li><li><a href="#tabset-1-3">ACC</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<div id="0d27f844" class="cell" data-execution_count="17">
+<div id="514e64e1" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display" data-execution_count="17">
 <style type="text/css">
-#T_128f4_row1_col0 {
+#T_9c50b_row1_col0 {
   background-color: darkgreen;
   color: white;
 }
-#T_128f4_row1_col1 {
+#T_9c50b_row1_col1 {
   background-color: darkgreen;
   color: white;
   font-weight: bold;
 }
 </style>
 
-<table id="T_128f4" data-quarto-postprocess="true">
+<table id="T_9c50b" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
-<th id="T_128f4_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
-<th id="T_128f4_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
+<th id="T_9c50b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
+<th id="T_9c50b_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_128f4_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
-<td id="T_128f4_row0_col0" class="data row0 col0">0.169987</td>
-<td id="T_128f4_row0_col1" class="data row0 col1">0.261620</td>
+<td id="T_9c50b_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
+<td id="T_9c50b_row0_col0" class="data row0 col0">0.169987</td>
+<td id="T_9c50b_row0_col1" class="data row0 col1">0.261620</td>
 </tr>
 <tr class="even">
-<td id="T_128f4_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
-<td id="T_128f4_row1_col0" class="data row1 col0">0.122178</td>
-<td id="T_128f4_row1_col1" class="data row1 col1">0.446215</td>
+<td id="T_9c50b_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
+<td id="T_9c50b_row1_col0" class="data row1 col0">0.122178</td>
+<td id="T_9c50b_row1_col1" class="data row1 col1">0.446215</td>
 </tr>
 </tbody>
 </table>
@@ -1216,38 +1216,38 @@ Optimization terminated successfully.
 <p>Métrica relacionada a <strong>Poder</strong></p>
 </div>
 <div id="tabset-1-2">
-<div id="5b358cc7" class="cell" data-execution_count="18">
+<div id="cf587053" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <style type="text/css">
-#T_8651e_row0_col0 {
+#T_5ec87_row0_col0 {
   background-color: darkgreen;
   color: white;
 }
-#T_8651e_row0_col1 {
+#T_5ec87_row0_col1 {
   background-color: darkgreen;
   color: white;
   font-weight: bold;
 }
 </style>
 
-<table id="T_8651e" data-quarto-postprocess="true">
+<table id="T_5ec87" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
-<th id="T_8651e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
-<th id="T_8651e_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
+<th id="T_5ec87_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
+<th id="T_5ec87_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_8651e_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
-<td id="T_8651e_row0_col0" class="data row0 col0">0.169987</td>
-<td id="T_8651e_row0_col1" class="data row0 col1">0.261620</td>
+<td id="T_5ec87_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
+<td id="T_5ec87_row0_col0" class="data row0 col0">0.169987</td>
+<td id="T_5ec87_row0_col1" class="data row0 col1">0.261620</td>
 </tr>
 <tr class="even">
-<td id="T_8651e_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
-<td id="T_8651e_row1_col0" class="data row1 col0">0.122178</td>
-<td id="T_8651e_row1_col1" class="data row1 col1">0.446215</td>
+<td id="T_5ec87_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
+<td id="T_5ec87_row1_col0" class="data row1 col0">0.122178</td>
+<td id="T_5ec87_row1_col1" class="data row1 col1">0.446215</td>
 </tr>
 </tbody>
 </table>
@@ -1256,34 +1256,34 @@ Optimization terminated successfully.
 <p>Métrica relacionada a <strong>Erro Tipo I</strong></p>
 </div>
 <div id="tabset-1-3">
-<div id="e32de650" class="cell" data-execution_count="19">
+<div id="a87b7222" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-display" data-execution_count="19">
 <style type="text/css">
-#T_3f370_row0_col0, #T_3f370_row1_col1 {
+#T_e6f91_row0_col0, #T_e6f91_row1_col1 {
   background-color: darkgreen;
   color: white;
   font-weight: bold;
 }
 </style>
 
-<table id="T_3f370" data-quarto-postprocess="true">
+<table id="T_e6f91" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
-<th id="T_3f370_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
-<th id="T_3f370_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
+<th id="T_e6f91_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
+<th id="T_e6f91_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_3f370_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
-<td id="T_3f370_row0_col0" class="data row0 col0">0.169987</td>
-<td id="T_3f370_row0_col1" class="data row0 col1">0.261620</td>
+<td id="T_e6f91_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
+<td id="T_e6f91_row0_col0" class="data row0 col0">0.169987</td>
+<td id="T_e6f91_row0_col1" class="data row0 col1">0.261620</td>
 </tr>
 <tr class="even">
-<td id="T_3f370_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
-<td id="T_3f370_row1_col0" class="data row1 col0">0.122178</td>
-<td id="T_3f370_row1_col1" class="data row1 col1">0.446215</td>
+<td id="T_e6f91_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
+<td id="T_e6f91_row1_col0" class="data row1 col0">0.122178</td>
+<td id="T_e6f91_row1_col1" class="data row1 col1">0.446215</td>
 </tr>
 </tbody>
 </table>
@@ -1313,7 +1313,7 @@ Optimization terminated successfully.
 <h2>Curvas ROC</h2>
 <div class="columns">
 <div class="column" style="width:75%;">
-<div id="481dcd51" class="cell" data-execution_count="20">
+<div id="e1163da2" class="cell" data-execution_count="20">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, auc, accuracy_score</span>
@@ -1334,7 +1334,7 @@ Optimization terminated successfully.
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="06-probit_pt_files/figure-revealjs/cell-21-output-2.png" width="844" height="456"></p>
+<p><img data-src="06-logit_pt_files/figure-revealjs/cell-21-output-2.png" width="844" height="456"></p>
 </figure>
 </div>
 </div>
@@ -1559,20 +1559,20 @@ s(\theta)&amp;=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\p
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="06-probit_pt_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="06-probit_pt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="06-probit_pt_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="06-probit_pt_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="06-probit_pt_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="06-probit_pt_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="06-probit_pt_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="06-probit_pt_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="06-probit_pt_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="06-probit_pt_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="06-probit_pt_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="06-logit_pt_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
