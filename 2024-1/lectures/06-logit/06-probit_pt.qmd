@@ -165,7 +165,6 @@ sns.histplot(
 # Name axes: x = Idade, y = Proporção
 plt.xlabel("Idade")
 plt.ylabel("Proporção")
-
 ```
 
 
@@ -173,18 +172,23 @@ plt.ylabel("Proporção")
 
 ::::{.columns}
 :::{.column width="50%"}
-```{r}
-LPM <- lm(inlf ~ nwifeinc + educ + exper + I(exper^2) + age + I(age^2) + kidslt6,
-  data = mroz
-)
-broom::tidy(LPM)
+
+```{python}
+# | echo: true
+# | code-fold: show
+lpm = smf.ols(
+    "inlf ~ nwifeinc + educ + exper + I(exper**2) + age + I(age**2) + kidslt6",
+    data=mroz,
+).fit()
+df = summary_col([lpm], model_names=["LPM"]).tables[0]
+df.iloc[[0, 1, 2, 3, 14, 15, 17], :]
 ```
 :::
 
 :::{.column width="50%"}
 * **idêntico** aos nossos modelos de regressão linear anteriores
 
-* Apenas `inlf` assume somente dois valores, 0 ou 1.
+* Variável dependente `inlf` assume somente dois valores, 0 ou 1.
 
 * Resultados: se a renda da mulher solteira aumenta em 10 (ou seja, 10.000 USD), $p(x)$ cai em 0,034 (isso é um efeito pequeno!),
 
@@ -192,7 +196,7 @@ broom::tidy(LPM)
 
 * Até agora, tudo simples.️
 :::
-
+::::
 
 
 ## MPL: Prevendo probabilidades negativas?!
@@ -200,18 +204,24 @@ broom::tidy(LPM)
 
 ::::{.columns}
 :::{.column width="50%"}
-```{r,echo = FALSE}
-pr <- predict(LPM)
-plot(pr[order(pr)], ylab = "P(inlf = 1)")
-abline(a = 0, b = 0, col = "red", lw = 3)
-abline(a = 1, b = 0, col = "red", lw = 3)
+
+```{python}
+# | echo: true
+# | code-fold: show
+pr = lpm.predict()
+sns.scatterplot(x=np.arange(len(pr)), y=np.sort(pr))
+sns.lineplot(x=[0, len(pr)], y=[0, 0], color="red", linewidth=2)
+sns.lineplot(x=[0, len(pr)], y=[1, 1], color="red", linewidth=2)
+plt.ylabel("P(inlf = 1)")
+plt.xlabel("Índice")
+plt.title("Previsões ordenadas do MPL")
 ```
 :::
 
 :::{.column width="50%"}
 <br>
 <br>
-* As previsões do MPL de $p(x)$ não são garantidas no intervalo unitário $[0,1]$.
+* As previsões do MPL de $p(x)$ não estão garantidas no intervalo unitário $[0,1]$.
 
 * Lembre-se: $e \sim D\left(0,\sigma^2\right)$
 
@@ -219,64 +229,83 @@ abline(a = 1, b = 0, col = "red", lw = 3)
 
 * Particularmente irritante se você quiser *previsões*: O que é probabilidade -0,3? 🤔
 :::
-
+::::
 
 
 ## MPL no modelo saturado: sem problemas!
 
-.left-wide[
-```{r,message=FALSE,warning=FALSE}
-mroz %<>%
-  # classify age into 3 and huswage into 2 classes
-  mutate(
-    age_fct = cut(age, breaks = 3, labels = FALSE),
-    huswage_fct = cut(huswage, breaks = 2, labels = FALSE)
-  ) %>%
-  mutate(classes = paste0("age_", age_fct, "_hus_", huswage_fct))
+::::{.columns}
+:::{.column width="75%"}
 
-LPM_saturated <- mroz %>%
-  lm(inlf ~ classes, data = .)
-broom::tidy(LPM_saturated)
+```{python}
+# | echo: true
+# | code-fold: show
+mroz["age_fct"] = pd.cut(mroz["age"], bins=3, labels=False)
+mroz["huswage_fct"] = pd.cut(mroz["huswage"], bins=2, labels=False)
+mroz["classes"] = (
+    "age_" + mroz["age_fct"].astype(str) + "_hus_" + mroz["huswage_fct"].astype(str)
+)
+
+lpm_saturated = smf.ols("inlf ~ -1 + classes", data=mroz).fit()
+lpm_saturated.summary(slim=True).tables[1]
 ```
 
-]
+:::
 
-.right-thin[
-* *modelo saturado* : só tem variáveis explicativas binárias (_dummies_)
+:::{.column width="25%"}
+* **modelo saturado** : só tem variáveis explicativas binárias (_dummies_)
 
 * Cada classe: $p(x)$ *dentro daquela célula*.
 
-]
+:::
+::::
 
 
 
 ## MPL no modelo saturado: sem problemas!
 
-.left-wide[
-```{r saturated,message=FALSE,warning=FALSE,fig.height = 5,echo = FALSE}
-mroz$pred <- predict(LPM_saturated)
+::::{.columns}
+:::{.column width="75%"}
 
-ggplot(mroz[order(mroz$pred), ], aes(x = 1:nrow(mroz), y = pred, color = classes)) +
-  geom_point() +
-  theme_bw() +
-  scale_y_continuous(limits = c(0, 1), name = "p(inlf)")
+```{python}
+lpm_points = lpm_saturated.params
+lpm_conf_int = lpm_saturated.conf_int()  # 95%
+lpm_df = pd.DataFrame(
+    {
+        "coef": lpm_points.index.values,
+        "est": lpm_points.values,
+        "err": lpm_points.values - lpm_conf_int[0],
+    }
+)
+ax = sns.scatterplot(data=lpm_df, x="coef", y="est", hue="coef", legend=False)
+ax.errorbar(
+    x=lpm_df["coef"],
+    y=lpm_df["est"],
+    yerr=lpm_df["err"],
+    fmt="o",
+    color="black",
+    capsize=3,
+)
+ax.hlines([0, 1], -0.5, 5.5, color="red", linestyles="dashed")
+# Rotate x-axis labels
+plt.xticks(rotation=45, ha="right")
+plt.ylabel("Estimativa")
+plt.xlabel("Coeficiente")
 ```
-]
+:::
 
-.right-thin[
+:::{.column width="25%"}
 
-* Cada segmento de linha: $p(x)$ *dentro daquela célula*.
+* Cada estimativa pontual: $p(x)$ *dentro do intervalo* $[0,1]$.
 
-* Por exemplo. as mulheres da faixa etária mais jovem e de menor renda do marido (classe `age_1_hus_1`) têm a maior probabilidade de trabalhar (`r round(max(mroz$pred),3)`).
-]
-
-
+* Mulheres da faixa etária mais jovem e de menor renda do marido (coeficiente `age_0_hus_0`) têm a maior probabilidade de trabalhar (`{python} lpm_points.iloc[0].round(3)`).
+:::
+::::
 
 
 ## Modelos de Resposta Binária Não-Lineares
 
 Nesta classe de modelos mudamos a forma como modelamos a probabilidade de resposta $p(x)$. Em vez da estrutura linear simples de cima, escrevemos
-
 $$
 \Pr(y = 1 | x) = p(x) = G \left(\beta_0 + \beta_1 x_1 + \dots + \beta_K x_K \right)
 $$
@@ -284,7 +313,7 @@ $$
 
 * ***quase*** idêntico ao MPL!
 
-* exceto que o *índice linear* $\beta_0 + \beta_1 x_1 + \dots + \beta_K x_K$ agora está dentro da ***função de ligação*** $G(\cdot)$ (i.e. _link function_).
+* exceto que o **índice linear** $\beta_0 + \beta_1 x_1 + \dots + \beta_K x_K$ agora está dentro da ***função de ligação*** $G(\cdot)$ (i.e. _link function_).
 
 * Propriedade principal de $G$: transforma qualquer $z\in \mathbb{R}$ em um número no intervalo $(0,1)$.
 
@@ -295,18 +324,26 @@ $$
 
 ### $G$: *probit* e *logit*
 
-.left-wide[
-```{r cdfs,echo = FALSE,fig.height = 4}
-ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +
-  stat_function(fun = pnorm, aes(colour = "Probit"), size = 1) +
-  stat_function(fun = plogis, aes(colour = "Logit"), size = 1) +
-  theme_bw() +
-  scale_colour_manual(name = "Função G", values = c("red", "blue")) +
-  scale_y_continuous(name = "Pr(y = 1 | x)")
-```
-]
+::::{.columns}
+:::{.column width="75%"}
+```{python}
+from scipy.stats import norm
+from scipy.special import expit
 
-.right-thin[
+x = np.linspace(-5, 5, 100)
+
+sns.lineplot(x=x, y=norm.cdf(x), color='red', label='Probit')
+sns.lineplot(x=x, y=expit(x), color='blue', label='Logit')
+
+plt.xlabel('x')
+plt.ylabel('Pr(y = 1 | x)')
+plt.legend(title='Função G')
+
+plt.show()
+```
+:::
+
+:::{.column width="25%"}
 
 <br>
 Para **probit** e **logit**:
@@ -317,7 +354,8 @@ Para **probit** e **logit**:
 
 1. Logit tem *caudas mais longas*.
 
-]
+:::
+::::
 
 
 
@@ -325,71 +363,86 @@ Para **probit** e **logit**:
 
 ### $G$: *probit* e *logit*
 
-.left-wide[
-```{r cdfs2, echo = FALSE,fig.height = 4}
-ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +
-  stat_function(fun = pnorm, aes(colour = "Probit"), size = 1) +
-  stat_function(fun = plogis, aes(colour = "Logit"), size = 1) +
-  theme_bw() +
-  scale_colour_manual(name = "Função G", values = c("red", "blue")) +
-  scale_y_continuous(name = "Pr(y = 1 | x)")
-```
-]
+::::{.columns}
+:::{.column width="70%"}
 
-.right-thin[
+```{python}
+from scipy.stats import norm
+from scipy.special import expit
+
+x = np.linspace(-5, 5, 100)
+
+sns.lineplot(x=x, y=norm.cdf(x), color='red', label='Probit')
+sns.lineplot(x=x, y=expit(x), color='blue', label='Logit')
+
+plt.xlabel('x')
+plt.ylabel('Pr(y = 1 | x)')
+plt.legend(title='Função G')
+
+plt.show()
+```
+:::
+
+:::{.column width="30%"}
 
 <br>
+
+:::{.fragment}
 **Probit**:
 
-* $G(z)=\Phi(z)$ Distribuição Normal
+$G(z)=\Phi(z) = \int_{-\infty}^z \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}t^2}dt$ Distribuição Normal
+:::
 
+:::{.fragment}
 **Logit**:
 
-* $G(z)=\Lambda(z)=\frac{1}{1+\exp(-z)}$ Distribuição Logística
-]
+$G(z)=\Lambda(z)=\frac{1}{1+\exp(-z)}$ Distribuição Logística
+:::
+:::
+::::
 
 
 ## Modelos de Resposta Binária Não-Lineares
 
-### Rodando probit e logit no `R`: a função `glm`
+### Rodando probit e logit no `Python`
 
-* Usamos a função `glm` para rodar um **modelo linear generalizado**
+* Podemos usar a função `glm` para rodar um **modelo linear generalizado**
 
-* Isso *generaliza* nosso modelo linear padrão. Temos que especificar uma `família` e um `link`:
+* Isso **generaliza** nosso modelo linear padrão. Temos que especificar uma `família` e um `link`.
 
-```{r}
-probit <- glm(inlf ~ age,
-  data = mroz,
-  family = binomial(link = "probit")
-)
+* Porém o `statsmodels` possui funções especializadas para probit e logit.
 
-logit <- glm(inlf ~ age,
-  data = mroz,
-  family = binomial(link = "logit")
-)
+:::{.fragment}
+```{python}
+# | echo: true
+# | code-fold: show
+probit = smf.probit("inlf ~ age", data=mroz).fit()
+
+logit = smf.logit("inlf ~ age", data=mroz).fit()
 ```
 
-
+:::
 
 ## Interpretação
 
 ::::{.columns}
 :::{.column width="50%"}
-```{r}
-modelsummary::modelsummary(list("probit" = probit, "logit" = logit))
+
+```{python}
+summary_col([probit, logit], stars=True, model_names=["Probit", "Logit"])
 ```
 :::
 
 :::{.column width="50%"}
-* coeficiente de probit para `idade` é `r round(coef(probit)[2],3)`
+* coeficiente de probit para `idade` é `{python} probit.params['age'].round(3)`
 
-* logit: `r round(coef(logit)[2],3)` para logit,
+* `{python} logit.params['age'].round(3)` para logit,
 
 * impacto da idade na probabilidade de trabalhar é **negativo**
 
 * No entanto, **quão** negativo? Não podemos dizer!
 :::
-
+::::
 
 
 ## Interpretação
@@ -397,7 +450,7 @@ modelsummary::modelsummary(list("probit" = probit, "logit" = logit))
 $$
 \Pr(y = 1 | \text{age})= G \left(x \beta\right) = G \left(\beta_0 + \beta_1 \text{age} \right) 
 $$
-e o *efeito marginal* de `idade` na probabilidade de resposta é
+e o *efeito marginal* de `idade` na probabilidade de resposta positiva é
 
 $$\frac{\partial{\Pr(y = 1 | \text{age})}}{ \partial{\text{age}}} = g \left(\beta_0 + \beta_1 \text{age} \right) \beta_1$$
 
@@ -416,73 +469,68 @@ $$\frac{\partial{\Pr(y = 1 | \text{age})}}{ \partial{\text{age}}} = g \left(\bet
 
 1. relate o **efeito parcial médio** (APE): $$APE(X_j)=\frac{1}{n} \sum_{i=1}^N g(x_i \beta) \beta_j$$
 
-Felizmente, existem pacotes disponíveis que nos ajudam a calcular esses efeitos marginais com bastante facilidade. Um deles se chama [`marginaleffects`](https://vincentarelbundock.github.io/marginaleffects/index.html), e o usamos da seguinte forma:
+:::{.fragment}
+Felizmente, a classe dos resultados de um GLM tem um método [`get_margeff`](https://www.statsmodels.org/stable/generated/statsmodels.genmod.generalized_linear_model.GLMResults.get_margeff.html#statsmodels.genmod.generalized_linear_model.GLMResults.get_margeff) que calcula esses efeitos para nós.
+:::
 
 
+## Efeitos Marginais
 
-## Interpretação
+```{python}
+# | echo: true
+# | code-fold: show
+def get_mfx(model):
+    return pd.concat(
+        [
+            model.get_margeff(at=p).summary_frame().loc[:, ["dy/dx", "Std. Err."]]
+            for p in ["mean", "overall"]
+        ],
+        axis=1,
+    )
 
-```{r glms}
-f <- "inlf ~ age + kidslt6 + nwifeinc" # setup a formula
-glms <- list()
-glms$probit <- glm(
-  formula = f,
-  data = mroz,
-  family = binomial(link = "probit")
-)
-glms$logit <- glm(
-  formula = f,
-  data = mroz,
-  family = binomial(link = "logit")
-)
-# now the marginal effects versions
-mfx_mean <- lapply(glms, marginaleffects, newdata = "mean")
-mfx_avg <- lapply(glms, marginaleffects)
+
+f = "inlf ~ age + kidslt6 + nwifeinc"  # Regressao estimada
+probit_reg = smf.probit(f, data=mroz).fit()
+logit_reg = smf.logit(f, data=mroz).fit()
+
+probit_mfx = get_mfx(probit_reg)
+logit_mfx = get_mfx(logit_reg)
 ```
 
+## Efeitos Marginais
 
+**Probit**
+```{python}
+# Show PEA and APE. Only the dy/dx and Std. Err. columns
+inner_cols = probit_mfx.columns.values
+outer_cols = np.array(["PEA", "APE"]).repeat(2)
+probit_mfx.columns = pd.MultiIndex.from_arrays([outer_cols, inner_cols])
 
-
-## Interpretação
-
-```{r, echo = FALSE}
-modelsummary(c(mfx_mean, mfx_avg),
-  output = "kableExtra",
-  stars = TRUE,
-  gof_omit = "AIC|BIC"
-) |>
-  kable_classic() |>
-  add_header_above(c(
-    " " = 1,
-    "PEA" = 2,
-    "APE" = 2
-  ))
+probit_mfx
 ```
 
+**Logit**
+```{python}
+logit_mfx.columns = pd.MultiIndex.from_arrays([outer_cols, inner_cols])
 
-layout: false
-class: separator, middle
+logit_mfx
+```
 
-
-## Qualidade do Ajuste em Modelos Binários
-
-
-layout: true
-
-<div class="my-footer"><img src="../../img/logo/UdescEsag.jpeg" style="height: 60px;"/></div> 
 
 
 ## Qualidade do Ajuste em Modelos Binários
 
 * Não existe $R^2$ universalmente aceito para modelos binários.
 
-* Podemos pensar em um *pseudo* $R^2$ que compara nosso modelo com outro sem regressores:
+* Podemos pensar em um [*pseudo* $R^2$](https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.ProbitResults.html#statsmodels.discrete.discrete_model.ProbitResults) que compara nosso modelo com outro sem regressores:
 
-```{r, eval=TRUE}
-glms$probit0 <- update(glms$probit, formula = . ~ 1)
-1 - as.vector(logLik(glms$probit) / logLik(glms$probit0))
+:::{.fragment}
+```{python}
+# | echo: true
+# | code-fold: show
+probit_reg.prsquared
 ```
-
+:::
 
 
 * Mas isso não é super informativo (ao contrário do $R^2$). As alterações no valor da log-verossimilhança são altamente não lineares.
@@ -490,121 +538,105 @@ glms$probit0 <- update(glms$probit, formula = . ~ 1)
 
 ## Qualidade do Ajuste em Modelos Binários
 
-* Vamos verificar **precisão** - qual é a proporção prevista corretamente! `round(fitted(x))` atribui `1` se a prob $> 0.5$ previsto.
+* Vamos verificar **precisão** - qual é a proporção prevista corretamente! 
 
-```{r, echo=TRUE}
-prop_tbl <- prop.table(table(
-  true = mroz$inlf,
-  pred = round(fitted(glms$probit))
-)) |>
-  as.data.table() |>
-  dcast(true ~ pred, value.var = "N")
-kbl(prop_tbl,
-  digits = 4,
-  caption = "Matriz de Confusão"
-) |>
-  add_header_above(c(
-    " " = 1,
-    "Pred" = 2
-  ))
+- Podemos atribuir a previsão `1` caso $p(x) > 0.5$ e `0` caso contrário.
+
+:::{.fragment}
+
+
+```{python}
+# | echo: true
+# | code-fold: show
+confusion_tbl = probit_reg.pred_table(threshold=0.5) / probit_reg.nobs
+
+confusion_matrix = pd.DataFrame(
+    confusion_tbl,
+    index=["Real 0", "Real 1"],
+    columns=["Previsto 0", "Previsto 1"],
+)
+confusion_matrix
 ```
-
+:::
 
 
 ## Curvas ROC (Receiver Operating Characteristics)
 
-```{r roc-names, echo=FALSE}
-tp <- prop_tbl[2, 3]
-fn <- prop_tbl[2, 2]
-p <- tp + fn
-tpr <- tp / p
-fp <- prop_tbl[1, 3]
-tn <- prop_tbl[1, 2]
-n <- fp + tn
-fpr <- fp / n
-
-base_kbl <- kbl(prop_tbl, digits = 4) |>
-  add_header_above(c(
-    " " = 1,
-    "Pred" = 2
-  ))
+```{python}
+tp = confusion_matrix.loc["Real 1", "Previsto 1"]
+fn = confusion_matrix.loc["Real 1", "Previsto 0"]
+p = tp + fn
+tpr = tp / p
+fp = confusion_matrix.loc["Real 0", "Previsto 1"]
+tn = confusion_matrix.loc["Real 0", "Previsto 0"]
+n = fp + tn
+fpr = fp / n
 ```
 
-### [Nomenclatura](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
+
+[**Nomenclatura**](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
 
 ::::{.columns}
+
 :::{.column width="50%"}
-**Taxa de Verdadeiros Positivos** (TPR, sensitividade, _recall_): $TP/P=$ `r tpr`  
 
-**Taxa de Falsos Positivos** (FPR): $FP/N=$ `r fpr`
+**Taxa de Verdadeiros Positivos** (TPR, sensitividade, _recall_): $TP/P=$ `{python} tpr.round(3)`  
 
-**Acurácia**: $(TP + TN)/ (P+N)=$ `r tp+tn`
+**Taxa de Falsos Positivos** (FPR): $FP/N=$ `{python} fpr.round(3)`
+
+**Acurácia**: $(TP + TN)/ (P+N)=$ `{python} (tp+tn).round(3)`
 :::
 
-
 :::{.column width="50%"}
 
-```{r panels, echo=FALSE}
-xaringanExtra::use_panelset()
-```
+:::{.panel-tabset}
 
-.panelset[
-.panel[.panel-name[TPR]
-```{r tpr, echo=FALSE}
-base_kbl |>
-  column_spec(2,
-    bold = FALSE,
-    background = ifelse(prop_tbl$`0` < 0.13, "darkgreen", "white"),
-    color = ifelse(prop_tbl$`0` < 0.13, "white", "black")
-  ) |>
-  column_spec(3,
-    bold = FALSE,
-    background = ifelse(prop_tbl$`1` > 0.44, "darkgreen", "white"),
-    color = ifelse(prop_tbl$`1` > 0.44, "white", "black")
+## TPR
+
+```{python}
+# Make the background of second row, columns 2 and 3 darkgreen
+(confusion_matrix.style
+  .applymap(
+    lambda x: "background-color: darkgreen; color: white" if (x > 0.44) | (x < 0.13) else ""
   )
-```
-
-<br>
-.center[Relacionado a **Poder**]
-]
-
-.panel[.panel-name[FPR]
-```{r fpr, echo=FALSE}
-base_kbl |>
-  column_spec(2,
-    bold = FALSE,
-    background = ifelse(prop_tbl$`0` > 0.13, "darkgreen", "white"),
-    color = ifelse(prop_tbl$`0` > 0.13, "white", "black")
-  ) |>
-  column_spec(3,
-    bold = FALSE,
-    background = ifelse(prop_tbl$`1` < 0.44, "darkgreen", "white"),
-    color = ifelse(prop_tbl$`1` < 0.44, "white", "black")
+  .applymap(
+    lambda x: "font-weight: bold" if x > 0.44 else "" 
   )
+)
 ```
+Métrica relacionada a **Poder**
 
-<br>
-.center[Relacionado a **Erro Tipo I**]
-]
+## FPR
 
-.panel[.panel-name[ACC]
-```{r acc, echo=FALSE}
-base_kbl |>
-  column_spec(2,
-    bold = FALSE,
-    background = ifelse(prop_tbl$`0` > 0.13, "darkgreen", "white"),
-    color = ifelse(prop_tbl$`0` > 0.13, "white", "black")
-  ) |>
-  column_spec(3,
-    bold = FALSE,
-    background = ifelse(prop_tbl$`1` > 0.44, "darkgreen", "white"),
-    color = ifelse(prop_tbl$`1` > 0.44, "white", "black")
+```{python}
+# Make the background of first row, columns 2 and 3 darkgreen
+(confusion_matrix.style
+  .applymap(
+    lambda x: "background-color: darkgreen; color: white" if (x < 0.44) & (x > 0.13) else ""
   )
+  .applymap(
+    lambda x: "font-weight: bold" if (x > 0.17) & (x < 0.27) else "" 
+  )
+)
 ```
-]
 
-]
-]
+Métrica relacionada a **Erro Tipo I**
+
+## ACC
+  
+```{python}
+# Make the background of main diagonal darkgreen
+(confusion_matrix.style
+  .applymap(
+    lambda x: "background-color: darkgreen; color: white; font-weight: bold" if (x > 0.44) | ((x > 0.13) & (x < 0.17)) else ""
+  )
+)
+```
+:::
+
+:::
+
+::::
 
 
 
@@ -614,50 +646,49 @@ base_kbl |>
 
 * Vamos escolher um *corte arbitrário* $c \in (0,1)$ e verificar a precisão de cada valor. Isso dá uma visão melhor.
 
-
-## Curvas ROC
-
-
 * Podemos confrontar a **taxa de verdadeiros positivos** (TPR) com a **taxa de falsos positivos** (FPR), para cada valor de corte $c\in[0, 1]$.
 
      1. TPR: número de mulheres corretamente previstas para trabalhar dividido pelo número de mulheres que trabalham.
      
      2. FPR: número de mulheres incorretamente previstas para trabalhar dividido pelo número de mulheres não trabalhadoras.
     
-
-
 * Plotar ***FPR vs TPR*** para cada $c$ define a curva **ROC**.
 
 * Um bom modelo tem uma curva ROC no canto superior esquerdo: FPR = 0, TPR = 1.
 
 
-
-
 ## Curvas ROC 
 
-.left-wide[
-```{r,fig.height = 3}
-pred_prob <- prediction(fitted(glms$probit), mroz$inlf)
-par(mfrow = c(1, 2), mar = lowtop)
-acc <- ROCR::performance(pred_prob, "acc")
-max_acc <- which.max(acc@y.values[[1]])
-plot(acc)
-points(acc@x.values[[1]][max_acc], acc@y.values[[1]][max_acc], col = "darkgreen")
-roc <- ROCR::performance(pred_prob, "tpr", "fpr")
-plot(roc)
-points(roc@x.values[[1]][max_acc], roc@y.values[[1]][max_acc], col = "darkgreen")
-abline(0, 1, lty = 2, col = "red")
-```
-]
+::::{.columns}
+:::{.column width="75%"}
 
-.right-thin[
+```{python}
+# | echo: true
+# | code-fold: show
+from sklearn.metrics import roc_curve, auc, accuracy_score
+pred_prob = probit_reg.predict()
+fpr, tpr, thresholds = roc_curve(mroz["inlf"], pred_prob)
+roc_auc = auc(fpr, tpr)
+accuracies = [accuracy_score(mroz["inlf"], pred_prob > t) for t in thresholds]
+acc_t = thresholds[np.argmax(accuracies)] # threshold que maximiza a acurácia
+
+plt.plot(fpr, tpr, color="darkorange", lw=2, label=f"ROC curve (area = {roc_auc: .2f})")
+plt.legend()
+plt.ylabel("TPR")
+plt.xlabel("FPR")
+```
+:::
+
+:::{.column width="25%"}
 <br>
 <br>
-* Melhor precisão em torno de $c=0,54$
+
+* Melhor precisão em torno de $c=`{python} acc_t.round(2)`$
 
 * ROC sempre acima da linha de 45 graus. Melhor do que atribuição aleatória (jogar uma moeda)!
 
-]
+:::
+::::
 
 
 ## Estimação de Máxima Verossimilhança
@@ -667,7 +698,7 @@ abline(0, 1, lty = 2, col = "red")
 * Amostra *iid* $\lbrace y_i, x_i \rbrace_{i=1}^N$. Queremos estimar a distribuição $f(y|x)$
 
 * **Hipótese:** esta distribuição é conhecida, a não ser por um número finito de parâmetros fixos.
-    + Impomos um modelo paramétrico para a densidade condicional
+  + Impomos um modelo paramétrico para a densidade condicional
     
 
 
@@ -682,44 +713,30 @@ abline(0, 1, lty = 2, col = "red")
 * Não observamos $y_i^*$, apenas $y_i$
 :::
 
-
-
 :::{.column width="50%"}
-$$\begin{equation*}
+:::{.fragment}
+$$
+\begin{equation*}
 y_i = \begin{cases}
 1 \text{ se } y_i^* > 0\\ 
 0 \text{ se } y_i^* \leq 0
 \end{cases}
-\end{equation*}$$
+\end{equation*}
+$$
 :::
+:::
+::::
 
 
-
-## Estimação de Máxima Verossimilhança
-
-### Exemplo Probit
-
-* Dadas as especificações acima:
-
-::::{.columns}
-:::{.column width="50%"}
-$$\begin{align*}
+- Dadas as especificações acima:
+$$
+\begin{aligned}
 P(y_i=1|x_i)&=P(y_i* > 0|x_i)\\
 &=P(\varepsilon_i > -x_i\theta |x_i)\\
 &=1-\Phi(-x_i\theta)\\
 &=\Phi(x_i\theta)
-\end{align*}$$
-:::
-
-:::{.column width="50%"}
-$$\begin{align*}
-P(y_i=0|x_i)&=P(y_i* \leq 0|x_i)\\
-&=P(\varepsilon_i \leq -x_i\theta |x_i)\\
-&=\Phi(-x_i\theta)\\
-&=1-\Phi(x_i\theta)
-\end{align*}$$
-:::
-::::
+\end{aligned}
+$$
 
 
 ## Estimação de Máxima Verossimilhança
@@ -727,12 +744,10 @@ P(y_i=0|x_i)&=P(y_i* \leq 0|x_i)\\
 ### Exemplo Probit
 
 * A função de probabilidade condicional pode ser escrita como:
-
 $$p(y_i|x_i)=\Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i}$$
 
 
 * Esta é a probabilidade de ocorrência de um ponto $(x_i, y_i)$. Para o conjunto de dados observados temos a ***função de verossimilhança***
-
 $$\ell(\theta)=\Pi_{i=1}^N \Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i}$$
 
 
@@ -746,13 +761,14 @@ $$\ell(\theta)=\Pi_{i=1}^N \Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i
 
 ### Exemplo Probit
 
+:::{.fragment}
 $$\hat\theta = \arg \max_{\theta} \mathcal{L}(\theta)$$
+:::
 
 * O vetor de ***score*** é dado pela derivada da log-verossimilhança em relação a cada um dos parâmetros
-
 $$s(\theta)=\nabla_\theta \mathcal{L}(\theta)=\left[\frac{\partial\mathcal{L}(\theta)}{\partial\theta_1}, \ldots, \frac{\partial\mathcal{L}(\theta)}{\partial\theta_k}\right]^{\prime}$$
-* A Hessiana é a matriz de segundas derivadas
 
+* A Hessiana é a matriz de segundas derivadas
 $$H(\theta)=\nabla^2_\theta \mathcal{L}(\theta)$$
 
 
@@ -785,11 +801,7 @@ s(\theta)&=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\phi(x
 
 - Suponha que tenhamos um conjunto simples de dados $\{x_i\}_{i=1}^N$ $iid$ e queremos ajustar uma distribuição exponencial
 
-
-
 - $x_i\sim Exp(\lambda)$. $f(x; \lambda)=\frac{1}{\lambda}e^{-x_i/\lambda}$. $x_i\geq 0$.
-
- 
 
 - Qual é a função de log-verossimilhança?
 - Encontre o estimador de máxima verossimilhança $\hat\lambda_{mle}$
@@ -802,24 +814,25 @@ s(\theta)&=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\phi(x
 
 - Função de verossimilhança: $L(\lambda)=\Pi_{i=1}^N f(x_i; \lambda)=\Pi_{i=1}^N \frac{1}{\lambda}e^{-x_i/\lambda}$
 
-
-
 - Log-verossimilhança: $\mathcal{L}(\lambda)=\sum_{i=1}^N \log \frac{1}{\lambda}e^{-x_i/\lambda}$
-
 
 
 - Ao final encontramos ...
 
 ::::{.columns}
+
 :::{.column width="50%"}
+:::{.fragment}
 $$\hat\lambda_{mle}=\frac{1}{N}\sum_{i=1}^N x_i$$
+:::
 :::
 
 :::{.column width="50%"}
-.center[
-<img src="https://media.giphy.com/media/Jlirxn597uSeW7kPAQ/giphy.gif", height="250" />
+:::{.fragment}
+![](https://media.giphy.com/media/Jlirxn597uSeW7kPAQ/giphy.gif)
 :::
 :::
+::::
 
 
 
@@ -835,18 +848,17 @@ $$\hat\lambda_{mle}=\frac{1}{N}\sum_{i=1}^N x_i$$
 * Quais são os momentos utilizados no MQO?
 
 
-
 * $E[u]=0$ e $E[xu]=0$, que são as equações normais do MQO
 
 * O MM resolve o análogo amostral destas equações
-
 
 
 ## Método dos Momentos Generalizado
 
 ### Método dos Momentos (MM)
 
-.left-wide[
+::::{.columns}
+:::{.column width="75%"}
 
 * Vamos considerar um _setup_ mais geral:
 * $\theta_0\in\mathbb{R}^p$ é um vetor dos parâmetros da população
@@ -856,37 +868,32 @@ $$\hat\lambda_{mle}=\frac{1}{N}\sum_{i=1}^N x_i$$
 * $\theta_0$ é a única solução para a equação de momento
 * MM vai resolver o análogo amostral:
 
+:::{.fragment}
 $$\hat{m}(\hat\theta)=\frac{1}{N}\sum_{i=1}^N g(Z_i, \hat\theta)=0$$
-]
+:::
+:::
 
-
-
-.right-thin[
-<!-- ![](https://media.giphy.com/media/ghuvaCOI6GOoTX0RmH/giphy.gif) -->
+:::{.column width="25%"}
+:::{.fragment}
 ![](https://media.giphy.com/media/YmnRIWXjSkct9ZZtNZ/giphy.gif)
-]
+:::
+:::
+::::
 
 
 ## Método dos Momentos Generalizado
 
 ### Clarificando
 
-.left-wide[
-* Considere o MQO. Podemos escrever duas equação de momento que identificam os parâmetros do modelo
-
-$$\hat{m}(\hat\beta)=\begin{cases}
+* **Considere o MQO**. Podemos escrever duas equação de momento que identificam os parâmetros do modelo
+$$
+\hat{m}(\hat\beta)=\begin{cases}
 \frac{1}{N}\sum_{i=1}^N(y_i-\hat\beta_0-\hat\beta_1 x_i)=0\\
 \frac{1}{N}\sum_{i=1}^Nx_i(y_i-\hat\beta_0-\hat\beta_1 x_i)=0
-\end{cases}$$
+\end{cases}
+$$
 
 * O MM escreve momentos populacionais em termos dos parâmetros e resolve o sistema de equações, simples!
-]
-
-
-.right-thin[
-.center[![](https://media.giphy.com/media/111ebonMs90YLu/giphy.gif)]
-]
-
 
 ## Método dos Momentos Generalizado
 
@@ -919,7 +926,7 @@ $$\hat{m}(\hat\beta)=\begin{cases}
 
 
 
-## Leitura Recomendada
+## :books: Leitura Recomendada
 
 * WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. Capítulo 17 Modelo com Variáveis Dependentes Limitadas e Correções da Seleção Amostral.
 
@@ -929,25 +936,11 @@ $$\hat{m}(\hat\beta)=\begin{cases}
 
 
 
-layout: false
-
-class: title-slide-final, middle
-background-image: url(../../img/logo/UdescEsag.jpeg)
-background-size: 350px
-background-position: 9% 19%
-
 ## ATÉ A PRÓXIMA AULA!
 
 <!-- Com a Lista 1 feita! `r emo::ji("white_check_mark")` -->
 
-.footnote[
+:::{.footer}
 [1]: Este slides foram baseados nas aulas de econometria da [SciencesPo Department of Economics](https://github.com/ScPoEcon/ScPoEconometrics-Slides)
-]
-
-
-|                                                                                                            |                                   |
-| : | :-- |
-| <a href="https://github.com/rfbressan/econometria3_slides">.ScPored[<i class="fa fa-link fa-fw"></i>] | Slides |
-| <a href="http://github.com/rfbressan">.ScPored[<i class="fa fa-github fa-fw"></i>]                          | @rfbressan                      |
-| <a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/02-probit/lista_I_pt.html">.ScPored[<i class="fa fa-list fa-fw"></i>] | Lista de Exercícios I |
+:::
 

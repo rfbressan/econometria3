@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="06-probit_pt_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="06-probit_pt_files/libs/clipboard/clipboard.min.js"></script>
 <script src="06-probit_pt_files/libs/quarto-html/tabby.min.js"></script>
 <script src="06-probit_pt_files/libs/quarto-html/popper.min.js"></script>
 <script src="06-probit_pt_files/libs/quarto-html/tippy.umd.min.js"></script>
@@ -387,6 +387,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -497,7 +500,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 </section>
 <section id="mroz-1987" class="slide level2">
 <h2>Mroz 1987</h2>
-<div id="81869e99" class="cell" data-execution_count="2">
+<div id="57e63195" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>mroz <span class="op">=</span> woo.dataWoo(<span class="st">"mroz"</span>)</span>
@@ -509,7 +512,7 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <span id="cb1-7"><a href=""></a>plt.xlabel(<span class="st">"Idade"</span>)</span>
 <span id="cb1-8"><a href=""></a>plt.ylabel(<span class="st">"Proporção"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>Text(0, 0.5, 'Proporção')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -525,80 +528,247 @@ E[y | x] = 1 \times p(x) + 0 \times (1-p(x)) = p(x)
 <h2>Rodando o MPL</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href=""></a>LPM &lt;- lm(inlf ~ nwifeinc + educ + exper + I(exper^2) + age + I(age^2) + kidslt6,</span>
-<span id="cb3-2"><a href=""></a>  data = mroz</span>
-<span id="cb3-3"><a href=""></a>)</span>
-<span id="cb3-4"><a href=""></a>broom::tidy(LPM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="70621f61" class="cell" data-execution_count="3">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a>lpm <span class="op">=</span> smf.ols(</span>
+<span id="cb3-2"><a href=""></a>    <span class="st">"inlf ~ nwifeinc + educ + exper + I(exper**2) + age + I(age**2) + kidslt6"</span>,</span>
+<span id="cb3-3"><a href=""></a>    data<span class="op">=</span>mroz,</span>
+<span id="cb3-4"><a href=""></a>).fit()</span>
+<span id="cb3-5"><a href=""></a>df <span class="op">=</span> summary_col([lpm], model_names<span class="op">=</span>[<span class="st">"LPM"</span>]).tables[<span class="dv">0</span>]</span>
+<span id="cb3-6"><a href=""></a>df.iloc[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">17</span>], :]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">LPM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>0.3220</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th"></td>
+<td>(0.4864)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">nwifeinc</td>
+<td>-0.0034</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th"></td>
+<td>(0.0015)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">kidslt6</td>
+<td>-0.2604</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th"></td>
+<td>(0.0341)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">R-squared Adj.</td>
+<td>0.2568</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </div><div class="column" style="width:50%;">
 <ul>
 <li class="fragment"><p><strong>idêntico</strong> aos nossos modelos de regressão linear anteriores</p></li>
-<li class="fragment"><p>Apenas <code>inlf</code> assume somente dois valores, 0 ou 1.</p></li>
+<li class="fragment"><p>Variável dependente <code>inlf</code> assume somente dois valores, 0 ou 1.</p></li>
 <li class="fragment"><p>Resultados: se a renda da mulher solteira aumenta em 10 (ou seja, 10.000 USD), <span class="math inline">\(p(x)\)</span> cai em 0,034 (isso é um efeito pequeno!),</p></li>
 <li class="fragment"><p>uma criança pequena adicional reduziria a probabilidade de trabalho em 0,26 (isso é grande).</p></li>
 <li class="fragment"><p>Até agora, tudo simples.️</p></li>
 </ul>
-</div><section id="mpl-prevendo-probabilidades-negativas" class="slide level2">
-<h2>MPL: Prevendo probabilidades negativas?!</h2>
-<p>::::{.columns} :::{.column width=“50%”}</p>
-<p><code>{r,echo = FALSE} pr &lt;- predict(LPM) plot(pr[order(pr)], ylab = "P(inlf = 1)") abline(a = 0, b = 0, col = "red", lw = 3) abline(a = 1, b = 0, col = "red", lw = 3)</code></p>
-</section>
 </div>
+</div>
+</section>
+<section id="mpl-prevendo-probabilidades-negativas" class="slide level2">
+<h2>MPL: Prevendo probabilidades negativas?!</h2>
+<div class="columns">
 <div class="column" style="width:50%;">
-<p><br> <br> * As previsões do MPL de <span class="math inline">\(p(x)\)</span> não são garantidas no intervalo unitário <span class="math inline">\([0,1]\)</span>.</p>
+<div id="9821e044" class="cell" data-execution_count="4">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a>pr <span class="op">=</span> lpm.predict()</span>
+<span id="cb4-2"><a href=""></a>sns.scatterplot(x<span class="op">=</span>np.arange(<span class="bu">len</span>(pr)), y<span class="op">=</span>np.sort(pr))</span>
+<span id="cb4-3"><a href=""></a>sns.lineplot(x<span class="op">=</span>[<span class="dv">0</span>, <span class="bu">len</span>(pr)], y<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>], color<span class="op">=</span><span class="st">"red"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-4"><a href=""></a>sns.lineplot(x<span class="op">=</span>[<span class="dv">0</span>, <span class="bu">len</span>(pr)], y<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"red"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-5"><a href=""></a>plt.ylabel(<span class="st">"P(inlf = 1)"</span>)</span>
+<span id="cb4-6"><a href=""></a>plt.xlabel(<span class="st">"Índice"</span>)</span>
+<span id="cb4-7"><a href=""></a>plt.title(<span class="st">"Previsões ordenadas do MPL"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>Text(0.5, 1.0, 'Previsões ordenadas do MPL')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="06-probit_pt_files/figure-revealjs/cell-5-output-2.png" width="876" height="482"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><br> <br> * As previsões do MPL de <span class="math inline">\(p(x)\)</span> não estão garantidas no intervalo unitário <span class="math inline">\([0,1]\)</span>.</p>
 <ul>
 <li class="fragment"><p>Lembre-se: <span class="math inline">\(e \sim D\left(0,\sigma^2\right)\)</span></p></li>
 <li class="fragment"><p>aqui, algumas probabilidades menores que zero!</p></li>
 <li class="fragment"><p>Particularmente irritante se você quiser <em>previsões</em>: O que é probabilidade -0,3? 🤔</p></li>
 </ul>
 </div>
+</div>
 </section>
 <section id="mpl-no-modelo-saturado-sem-problemas" class="slide level2">
 <h2>MPL no modelo saturado: sem problemas!</h2>
-<p>.left-wide[</p>
-<p>```{r,message=FALSE,warning=FALSE} mroz %&lt;&gt;% # classify age into 3 and huswage into 2 classes mutate( age_fct = cut(age, breaks = 3, labels = FALSE), huswage_fct = cut(huswage, breaks = 2, labels = FALSE) ) %&gt;% mutate(classes = paste0(“age_”, age_fct, “<em>hus</em>”, huswage_fct))</p>
-<p>LPM_saturated &lt;- mroz %&gt;% lm(inlf ~ classes, data = .) broom::tidy(LPM_saturated)</p>
-<pre><code>
-
-
-]
-
-.right-thin[
-* *modelo saturado* : só tem variáveis explicativas binárias (_dummies_)
-
-* Cada classe: $p(x)$ *dentro daquela célula*.
-
-]
-
-
-
-## MPL no modelo saturado: sem problemas!
-
-.left-wide[
-
-
-```{r saturated,message=FALSE,warning=FALSE,fig.height = 5,echo = FALSE}
-mroz$pred &lt;- predict(LPM_saturated)
-
-ggplot(mroz[order(mroz$pred), ], aes(x = 1:nrow(mroz), y = pred, color = classes)) +
-  geom_point() +
-  theme_bw() +
-  scale_y_continuous(limits = c(0, 1), name = "p(inlf)")</code></pre>
-<p>]</p>
-<p>.right-thin[</p>
+<div class="columns">
+<div class="column" style="width:75%;">
+<div id="ec1e484d" class="cell" data-execution_count="5">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a>mroz[<span class="st">"age_fct"</span>] <span class="op">=</span> pd.cut(mroz[<span class="st">"age"</span>], bins<span class="op">=</span><span class="dv">3</span>, labels<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-2"><a href=""></a>mroz[<span class="st">"huswage_fct"</span>] <span class="op">=</span> pd.cut(mroz[<span class="st">"huswage"</span>], bins<span class="op">=</span><span class="dv">2</span>, labels<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-3"><a href=""></a>mroz[<span class="st">"classes"</span>] <span class="op">=</span> (</span>
+<span id="cb6-4"><a href=""></a>    <span class="st">"age_"</span> <span class="op">+</span> mroz[<span class="st">"age_fct"</span>].astype(<span class="bu">str</span>) <span class="op">+</span> <span class="st">"_hus_"</span> <span class="op">+</span> mroz[<span class="st">"huswage_fct"</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb6-5"><a href=""></a>)</span>
+<span id="cb6-6"><a href=""></a></span>
+<span id="cb6-7"><a href=""></a>lpm_saturated <span class="op">=</span> smf.ols(<span class="st">"inlf ~ -1 + classes"</span>, data<span class="op">=</span>mroz).fit()</span>
+<span id="cb6-8"><a href=""></a>lpm_saturated.summary(slim<span class="op">=</span><span class="va">True</span>).tables[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<table class="simpletable" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">classes[age_0_hus_0]</td>
+<td>0.6108</td>
+<td>0.028</td>
+<td>22.029</td>
+<td>0.000</td>
+<td>0.556</td>
+<td>0.665</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">classes[age_0_hus_1]</td>
+<td>0</td>
+<td>0.349</td>
+<td>0</td>
+<td>1.000</td>
+<td>-0.684</td>
+<td>0.684</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">classes[age_1_hus_0]</td>
+<td>0.5851</td>
+<td>0.029</td>
+<td>19.936</td>
+<td>0.000</td>
+<td>0.527</td>
+<td>0.643</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">classes[age_1_hus_1]</td>
+<td>0.3333</td>
+<td>0.201</td>
+<td>1.657</td>
+<td>0.098</td>
+<td>-0.062</td>
+<td>0.728</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">classes[age_2_hus_0]</td>
+<td>0.4621</td>
+<td>0.041</td>
+<td>11.289</td>
+<td>0.000</td>
+<td>0.382</td>
+<td>0.542</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">classes[age_2_hus_1]</td>
+<td>0.5000</td>
+<td>0.349</td>
+<td>1.435</td>
+<td>0.152</td>
+<td>-0.184</td>
+<td>1.184</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div class="column" style="width:25%;">
 <ul>
-<li class="fragment"><p>Cada segmento de linha: <span class="math inline">\(p(x)\)</span> <em>dentro daquela célula</em>.</p></li>
-<li class="fragment"><p>Por exemplo. as mulheres da faixa etária mais jovem e de menor renda do marido (classe <code>age_1_hus_1</code>) têm a maior probabilidade de trabalhar (<code>r round(max(mroz$pred),3)</code>). ]</p></li>
+<li class="fragment"><p><strong>modelo saturado</strong> : só tem variáveis explicativas binárias (<em>dummies</em>)</p></li>
+<li class="fragment"><p>Cada classe: <span class="math inline">\(p(x)\)</span> <em>dentro daquela célula</em>.</p></li>
 </ul>
+</div>
+</div>
+</section>
+<section id="mpl-no-modelo-saturado-sem-problemas-1" class="slide level2">
+<h2>MPL no modelo saturado: sem problemas!</h2>
+<div class="columns">
+<div class="column" style="width:75%;">
+<div id="fd38d4ad" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>Text(0.5, 0, 'Coeficiente')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="06-probit_pt_files/figure-revealjs/cell-7-output-2.png" width="862" height="619"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:25%;">
+<ul>
+<li class="fragment"><p>Cada estimativa pontual: <span class="math inline">\(p(x)\)</span> <em>dentro do intervalo</em> <span class="math inline">\([0,1]\)</span>.</p></li>
+<li class="fragment"><p>Mulheres da faixa etária mais jovem e de menor renda do marido (coeficiente <code>age_0_hus_0</code>) têm a maior probabilidade de trabalhar (0.611).</p></li>
+</ul>
+</div>
+</div>
 </section>
 <section id="modelos-de-resposta-binária-não-lineares" class="slide level2">
 <h2>Modelos de Resposta Binária Não-Lineares</h2>
-<p>Nesta classe de modelos mudamos a forma como modelamos a probabilidade de resposta <span class="math inline">\(p(x)\)</span>. Em vez da estrutura linear simples de cima, escrevemos</p>
-<p><span class="math display">\[
+<p>Nesta classe de modelos mudamos a forma como modelamos a probabilidade de resposta <span class="math inline">\(p(x)\)</span>. Em vez da estrutura linear simples de cima, escrevemos <span class="math display">\[
 \Pr(y = 1 | x) = p(x) = G \left(\beta_0 + \beta_1 x_1 + \dots + \beta_K x_K \right)
 \]</span></p>
 <ul>
 <li class="fragment"><p><strong><em>quase</em></strong> idêntico ao MPL!</p></li>
-<li class="fragment"><p>exceto que o <em>índice linear</em> <span class="math inline">\(\beta_0 + \beta_1 x_1 + \dots + \beta_K x_K\)</span> agora está dentro da <strong><em>função de ligação</em></strong> <span class="math inline">\(G(\cdot)\)</span> (i.e.&nbsp;<em>link function</em>).</p></li>
+<li class="fragment"><p>exceto que o <strong>índice linear</strong> <span class="math inline">\(\beta_0 + \beta_1 x_1 + \dots + \beta_K x_K\)</span> agora está dentro da <strong><em>função de ligação</em></strong> <span class="math inline">\(G(\cdot)\)</span> (i.e.&nbsp;<em>link function</em>).</p></li>
 <li class="fragment"><p>Propriedade principal de <span class="math inline">\(G\)</span>: transforma qualquer <span class="math inline">\(z\in \mathbb{R}\)</span> em um número no intervalo <span class="math inline">\((0,1)\)</span>.</p></li>
 <li class="fragment"><p>Isso resolve nosso problema de previsões fora do intervalo <span class="math inline">\(\left[0, 1\right]\)</span> para probabilidades.</p></li>
 </ul>
@@ -606,168 +776,530 @@ ggplot(mroz[order(mroz$pred), ], aes(x = 1:nrow(mroz), y = pred, color = classes
 <section id="modelos-de-resposta-binária-não-lineares-1" class="slide level2">
 <h2>Modelos de Resposta Binária Não-Lineares</h2>
 <h3 id="g-probit-e-logit"><span class="math inline">\(G\)</span>: <em>probit</em> e <em>logit</em></h3>
-<p>.left-wide[</p>
-<p><code>{r cdfs,echo = FALSE,fig.height = 4} ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +   stat_function(fun = pnorm, aes(colour = "Probit"), size = 1) +   stat_function(fun = plogis, aes(colour = "Logit"), size = 1) +   theme_bw() +   scale_colour_manual(name = "Função G", values = c("red", "blue")) +   scale_y_continuous(name = "Pr(y = 1 | x)")</code></p>
-<p>]</p>
-<p>.right-thin[</p>
+<div class="columns">
+<div class="column" style="width:75%;">
+<div id="50283461" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="06-probit_pt_files/figure-revealjs/cell-8-output-1.png" width="844" height="456"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:25%;">
 <p><br> Para <strong>probit</strong> e <strong>logit</strong>:</p>
 <ol type="1">
 <li class="fragment"><p>qualquer valor <span class="math inline">\(x\)</span> resulta em um valor <span class="math inline">\(p(x)\)</span> entre 0 e 1.</p></li>
 <li class="fragment"><p>estritamente crescentes.</p></li>
 <li class="fragment"><p>Logit tem <em>caudas mais longas</em>.</p></li>
 </ol>
-<p>]</p>
+</div>
+</div>
 </section>
 <section id="modelos-de-resposta-binária-não-lineares-2" class="slide level2">
 <h2>Modelos de Resposta Binária Não-Lineares</h2>
 <h3 id="g-probit-e-logit-1"><span class="math inline">\(G\)</span>: <em>probit</em> e <em>logit</em></h3>
-<p>.left-wide[</p>
-<p><code>{r cdfs2, echo = FALSE,fig.height = 4} ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +   stat_function(fun = pnorm, aes(colour = "Probit"), size = 1) +   stat_function(fun = plogis, aes(colour = "Logit"), size = 1) +   theme_bw() +   scale_colour_manual(name = "Função G", values = c("red", "blue")) +   scale_y_continuous(name = "Pr(y = 1 | x)")</code></p>
-<p>]</p>
-<p>.right-thin[</p>
-<p><br> <strong>Probit</strong>:</p>
-<ul>
-<li class="fragment"><span class="math inline">\(G(z)=\Phi(z)\)</span> Distribuição Normal</li>
-</ul>
+<div class="columns">
+<div class="column" style="width:70%;">
+<div id="ad723663" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="06-probit_pt_files/figure-revealjs/cell-9-output-1.png" width="844" height="456"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:30%;">
+<p><br></p>
+<div class="fragment">
+<p><strong>Probit</strong>:</p>
+<p><span class="math inline">\(G(z)=\Phi(z) = \int_{-\infty}^z \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}t^2}dt\)</span> Distribuição Normal</p>
+</div>
+<div class="fragment">
 <p><strong>Logit</strong>:</p>
-<ul>
-<li class="fragment"><span class="math inline">\(G(z)=\Lambda(z)=\frac{1}{1+\exp(-z)}\)</span> Distribuição Logística ]</li>
-</ul>
+<p><span class="math inline">\(G(z)=\Lambda(z)=\frac{1}{1+\exp(-z)}\)</span> Distribuição Logística</p>
+</div>
+</div>
+</div>
 </section>
 <section id="modelos-de-resposta-binária-não-lineares-3" class="slide level2">
 <h2>Modelos de Resposta Binária Não-Lineares</h2>
-<h3 id="rodando-probit-e-logit-no-r-a-função-glm">Rodando probit e logit no <code>R</code>: a função <code>glm</code></h3>
+<h3 id="rodando-probit-e-logit-no-python">Rodando probit e logit no <code>Python</code></h3>
 <ul>
-<li class="fragment"><p>Usamos a função <code>glm</code> para rodar um <strong>modelo linear generalizado</strong></p></li>
-<li class="fragment"><p>Isso <em>generaliza</em> nosso modelo linear padrão. Temos que especificar uma <code>família</code> e um <code>link</code>:</p></li>
+<li class="fragment"><p>Podemos usar a função <code>glm</code> para rodar um <strong>modelo linear generalizado</strong></p></li>
+<li class="fragment"><p>Isso <strong>generaliza</strong> nosso modelo linear padrão. Temos que especificar uma <code>família</code> e um <code>link</code>.</p></li>
+<li class="fragment"><p>Porém o <code>statsmodels</code> possui funções especializadas para probit e logit.</p></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href=""></a>probit &lt;- glm(inlf ~ age,</span>
-<span id="cb5-2"><a href=""></a>  data = mroz,</span>
-<span id="cb5-3"><a href=""></a>  family = binomial(link = "probit")</span>
-<span id="cb5-4"><a href=""></a>)</span>
-<span id="cb5-5"><a href=""></a></span>
-<span id="cb5-6"><a href=""></a>logit &lt;- glm(inlf ~ age,</span>
-<span id="cb5-7"><a href=""></a>  data = mroz,</span>
-<span id="cb5-8"><a href=""></a>  family = binomial(link = "logit")</span>
-<span id="cb5-9"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="fragment">
+<div id="6ad19da4" class="cell" data-execution_count="9">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>probit <span class="op">=</span> smf.probit(<span class="st">"inlf ~ age"</span>, data<span class="op">=</span>mroz).fit()</span>
+<span id="cb8-2"><a href=""></a></span>
+<span id="cb8-3"><a href=""></a>logit <span class="op">=</span> smf.logit(<span class="st">"inlf ~ age"</span>, data<span class="op">=</span>mroz).fit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimization terminated successfully.
+         Current function value: 0.680534
+         Iterations 4
+Optimization terminated successfully.
+         Current function value: 0.680519
+         Iterations 4</code></pre>
+</div>
+</div>
+</div>
 </section>
 <section id="interpretação" class="slide level2">
 <h2>Interpretação</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {r} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href=""></a>modelsummary::modelsummary(list("probit" = probit, "logit" = logit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="948a9f19" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="10">
+<table class="simpletable" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">Probit</td>
+<td data-quarto-table-cell-role="th">Logit</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>0.7065***</td>
+<td>1.1364***</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th"></td>
+<td>(0.2470)</td>
+<td>(0.3983)</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">age</td>
+<td>-0.0125**</td>
+<td>-0.0202**</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th"></td>
+<td>(0.0057)</td>
+<td>(0.0092)</td>
+</tr>
+</tbody>
+</table>
+<br>
+Standard errors in parentheses.<br>
+* p&lt;.1, ** p&lt;.05, ***p&lt;.01
+</div>
+</div>
 </div><div class="column" style="width:50%;">
 <ul>
-<li class="fragment"><p>coeficiente de probit para <code>idade</code> é <code>r round(coef(probit)[2],3)</code></p></li>
-<li class="fragment"><p>logit: <code>r round(coef(logit)[2],3)</code> para logit,</p></li>
+<li class="fragment"><p>coeficiente de probit para <code>idade</code> é -0.013</p></li>
+<li class="fragment"><p>-0.02 para logit,</p></li>
 <li class="fragment"><p>impacto da idade na probabilidade de trabalhar é <strong>negativo</strong></p></li>
 <li class="fragment"><p>No entanto, <strong>quão</strong> negativo? Não podemos dizer!</p></li>
 </ul>
-</div><section id="interpretação-1" class="slide level2">
+</div>
+</div>
+</section>
+<section id="interpretação-1" class="slide level2">
 <h2>Interpretação</h2>
 <p><span class="math display">\[
 \Pr(y = 1 | \text{age})= G \left(x \beta\right) = G \left(\beta_0 + \beta_1 \text{age} \right)
-\]</span> e o <em>efeito marginal</em> de <code>idade</code> na probabilidade de resposta é</p>
+\]</span> e o <em>efeito marginal</em> de <code>idade</code> na probabilidade de resposta positiva é</p>
 <p><span class="math display">\[\frac{\partial{\Pr(y = 1 | \text{age})}}{ \partial{\text{age}}} = g \left(\beta_0 + \beta_1 \text{age} \right) \beta_1\]</span></p>
 <ul>
 <li class="fragment"><p><span class="math inline">\(g\)</span> é definida como <span class="math inline">\(g(z) = \frac{dG}{dz}(z)\)</span> - a primeira derivada de <span class="math inline">\(G\)</span> (sendo <span class="math inline">\(G\)</span> uma distribuição, <span class="math inline">\(g\)</span> é a função densidade).</p></li>
 <li class="fragment"><p>dado que <span class="math inline">\(G\)</span> é não-linear, isso significa que <span class="math inline">\(g\)</span> não será constante. Você pode experimentar isso usando este <a href="https://floswald.shinyapps.io/marginal_effects_of_logit_probit/">aplicativo aqui</a>:</p></li>
 </ul>
-</section><section id="interpretação-2" class="slide level2">
+</section>
+<section id="interpretação-2" class="slide level2">
 <h2>Interpretação</h2>
 <p><strong><em>Não há um único efeito marginal</em></strong> nesses modelos, pois isso depende de <em>onde avaliamos</em> a expressão anterior. Na prática, existem duas abordagens comuns:</p>
 <ol type="1">
 <li class="fragment"><p>reporte o <strong>efeito parcial na média</strong> (PEA): <span class="math display">\[PEA(X_j)=g(\bar{x} \beta) \beta_j\]</span></p></li>
 <li class="fragment"><p>relate o <strong>efeito parcial médio</strong> (APE): <span class="math display">\[APE(X_j)=\frac{1}{n} \sum_{i=1}^N g(x_i \beta) \beta_j\]</span></p></li>
 </ol>
-<p>Felizmente, existem pacotes disponíveis que nos ajudam a calcular esses efeitos marginais com bastante facilidade. Um deles se chama <a href="https://vincentarelbundock.github.io/marginaleffects/index.html"><code>marginaleffects</code></a>, e o usamos da seguinte forma:</p>
-</section><section id="interpretação-3" class="slide level2">
-<h2>Interpretação</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {r glms} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href=""></a>f &lt;- "inlf ~ age + kidslt6 + nwifeinc" # setup a formula</span>
-<span id="cb7-2"><a href=""></a>glms &lt;- list()</span>
-<span id="cb7-3"><a href=""></a>glms$probit &lt;- glm(</span>
-<span id="cb7-4"><a href=""></a>  formula = f,</span>
-<span id="cb7-5"><a href=""></a>  data = mroz,</span>
-<span id="cb7-6"><a href=""></a>  family = binomial(link = "probit")</span>
-<span id="cb7-7"><a href=""></a>)</span>
-<span id="cb7-8"><a href=""></a>glms$logit &lt;- glm(</span>
-<span id="cb7-9"><a href=""></a>  formula = f,</span>
-<span id="cb7-10"><a href=""></a>  data = mroz,</span>
-<span id="cb7-11"><a href=""></a>  family = binomial(link = "logit")</span>
-<span id="cb7-12"><a href=""></a>)</span>
-<span id="cb7-13"><a href=""></a># now the marginal effects versions</span>
-<span id="cb7-14"><a href=""></a>mfx_mean &lt;- lapply(glms, marginaleffects, newdata = "mean")</span>
-<span id="cb7-15"><a href=""></a>mfx_avg &lt;- lapply(glms, marginaleffects)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section><section id="interpretação-4" class="slide level2">
-<h2>Interpretação</h2>
-<p><code>{r, echo = FALSE} modelsummary(c(mfx_mean, mfx_avg),   output = "kableExtra",   stars = TRUE,   gof_omit = "AIC|BIC" ) |&gt;   kable_classic() |&gt;   add_header_above(c(     " " = 1,     "PEA" = 2,     "APE" = 2   ))</code></p>
-<p>layout: false class: separator, middle</p>
-</section><section id="qualidade-do-ajuste-em-modelos-binários" class="slide level2">
-<h2>Qualidade do Ajuste em Modelos Binários</h2>
-<p>layout: true</p>
-<div class="my-footer">
-<img src="../../img/logo/UdescEsag.jpeg" style="height: 60px;">
+<div class="fragment">
+<p>Felizmente, a classe dos resultados de um GLM tem um método <a href="https://www.statsmodels.org/stable/generated/statsmodels.genmod.generalized_linear_model.GLMResults.get_margeff.html#statsmodels.genmod.generalized_linear_model.GLMResults.get_margeff"><code>get_margeff</code></a> que calcula esses efeitos para nós.</p>
 </div>
-</section><section id="qualidade-do-ajuste-em-modelos-binários-1" class="slide level2">
+</section>
+<section id="efeitos-marginais" class="slide level2">
+<h2>Efeitos Marginais</h2>
+<div id="7fbdab63" class="cell" data-execution_count="11">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="kw">def</span> get_mfx(model):</span>
+<span id="cb10-2"><a href=""></a>    <span class="cf">return</span> pd.concat(</span>
+<span id="cb10-3"><a href=""></a>        [</span>
+<span id="cb10-4"><a href=""></a>            model.get_margeff(at<span class="op">=</span>p).summary_frame().loc[:, [<span class="st">"dy/dx"</span>, <span class="st">"Std. Err."</span>]]</span>
+<span id="cb10-5"><a href=""></a>            <span class="cf">for</span> p <span class="kw">in</span> [<span class="st">"mean"</span>, <span class="st">"overall"</span>]</span>
+<span id="cb10-6"><a href=""></a>        ],</span>
+<span id="cb10-7"><a href=""></a>        axis<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb10-8"><a href=""></a>    )</span>
+<span id="cb10-9"><a href=""></a></span>
+<span id="cb10-10"><a href=""></a></span>
+<span id="cb10-11"><a href=""></a>f <span class="op">=</span> <span class="st">"inlf ~ age + kidslt6 + nwifeinc"</span>  <span class="co"># Regressao estimada</span></span>
+<span id="cb10-12"><a href=""></a>probit_reg <span class="op">=</span> smf.probit(f, data<span class="op">=</span>mroz).fit()</span>
+<span id="cb10-13"><a href=""></a>logit_reg <span class="op">=</span> smf.logit(f, data<span class="op">=</span>mroz).fit()</span>
+<span id="cb10-14"><a href=""></a></span>
+<span id="cb10-15"><a href=""></a>probit_mfx <span class="op">=</span> get_mfx(probit_reg)</span>
+<span id="cb10-16"><a href=""></a>logit_mfx <span class="op">=</span> get_mfx(logit_reg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimization terminated successfully.
+         Current function value: 0.635318
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.635295
+         Iterations 5</code></pre>
+</div>
+</div>
+</section>
+<section id="efeitos-marginais-1" class="slide level2">
+<h2>Efeitos Marginais</h2>
+<p><strong>Probit</strong></p>
+<div id="a01e3d66" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th colspan="2" data-quarto-table-cell-role="th" data-halign="left">PEA</th>
+<th colspan="2" data-quarto-table-cell-role="th" data-halign="left">APE</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">dy/dx</th>
+<th data-quarto-table-cell-role="th">Std. Err.</th>
+<th data-quarto-table-cell-role="th">dy/dx</th>
+<th data-quarto-table-cell-role="th">Std. Err.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">age</td>
+<td>-0.013671</td>
+<td>0.002610</td>
+<td>-0.012646</td>
+<td>0.002284</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">kidslt6</td>
+<td>-0.313910</td>
+<td>0.043171</td>
+<td>-0.290372</td>
+<td>0.035530</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">nwifeinc</td>
+<td>-0.004496</td>
+<td>0.001629</td>
+<td>-0.004159</td>
+<td>0.001484</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><strong>Logit</strong></p>
+<div id="5c427ad0" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th colspan="2" data-quarto-table-cell-role="th" data-halign="left">PEA</th>
+<th colspan="2" data-quarto-table-cell-role="th" data-halign="left">APE</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">dy/dx</th>
+<th data-quarto-table-cell-role="th">Std. Err.</th>
+<th data-quarto-table-cell-role="th">dy/dx</th>
+<th data-quarto-table-cell-role="th">Std. Err.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">age</td>
+<td>-0.013926</td>
+<td>0.002686</td>
+<td>-0.012652</td>
+<td>0.002282</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">kidslt6</td>
+<td>-0.321692</td>
+<td>0.046099</td>
+<td>-0.292258</td>
+<td>0.036455</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">nwifeinc</td>
+<td>-0.004593</td>
+<td>0.001688</td>
+<td>-0.004173</td>
+<td>0.001505</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="qualidade-do-ajuste-em-modelos-binários" class="slide level2">
 <h2>Qualidade do Ajuste em Modelos Binários</h2>
 <ul>
 <li class="fragment"><p>Não existe <span class="math inline">\(R^2\)</span> universalmente aceito para modelos binários.</p></li>
-<li class="fragment"><p>Podemos pensar em um <em>pseudo</em> <span class="math inline">\(R^2\)</span> que compara nosso modelo com outro sem regressores:</p></li>
+<li class="fragment"><p>Podemos pensar em um <a href="https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.ProbitResults.html#statsmodels.discrete.discrete_model.ProbitResults"><em>pseudo</em> <span class="math inline">\(R^2\)</span></a> que compara nosso modelo com outro sem regressores:</p></li>
 </ul>
-<p><code>{r, eval=TRUE} glms$probit0 &lt;- update(glms$probit, formula = . ~ 1) 1 - as.vector(logLik(glms$probit) / logLik(glms$probit0))</code></p>
+<div class="fragment">
+<div id="72bd6e77" class="cell" data-execution_count="14">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a>probit_reg.prsquared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>0.07084971547449481</code></pre>
+</div>
+</div>
+</div>
 <ul>
 <li class="fragment">Mas isso não é super informativo (ao contrário do <span class="math inline">\(R^2\)</span>). As alterações no valor da log-verossimilhança são altamente não lineares.</li>
 </ul>
-</section><section id="qualidade-do-ajuste-em-modelos-binários-2" class="slide level2">
+</section>
+<section id="qualidade-do-ajuste-em-modelos-binários-1" class="slide level2">
 <h2>Qualidade do Ajuste em Modelos Binários</h2>
 <ul>
-<li class="fragment">Vamos verificar <strong>precisão</strong> - qual é a proporção prevista corretamente! <code>round(fitted(x))</code> atribui <code>1</code> se a prob <span class="math inline">\(&gt; 0.5\)</span> previsto.</li>
+<li class="fragment"><p>Vamos verificar <strong>precisão</strong> - qual é a proporção prevista corretamente!</p></li>
+<li class="fragment"><p>Podemos atribuir a previsão <code>1</code> caso <span class="math inline">\(p(x) &gt; 0.5\)</span> e <code>0</code> caso contrário.</p></li>
 </ul>
-<p><code>{r, echo=TRUE} prop_tbl &lt;- prop.table(table(   true = mroz$inlf,   pred = round(fitted(glms$probit)) )) |&gt;   as.data.table() |&gt;   dcast(true ~ pred, value.var = "N") kbl(prop_tbl,   digits = 4,   caption = "Matriz de Confusão" ) |&gt;   add_header_above(c(     " " = 1,     "Pred" = 2   ))</code></p>
-</section><section id="curvas-roc-receiver-operating-characteristics" class="slide level2">
+<div class="fragment">
+<div id="f43c0d75" class="cell" data-execution_count="15">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a>confusion_tbl <span class="op">=</span> probit_reg.pred_table(threshold<span class="op">=</span><span class="fl">0.5</span>) <span class="op">/</span> probit_reg.nobs</span>
+<span id="cb14-2"><a href=""></a></span>
+<span id="cb14-3"><a href=""></a>confusion_matrix <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb14-4"><a href=""></a>    confusion_tbl,</span>
+<span id="cb14-5"><a href=""></a>    index<span class="op">=</span>[<span class="st">"Real 0"</span>, <span class="st">"Real 1"</span>],</span>
+<span id="cb14-6"><a href=""></a>    columns<span class="op">=</span>[<span class="st">"Previsto 0"</span>, <span class="st">"Previsto 1"</span>],</span>
+<span id="cb14-7"><a href=""></a>)</span>
+<span id="cb14-8"><a href=""></a>confusion_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Previsto 0</th>
+<th data-quarto-table-cell-role="th">Previsto 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Real 0</td>
+<td>0.169987</td>
+<td>0.261620</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Real 1</td>
+<td>0.122178</td>
+<td>0.446215</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="curvas-roc-receiver-operating-characteristics" class="slide level2">
 <h2>Curvas ROC (Receiver Operating Characteristics)</h2>
-<p>```{r roc-names, echo=FALSE} tp &lt;- prop_tbl[2, 3] fn &lt;- prop_tbl[2, 2] p &lt;- tp + fn tpr &lt;- tp / p fp &lt;- prop_tbl[1, 3] tn &lt;- prop_tbl[1, 2] n &lt;- fp + tn fpr &lt;- fp / n</p>
-<p>base_kbl &lt;- kbl(prop_tbl, digits = 4) |&gt; add_header_above(c( ” ” = 1, “Pred” = 2 ))</p>
-<pre><code>
+<p><a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic"><strong>Nomenclatura</strong></a></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Taxa de Verdadeiros Positivos</strong> (TPR, sensitividade, <em>recall</em>): <span class="math inline">\(TP/P=\)</span> 0.785</p>
+<p><strong>Taxa de Falsos Positivos</strong> (FPR): <span class="math inline">\(FP/N=\)</span> 0.606</p>
+<p><strong>Acurácia</strong>: <span class="math inline">\((TP + TN)/ (P+N)=\)</span> 0.616</p>
+</div><div class="column" style="width:50%;">
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">TPR</a></li><li><a href="#tabset-1-2">FPR</a></li><li><a href="#tabset-1-3">ACC</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div id="0d27f844" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="17">
+<style type="text/css">
+#T_128f4_row1_col0 {
+  background-color: darkgreen;
+  color: white;
+}
+#T_128f4_row1_col1 {
+  background-color: darkgreen;
+  color: white;
+  font-weight: bold;
+}
+</style>
 
+<table id="T_128f4" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_128f4_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
+<th id="T_128f4_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_128f4_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
+<td id="T_128f4_row0_col0" class="data row0 col0">0.169987</td>
+<td id="T_128f4_row0_col1" class="data row0 col1">0.261620</td>
+</tr>
+<tr class="even">
+<td id="T_128f4_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
+<td id="T_128f4_row1_col0" class="data row1 col0">0.122178</td>
+<td id="T_128f4_row1_col1" class="data row1 col1">0.446215</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Métrica relacionada a <strong>Poder</strong></p>
+</div>
+<div id="tabset-1-2">
+<div id="5b358cc7" class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="18">
+<style type="text/css">
+#T_8651e_row0_col0 {
+  background-color: darkgreen;
+  color: white;
+}
+#T_8651e_row0_col1 {
+  background-color: darkgreen;
+  color: white;
+  font-weight: bold;
+}
+</style>
 
-### [Nomenclatura](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
+<table id="T_8651e" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_8651e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
+<th id="T_8651e_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_8651e_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
+<td id="T_8651e_row0_col0" class="data row0 col0">0.169987</td>
+<td id="T_8651e_row0_col1" class="data row0 col1">0.261620</td>
+</tr>
+<tr class="even">
+<td id="T_8651e_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
+<td id="T_8651e_row1_col0" class="data row1 col0">0.122178</td>
+<td id="T_8651e_row1_col1" class="data row1 col1">0.446215</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Métrica relacionada a <strong>Erro Tipo I</strong></p>
+</div>
+<div id="tabset-1-3">
+<div id="e32de650" class="cell" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="19">
+<style type="text/css">
+#T_3f370_row0_col0, #T_3f370_row1_col1 {
+  background-color: darkgreen;
+  color: white;
+  font-weight: bold;
+}
+</style>
 
-::::{.columns}
-:::{.column width="50%"}
-**Taxa de Verdadeiros Positivos** (TPR, sensitividade, _recall_): $TP/P=$ `r tpr`  
-
-**Taxa de Falsos Positivos** (FPR): $FP/N=$ `r fpr`
-
-**Acurácia**: $(TP + TN)/ (P+N)=$ `r tp+tn`
-:::
-
-
-:::{.column width="50%"}
-
-
-
-```{r panels, echo=FALSE}
-xaringanExtra::use_panelset()</code></pre>
-<p>.panelset[ .panel[.panel-name[TPR]</p>
-<p><code>{r tpr, echo=FALSE} base_kbl |&gt;   column_spec(2,     bold = FALSE,     background = ifelse(prop_tbl$`0` &lt; 0.13, "darkgreen", "white"),     color = ifelse(prop_tbl$`0` &lt; 0.13, "white", "black")   ) |&gt;   column_spec(3,     bold = FALSE,     background = ifelse(prop_tbl$`1` &gt; 0.44, "darkgreen", "white"),     color = ifelse(prop_tbl$`1` &gt; 0.44, "white", "black")   )</code></p>
-<p><br> .center[Relacionado a <strong>Poder</strong>] ]</p>
-<p>.panel[.panel-name[FPR]</p>
-<p><code>{r fpr, echo=FALSE} base_kbl |&gt;   column_spec(2,     bold = FALSE,     background = ifelse(prop_tbl$`0` &gt; 0.13, "darkgreen", "white"),     color = ifelse(prop_tbl$`0` &gt; 0.13, "white", "black")   ) |&gt;   column_spec(3,     bold = FALSE,     background = ifelse(prop_tbl$`1` &lt; 0.44, "darkgreen", "white"),     color = ifelse(prop_tbl$`1` &lt; 0.44, "white", "black")   )</code></p>
-<p><br> .center[Relacionado a <strong>Erro Tipo I</strong>] ]</p>
-<p>.panel[.panel-name[ACC]</p>
-<p><code>{r acc, echo=FALSE} base_kbl |&gt;   column_spec(2,     bold = FALSE,     background = ifelse(prop_tbl$`0` &gt; 0.13, "darkgreen", "white"),     color = ifelse(prop_tbl$`0` &gt; 0.13, "white", "black")   ) |&gt;   column_spec(3,     bold = FALSE,     background = ifelse(prop_tbl$`1` &gt; 0.44, "darkgreen", "white"),     color = ifelse(prop_tbl$`1` &gt; 0.44, "white", "black")   )</code></p>
-<p>]</p>
-<p>] ]</p>
-</section><section id="curvas-roc" class="slide level2">
+<table id="T_3f370" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_3f370_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Previsto 0</th>
+<th id="T_3f370_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Previsto 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_3f370_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Real 0</td>
+<td id="T_3f370_row0_col0" class="data row0 col0">0.169987</td>
+<td id="T_3f370_row0_col1" class="data row0 col1">0.261620</td>
+</tr>
+<tr class="even">
+<td id="T_3f370_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Real 1</td>
+<td id="T_3f370_row1_col0" class="data row1 col0">0.122178</td>
+<td id="T_3f370_row1_col1" class="data row1 col1">0.446215</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="curvas-roc" class="slide level2">
 <h2>Curvas ROC</h2>
 <ul>
 <li class="fragment"><p>O corte de 0,5 é arbitrário. E se todas as probabilidades previstas forem <span class="math inline">\(&gt; 0,5\)</span>, mas nos dados houver cerca de 50% de zeros?</p></li>
 <li class="fragment"><p>Vamos escolher um <em>corte arbitrário</em> <span class="math inline">\(c \in (0,1)\)</span> e verificar a precisão de cada valor. Isso dá uma visão melhor.</p></li>
-</ul>
-</section><section id="curvas-roc-1" class="slide level2">
-<h2>Curvas ROC</h2>
-<ul>
 <li class="fragment"><p>Podemos confrontar a <strong>taxa de verdadeiros positivos</strong> (TPR) com a <strong>taxa de falsos positivos</strong> (FPR), para cada valor de corte <span class="math inline">\(c\in[0, 1]\)</span>.</p>
 <ol type="1">
 <li class="fragment"><p>TPR: número de mulheres corretamente previstas para trabalhar dividido pelo número de mulheres que trabalham.</p></li>
@@ -776,17 +1308,47 @@ xaringanExtra::use_panelset()</code></pre>
 <li class="fragment"><p>Plotar <strong><em>FPR vs TPR</em></strong> para cada <span class="math inline">\(c\)</span> define a curva <strong>ROC</strong>.</p></li>
 <li class="fragment"><p>Um bom modelo tem uma curva ROC no canto superior esquerdo: FPR = 0, TPR = 1.</p></li>
 </ul>
-</section><section id="curvas-roc-2" class="slide level2">
+</section>
+<section id="curvas-roc-1" class="slide level2">
 <h2>Curvas ROC</h2>
-<p>.left-wide[</p>
-<p><code>{r,fig.height = 3} pred_prob &lt;- prediction(fitted(glms$probit), mroz$inlf) par(mfrow = c(1, 2), mar = lowtop) acc &lt;- ROCR::performance(pred_prob, "acc") max_acc &lt;- which.max(acc@y.values[[1]]) plot(acc) points(acc@x.values[[1]][max_acc], acc@y.values[[1]][max_acc], col = "darkgreen") roc &lt;- ROCR::performance(pred_prob, "tpr", "fpr") plot(roc) points(roc@x.values[[1]][max_acc], roc@y.values[[1]][max_acc], col = "darkgreen") abline(0, 1, lty = 2, col = "red")</code></p>
-<p>]</p>
-<p>.right-thin[ <br> <br> * Melhor precisão em torno de <span class="math inline">\(c=0,54\)</span></p>
+<div class="columns">
+<div class="column" style="width:75%;">
+<div id="481dcd51" class="cell" data-execution_count="20">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, auc, accuracy_score</span>
+<span id="cb15-2"><a href=""></a>pred_prob <span class="op">=</span> probit_reg.predict()</span>
+<span id="cb15-3"><a href=""></a>fpr, tpr, thresholds <span class="op">=</span> roc_curve(mroz[<span class="st">"inlf"</span>], pred_prob)</span>
+<span id="cb15-4"><a href=""></a>roc_auc <span class="op">=</span> auc(fpr, tpr)</span>
+<span id="cb15-5"><a href=""></a>accuracies <span class="op">=</span> [accuracy_score(mroz[<span class="st">"inlf"</span>], pred_prob <span class="op">&gt;</span> t) <span class="cf">for</span> t <span class="kw">in</span> thresholds]</span>
+<span id="cb15-6"><a href=""></a>acc_t <span class="op">=</span> thresholds[np.argmax(accuracies)] <span class="co"># threshold que maximiza a acurácia</span></span>
+<span id="cb15-7"><a href=""></a></span>
+<span id="cb15-8"><a href=""></a>plt.plot(fpr, tpr, color<span class="op">=</span><span class="st">"darkorange"</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f"ROC curve (area = </span><span class="sc">{</span>roc_auc<span class="sc">: .2f}</span><span class="ss">)"</span>)</span>
+<span id="cb15-9"><a href=""></a>plt.legend()</span>
+<span id="cb15-10"><a href=""></a>plt.ylabel(<span class="st">"TPR"</span>)</span>
+<span id="cb15-11"><a href=""></a>plt.xlabel(<span class="st">"FPR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>Text(0.5, 0, 'FPR')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="06-probit_pt_files/figure-revealjs/cell-21-output-2.png" width="844" height="456"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:25%;">
+<p><br> <br></p>
 <ul>
-<li class="fragment">ROC sempre acima da linha de 45 graus. Melhor do que atribuição aleatória (jogar uma moeda)!</li>
+<li class="fragment"><p>Melhor precisão em torno de <span class="math inline">\(c=0.54\)</span></p></li>
+<li class="fragment"><p>ROC sempre acima da linha de 45 graus. Melhor do que atribuição aleatória (jogar uma moeda)!</p></li>
 </ul>
-<p>]</p>
-</section><section id="estimação-de-máxima-verossimilhança" class="slide level2">
+</div>
+</div>
+</section>
+<section id="estimação-de-máxima-verossimilhança" class="slide level2">
 <h2>Estimação de Máxima Verossimilhança</h2>
 <ul>
 <li class="fragment"><p>Ao invés de usar média e variância condicionais, usaremos a distribuição condicional completa</p></li>
@@ -796,80 +1358,67 @@ xaringanExtra::use_panelset()</code></pre>
 <li class="fragment">Impomos um modelo paramétrico para a densidade condicional</li>
 </ul></li>
 </ul>
-</section><section id="estimação-de-máxima-verossimilhança-1" class="slide level2">
+</section>
+<section id="estimação-de-máxima-verossimilhança-1" class="slide level2">
 <h2>Estimação de Máxima Verossimilhança</h2>
 <h3 id="exemplo-probit">Exemplo Probit</h3>
-<p>::::{.columns} :::{.column width=“50%”} * <span class="math inline">\(y_i^*=x_i\theta + \varepsilon_i\)</span>, sendo <span class="math inline">\(\varepsilon_i\sim N(0,1)\)</span></p>
-<ul>
-<li class="fragment">Não observamos <span class="math inline">\(y_i^*\)</span>, apenas <span class="math inline">\(y_i\)</span></li>
-</ul>
-</section>
-</div>
+<div class="columns">
 <div class="column" style="width:50%;">
-<p><span class="math display">\[\begin{equation*}
+<ul>
+<li class="fragment"><p><span class="math inline">\(y_i^*=x_i\theta + \varepsilon_i\)</span>, sendo <span class="math inline">\(\varepsilon_i\sim N(0,1)\)</span></p></li>
+<li class="fragment"><p>Não observamos <span class="math inline">\(y_i^*\)</span>, apenas <span class="math inline">\(y_i\)</span></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><span class="math display">\[
+\begin{equation*}
 y_i = \begin{cases}
 1 \text{ se } y_i^* &gt; 0\\
 0 \text{ se } y_i^* \leq 0
 \end{cases}
-\end{equation*}\]</span></p>
+\end{equation*}
+\]</span></p>
 </div>
+</div>
+</div>
+<ul>
+<li class="fragment">Dadas as especificações acima: <span class="math display">\[
+\begin{aligned}
+P(y_i=1|x_i)&amp;=P(y_i* &gt; 0|x_i)\\
+&amp;=P(\varepsilon_i &gt; -x_i\theta |x_i)\\
+&amp;=1-\Phi(-x_i\theta)\\
+&amp;=\Phi(x_i\theta)
+\end{aligned}
+\]</span></li>
+</ul>
 </section>
 <section id="estimação-de-máxima-verossimilhança-2" class="slide level2">
 <h2>Estimação de Máxima Verossimilhança</h2>
 <h3 id="exemplo-probit-1">Exemplo Probit</h3>
 <ul>
-<li class="fragment">Dadas as especificações acima:</li>
+<li class="fragment"><p>A função de probabilidade condicional pode ser escrita como: <span class="math display">\[p(y_i|x_i)=\Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i}\]</span></p></li>
+<li class="fragment"><p>Esta é a probabilidade de ocorrência de um ponto <span class="math inline">\((x_i, y_i)\)</span>. Para o conjunto de dados observados temos a <strong><em>função de verossimilhança</em></strong> <span class="math display">\[\ell(\theta)=\Pi_{i=1}^N \Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i}\]</span></p></li>
+<li class="fragment"><p>Máxima Verossimilhança consiste em <strong><em>maximizar a função de verossimilhança</em></strong> em relação aos parâmetros, <span class="math inline">\(\theta\)</span>.</p></li>
+<li class="fragment"><p>Podemos maximizar a <strong><em>log-verossimilhança</em></strong> por praticidade. <span class="math inline">\(\mathcal{L}(\theta)=\log(\ell(\theta))=\sum_{i=1}^N y_i\log(\Phi(x_i\theta))+(1-y_i)\log(1-\Phi(x_i\theta))\)</span></p></li>
 </ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><span class="math display">\[\begin{align*}
-P(y_i=1|x_i)&amp;=P(y_i* &gt; 0|x_i)\\
-&amp;=P(\varepsilon_i &gt; -x_i\theta |x_i)\\
-&amp;=1-\Phi(-x_i\theta)\\
-&amp;=\Phi(x_i\theta)
-\end{align*}\]</span></p>
-</div><div class="column" style="width:50%;">
-<p><span class="math display">\[\begin{align*}
-P(y_i=0|x_i)&amp;=P(y_i* \leq 0|x_i)\\
-&amp;=P(\varepsilon_i \leq -x_i\theta |x_i)\\
-&amp;=\Phi(-x_i\theta)\\
-&amp;=1-\Phi(x_i\theta)
-\end{align*}\]</span></p>
-</div>
-</div>
 </section>
 <section id="estimação-de-máxima-verossimilhança-3" class="slide level2">
 <h2>Estimação de Máxima Verossimilhança</h2>
 <h3 id="exemplo-probit-2">Exemplo Probit</h3>
+<div class="fragment">
+<p><span class="math display">\[\hat\theta = \arg \max_{\theta} \mathcal{L}(\theta)\]</span></p>
+</div>
 <ul>
-<li class="fragment">A função de probabilidade condicional pode ser escrita como:</li>
-</ul>
-<p><span class="math display">\[p(y_i|x_i)=\Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i}\]</span></p>
-<ul>
-<li class="fragment">Esta é a probabilidade de ocorrência de um ponto <span class="math inline">\((x_i, y_i)\)</span>. Para o conjunto de dados observados temos a <strong><em>função de verossimilhança</em></strong></li>
-</ul>
-<p><span class="math display">\[\ell(\theta)=\Pi_{i=1}^N \Phi(x_i\theta)^{y_i}\cdot [1-\Phi(x_i\theta)]^{1-y_i}\]</span></p>
-<ul>
-<li class="fragment"><p>Máxima Verossimilhança consiste em <strong><em>maximizar a função de verossimilhança</em></strong> em relação aos parâmetros, <span class="math inline">\(\theta\)</span>.</p></li>
-<li class="fragment"><p>Podemos maximizar a <strong><em>log-verossimilhança</em></strong> por praticidade. <span class="math inline">\(\mathcal{L}(\theta)=\log(\ell(\theta))=\sum_{i=1}^N y_i\log(\Phi(x_i\theta))+(1-y_i)\log(1-\Phi(x_i\theta))\)</span></p></li>
+<li class="fragment"><p>O vetor de <strong><em>score</em></strong> é dado pela derivada da log-verossimilhança em relação a cada um dos parâmetros <span class="math display">\[s(\theta)=\nabla_\theta \mathcal{L}(\theta)=\left[\frac{\partial\mathcal{L}(\theta)}{\partial\theta_1}, \ldots, \frac{\partial\mathcal{L}(\theta)}{\partial\theta_k}\right]^{\prime}\]</span></p></li>
+<li class="fragment"><p>A Hessiana é a matriz de segundas derivadas <span class="math display">\[H(\theta)=\nabla^2_\theta \mathcal{L}(\theta)\]</span></p></li>
 </ul>
 </section>
 <section id="estimação-de-máxima-verossimilhança-4" class="slide level2">
 <h2>Estimação de Máxima Verossimilhança</h2>
 <h3 id="exemplo-probit-3">Exemplo Probit</h3>
-<p><span class="math display">\[\hat\theta = \arg \max_{\theta} \mathcal{L}(\theta)\]</span></p>
-<ul>
-<li class="fragment">O vetor de <strong><em>score</em></strong> é dado pela derivada da log-verossimilhança em relação a cada um dos parâmetros</li>
-</ul>
-<p><span class="math display">\[s(\theta)=\nabla_\theta \mathcal{L}(\theta)=\left[\frac{\partial\mathcal{L}(\theta)}{\partial\theta_1}, \ldots, \frac{\partial\mathcal{L}(\theta)}{\partial\theta_k}\right]^{\prime}\]</span> * A Hessiana é a matriz de segundas derivadas</p>
-<p><span class="math display">\[H(\theta)=\nabla^2_\theta \mathcal{L}(\theta)\]</span></p>
-</section>
-<section id="estimação-de-máxima-verossimilhança-5" class="slide level2">
-<h2>Estimação de Máxima Verossimilhança</h2>
-<h3 id="exemplo-probit-4">Exemplo Probit</h3>
 <p>Exercício: Calcule o <em>score</em> do modelo probit.</p>
 </section>
-<section id="estimação-de-máxima-verossimilhança-6" class="slide level2">
+<section id="estimação-de-máxima-verossimilhança-5" class="slide level2">
 <h2>Estimação de Máxima Verossimilhança</h2>
 <h3 id="exemplo-probit---solução">Exemplo Probit - Solução</h3>
 <p><span class="math inline">\(\mathcal{L}(\theta)=\sum_{i=1}^N y_i\log(\Phi(x_i\theta))+(1-y_i)\log(1-\Phi(x_i\theta))\)</span></p>
@@ -879,7 +1428,7 @@ s(\theta)&amp;=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\p
 &amp;=\sum_{i=1}^N \frac{x_i\phi(x_i \theta)}{\Phi(x_i \theta) [1-\Phi(x_i \theta)]}[y_i-\Phi(x_i \theta)]
 \end{align}\]</span></p>
 </section>
-<section id="estimação-de-máxima-verossimilhança-7" class="slide level2">
+<section id="estimação-de-máxima-verossimilhança-6" class="slide level2">
 <h2>Estimação de Máxima Verossimilhança</h2>
 <h3 id="exemplo-exponencial">Exemplo Exponencial</h3>
 <ul>
@@ -889,7 +1438,7 @@ s(\theta)&amp;=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\p
 <li class="fragment"><p>Encontre o estimador de máxima verossimilhança <span class="math inline">\(\hat\lambda_{mle}\)</span></p></li>
 </ul>
 </section>
-<section id="estimação-de-máxima-verossimilhança-8" class="slide level2">
+<section id="estimação-de-máxima-verossimilhança-7" class="slide level2">
 <h2>Estimação de Máxima Verossimilhança</h2>
 <h3 id="exemplo-exponencial-1">Exemplo Exponencial</h3>
 <ul>
@@ -899,9 +1448,13 @@ s(\theta)&amp;=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\p
 </ul>
 <div class="columns">
 <div class="column" style="width:50%;">
+<div class="fragment">
 <p><span class="math display">\[\hat\lambda_{mle}=\frac{1}{N}\sum_{i=1}^N x_i\]</span></p>
+</div>
 </div><div class="column" style="width:50%;">
-<p>.center[ &lt;img src=“https://media.giphy.com/media/Jlirxn597uSeW7kPAQ/giphy.gif”, height=“250” /&gt;</p>
+<div class="fragment">
+<p><img data-src="https://media.giphy.com/media/Jlirxn597uSeW7kPAQ/giphy.gif"></p>
+</div>
 </div>
 </div>
 </section>
@@ -922,7 +1475,8 @@ s(\theta)&amp;=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\p
 <section id="método-dos-momentos-generalizado-1" class="slide level2">
 <h2>Método dos Momentos Generalizado</h2>
 <h3 id="método-dos-momentos-mm-1">Método dos Momentos (MM)</h3>
-<p>.left-wide[</p>
+<div class="columns">
+<div class="column" style="width:75%;">
 <ul>
 <li class="fragment">Vamos considerar um <em>setup</em> mais geral:</li>
 <li class="fragment"><span class="math inline">\(\theta_0\in\mathbb{R}^p\)</span> é um vetor dos parâmetros da população</li>
@@ -932,21 +1486,28 @@ s(\theta)&amp;=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\p
 <li class="fragment"><span class="math inline">\(\theta_0\)</span> é a única solução para a equação de momento</li>
 <li class="fragment">MM vai resolver o análogo amostral:</li>
 </ul>
-<p><span class="math display">\[\hat{m}(\hat\theta)=\frac{1}{N}\sum_{i=1}^N g(Z_i, \hat\theta)=0\]</span> ]</p>
-<p>.right-thin[ <!-- ![](https://media.giphy.com/media/ghuvaCOI6GOoTX0RmH/giphy.gif) --> <img data-src="https://media.giphy.com/media/YmnRIWXjSkct9ZZtNZ/giphy.gif">]</p>
+<div class="fragment">
+<p><span class="math display">\[\hat{m}(\hat\theta)=\frac{1}{N}\sum_{i=1}^N g(Z_i, \hat\theta)=0\]</span></p>
+</div>
+</div><div class="column" style="width:25%;">
+<div class="fragment">
+<p><img data-src="https://media.giphy.com/media/YmnRIWXjSkct9ZZtNZ/giphy.gif"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="método-dos-momentos-generalizado-2" class="slide level2">
 <h2>Método dos Momentos Generalizado</h2>
 <h3 id="clarificando">Clarificando</h3>
-<p>.left-wide[ * Considere o MQO. Podemos escrever duas equação de momento que identificam os parâmetros do modelo</p>
-<p><span class="math display">\[\hat{m}(\hat\beta)=\begin{cases}
+<ul>
+<li class="fragment"><p><strong>Considere o MQO</strong>. Podemos escrever duas equação de momento que identificam os parâmetros do modelo <span class="math display">\[
+\hat{m}(\hat\beta)=\begin{cases}
 \frac{1}{N}\sum_{i=1}^N(y_i-\hat\beta_0-\hat\beta_1 x_i)=0\\
 \frac{1}{N}\sum_{i=1}^Nx_i(y_i-\hat\beta_0-\hat\beta_1 x_i)=0
-\end{cases}\]</span></p>
-<ul>
-<li class="fragment">O MM escreve momentos populacionais em termos dos parâmetros e resolve o sistema de equações, simples! ]</li>
+\end{cases}
+\]</span></p></li>
+<li class="fragment"><p>O MM escreve momentos populacionais em termos dos parâmetros e resolve o sistema de equações, simples!</p></li>
 </ul>
-<p>.right-thin[ .center[<img data-src="https://media.giphy.com/media/111ebonMs90YLu/giphy.gif">]]</p>
 </section>
 <section id="método-dos-momentos-generalizado-3" class="slide level2">
 <h2>Método dos Momentos Generalizado</h2>
@@ -974,33 +1535,28 @@ s(\theta)&amp;=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\p
 </ul>
 </section>
 <section id="leitura-recomendada" class="slide level2">
-<h2>Leitura Recomendada</h2>
+<h2><span class="emoji" data-emoji="books">📚</span> Leitura Recomendada</h2>
 <ul>
 <li class="fragment"><p>WOOLDRIDGE, Jeffrey M. Introdução à econometria: uma abordagem moderna. São Paulo: Cengage Learning, 2016. Tradução da 4ª edição norte-americana por José Antonio Ferreira. Capítulo 17 Modelo com Variáveis Dependentes Limitadas e Correções da Seleção Amostral.</p></li>
 <li class="fragment"><p>GUJARATI, Damodar N.; PORTER, Dawn C. Econometria básica. Porto Alegre: Amgh Editora, 2011. - 5. ed.&nbsp;Capítulo 15 Modelos de regressão de resposta qualitativa</p></li>
 <li class="fragment"><p>WOOLDRIDGE, Jeffrey M. Econometric Analysis of Cross Section and Panel Data. MIT press, 2010. Second Edition. Chapter 15 Binary Response Models</p></li>
 </ul>
-<p>layout: false</p>
-<p>class: title-slide-final, middle background-image: url(../../img/logo/UdescEsag.jpeg) background-size: 350px background-position: 9% 19%</p>
 </section>
 <section id="até-a-próxima-aula" class="slide level2">
 <h2>ATÉ A PRÓXIMA AULA!</h2>
 <!-- Com a Lista 1 feita! `r emo::ji("white_check_mark")` -->
-<p>.footnote[ [1]: Este slides foram baseados nas aulas de econometria da <a href="https://github.com/ScPoEcon/ScPoEconometrics-Slides">SciencesPo Department of Economics</a>]</p>
-<div class="line-block">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| |<br>
-: | :– |<br>
-<a href="https://github.com/rfbressan/econometria3_slides">.ScPored[<i class="fa fa-link fa-fw"></i>] | Slides |<br>
-</a><a href="http://github.com/rfbressan">.ScPored[<i class="fa fa-github fa-fw"></i>] | <span class="citation" data-cites="rfbressan">@rfbressan</span> |<br>
-</a><a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/02-probit/lista_I_pt.html">.ScPored[<i class="fa fa-list fa-fw"></i>] | Lista de Exercícios I |</a></div><a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/02-probit/lista_I_pt.html">
+<div class="footer">
+<p>[1]: Este slides foram baseados nas aulas de econometria da <a href="https://github.com/ScPoEcon/ScPoEconometrics-Slides">SciencesPo Department of Economics</a></p>
+</div>
 <div class="quarto-auto-generated-content">
 <p><img src="img/UdescEsag.jpeg" class="slide-logo"></p>
 <div class="footer footer-default">
 
 </div>
 </div>
-</a></section><a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/02-probit/lista_I_pt.html">
-    </a></div><a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/02-probit/lista_I_pt.html">
-  </a></div><a href="https://raw.githack.com/rfbressan/econometria3_slides/master/lectures/02-probit/lista_I_pt.html">
+</section>
+    </div>
+  </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
   <script src="06-probit_pt_files/libs/revealjs/dist/reveal.js"></script>
@@ -1367,4 +1923,4 @@ s(\theta)&amp;=\frac{d\mathcal{L}(\theta)}{d\theta}=\sum_{i=1}^N y_i x_i\frac{\p
     </script>
     
 
-</a></body></html>
+</body></html>
