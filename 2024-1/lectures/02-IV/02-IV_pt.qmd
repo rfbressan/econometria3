@@ -13,10 +13,11 @@ format:
   revealjs:
     theme: [default, ../udesc.scss] 
     code-fold: true
-    chalkboard: true
+    # chalkboard: true
     incremental: true
     width: 1600
     height: 900
+    embed-resources: true
 from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
 fontsize: "2.2em"
 # editor: source
@@ -506,8 +507,6 @@ plt.show()
 
 :::
 
-
-
 :::{.column width="50%"}
 
 * Como isto ***identifica*** $\beta_1$?
@@ -544,6 +543,7 @@ e sob a condição 1. (**relevância**), temos $Cov(z,x)\neq 0$, portanto:
 $$
 \beta_1 =  \frac{Cov(z,y)}{Cov(z,x)}.
 $$
+
 :::
 ::::
 
@@ -655,10 +655,13 @@ onde $\hat{u}_i=y_i-\hat\beta_0-\hat\beta_{1, IV} x_i$
 2. Em seguida, usamos a **previsão** do 1º estágio, $\hat{s}$, no que é chamado de modelo de **segundo estágio**. Esse procedimento deve eliminar qualquer endogeneidade entre $\hat{s}$ e $y$.
 
 :::{.fragment}
-\begin{align}
+$$
+\begin{aligned}
 \text{1. Estágio: }s_i &= \alpha_0 + \alpha_1 z_i + \alpha_2 x_i + \eta_i \\
 \text{2. Estágio: }y_i &= \beta_0 + \beta_1 \hat{s}_i + \beta_2 x_i + \varepsilon_i
-\end{align}
+\end{aligned}
+$$
+
 :::
 
 - **Condições:**
@@ -700,8 +703,6 @@ Assim o segundo estágio faz uso somente de ***variações exógenas*** de $s_i$
     
 * Crianças que completam 6 anos até 31 de dezembro devem se matricular na 1ª série em setembro do mesmo ano
 :::
-
-
 
 :::{.column width="50%"}
 * Nascidos em dezembro de 2016, estarão com 5a9m quando começarem a escola
