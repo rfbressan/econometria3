@@ -13,10 +13,11 @@ format:
   revealjs:
     theme: [default, ../udesc.scss] 
     code-fold: true
-    chalkboard: true
+    # chalkboard: true
     incremental: true
     width: 1600
     height: 900
+    embed-resources: true
 from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
 fontsize: "2.2em"
 # editor: source
@@ -559,11 +560,14 @@ diff_table = pd.DataFrame(
 )
 
 diff_table["diff_small_regular"] = diff_table["mean_small"] - diff_table["mean_regular"]
+
 diff_table["diff_regular_aide_regular"] = (
     diff_table["mean_regular_aide"] - diff_table["mean_regular"]
 )
 
-diff_table = diff_table.sort_values(by=["grade"], ascending=False).reset_index(drop=True)
+diff_table = diff_table.sort_values(by=["grade"], ascending=False).reset_index(
+    drop=True
+)
 ```
 
 :::{.fragment}

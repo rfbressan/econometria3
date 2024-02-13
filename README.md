@@ -25,7 +25,7 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 | Tópico | Slides | Lista | Laboratório |
 |--------|--------|-------|-------------|
-| Aula 1: Causalidade | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/01-causalidade/01-causality_pt.html) |  | [Github Copilot](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/01_lab_intro_github.html) |
+| Aula 1: Causalidade | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/01-causalidade/01-causality_pt.html) |  | [Github Copilot](https://raw.githack.com/rfbressan/econometria3/main/2024-1/labs/01_lab_intro_github.html) |
 
 | Aula 2: Variáveis Instrumentais | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/02-IV/02-IV_pt.html) |  | [Intro R](https://raw.githack.com/rfbressan/econometria3_slides/master/labs/01_lab_introducao.html)               |
 
