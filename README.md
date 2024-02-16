@@ -117,6 +117,8 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 * [Coletânea de cursos de Econometria](https://giuseppecavaliere.wixsite.com/giuseppe/econometrics-courses)
 
+* [Econometrics Course](https://www.youtube.com/playlist?list=PLOQU3c_3DSpLTBa0vqPFVwDCqXlXiu49j)
+
 * [Microsoft's Experimentation](https://www.microsoft.com/en-us/research/group/experimentation-platform-exp/)
 
 * [Booking.datasience](https://booking.ai)

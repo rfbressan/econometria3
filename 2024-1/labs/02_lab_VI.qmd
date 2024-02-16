@@ -1,12 +1,14 @@
 ---
 title: Aula de laboratório - Variáveis Instrumentais
 author: Rafael Bressan
-date: "2023-08-07"
+date: "2024-02-14"
 format: 
   html:
     theme: cosmo
     embed-resources: true
 lang: "pt-BR"
+engine: jupyter
+jupyter: python3
 ---
 
 ## Retornos da educação para mulheres casadas
@@ -16,97 +18,92 @@ Vamos analizar os retornos de educação para mulheres casadas com os dados
 que onde salário não seja faltante. Como variável instrumental para educação
 usaremos a educação do pai. Você acha que este é um bom instrumento? Por quê?
 
-```{r}
-library(wooldridge)
-library(fixest)
-library(ggplot2)
-library(data.table)
-library(modelsummary)
+
+```{python}
+import pandas as pd
+import wooldridge as woo
+import linearmodels.iv as iv
 ```
 
-```{r}
-data("mroz")
 
-df <- mroz[!is.na(mroz$wage), ]
+```{python}
+df = woo.dataWoo('mroz').dropna(subset=['wage'])
 ```
+
 
 **Crie uma tabela com as estatíticas descritivas dos dados.** Vamos usar o **Copilot** para criar o código para nós. Uma sugestão de *prompt* é:
 
 | | *Prompt* |
 |-|-----|
-| ![Copilot](img/copilot-logo.png){width=100%} | `usando a linguagem R, crie uma tabela de estatísticas descritivas para todas as variáveis do data frame df utilizando a função datasummary do pacote modelsummary. As estatísticas devem ser número de observações, número de valores únicos, média e desvio padrão.`| 
+| ![Copilot](img/copilot-logo.png){width=100%} | `usando a linguagem Python, crie um data frame de estatísticas descritivas para todas as variáveis do data frame df. As estatísticas devem ser número de observações, número de valores únicos, média e desvio padrão.`| 
 
-```{r}
-#| code-fold: true
-datasummary(All(df) ~ Ncol + NUnique + Mean + SD + Min + Median + Max, data = df)
+
+```{python}
+desc = df.describe().loc[["count", "mean", "std"]].transpose()
+stats = desc.join(df.nunique().rename("unique"))
+stats
 ```
 
 ## Regressão simples
 
-Estimamos primeiro um MQO simples com a função `feols` do pacote `fixest`.
+Estimamos primeiro um MQO simples com a função `IV2SLS` **sem utilizar** a especificação de `[endo ~ exog]`.
 
 | | *Prompt* |
 |-|-----|
-| ![Copilot](img/copilot-logo.png){width=100%} | `estime um modelo linear com a função feols do pacote fixest. A variável dependente é o logaritmo do salário (lwage) e a variável independente é o número de anos de educação (educ).`| 
+| ![Copilot](img/copilot-logo.png){width=100%} | `estime um modelo linear com a função IV2SLS da biblioteca linearmodels. A variável dependente é o logaritmo do salário (lwage) e a variável independente é o número de anos de educação (educ).`| 
 
-```{r}
 
-```{r}
-#| code-fold: true
-s_ols <- feols(lwage ~ educ, data = df) 
+```{python}
+ols_reg = iv.IV2SLS.from_formula("lwage ~ 1 + educ", df).fit()
 ```
 
-Leia a ajuda da função `feols` (?feols) e descubra como especificar um 
-modelo de variáveis instrumentais (IVs). 
+Leia a introdução a biblioteca [`linearmodels`](https://bashtage.github.io/linearmodels/iv/introduction.html) e descubra como especificar um modelo de variáveis instrumentais (IVs). 
 
 **Em seguida rode a regressão com `fatheduc` como instrumento para `educ`**, e apresente os resultados das duas regressões lado a lado em uma tabela.
 
 | | *Prompt* |
 |-|-----|
-| ![Copilot](img/copilot-logo.png){width=100%} | `em R, usando a função feols, estime um modelo linear lwage contra educ onde a variavel instrumental para educ será fatheduc. Apresente os resultados das duas regressões lado a lado em uma tabela usando a função etable.`|
+| ![Copilot](img/copilot-logo.png){width=100%} | `estime um modelo linear lwage contra educ onde a variavel instrumental para educ será fatheduc. Apresente os resultados das duas regressões lado a lado em uma tabela.`|
 
-```{r}
-#| code-fold: true
-iv_ols <- feols(lwage ~ 1 | educ ~ fatheduc, data = df)
-etable(list(OLS = s_ols, VI = iv_ols))
+
+```{python}
+iv_reg = iv.IV2SLS.from_formula("lwage ~ 1 + [educ ~ fatheduc]", df).fit()
 ```
 
+```{python}
+from linearmodels.iv.results import compare
+
+compare({"OLS": ols_reg, "IV": iv_reg})
+```
 
 ## Adicionando regressores exógenos
 
 A abordagem de variáveis instrumentais pode facilmente ser estendida para
 a inclusão de outros regressores exógenos na regressão.
 
-Inclua em ambas as regressões anteriores os regressores experiência (`exper`)
-e experiência ao quadrado (`expersq`). Faça também um modelo de MQ2E
-**manualmente** e apresente os resultados.
+Inclua em ambas as regressões anteriores os regressores experiência (`exper`) e experiência ao quadrado (`expersq`). Faça também um modelo de MQ2E **manualmente** e apresente os resultados.
 
 | | *Prompt* |
 |-|-----|
 | ![Copilot](img/copilot-logo.png){width=100%} | `inclua nos dois modelos anteriores os regressores exper e expersq. Em seguida, faça um modelo de minimos quadrados em dois estagios manualmente e apresente os resultados.`|
 
 
+```{python}
+ols_reg = iv.IV2SLS.from_formula("lwage ~ 1 + educ + exper + expersq", df).fit()
+iv_reg = iv.IV2SLS.from_formula("lwage ~ 1 + exper + expersq + [educ ~ fatheduc]", df).fit()
+stage_1 = iv.IV2SLS.from_formula("educ ~ 1 + exper + expersq + fatheduc", df).fit()
+mq2e_df = df.copy()
+mq2e_df["pred_educ"] = stage_1.fitted_values
+stage_2 = iv.IV2SLS.from_formula("lwage ~ 1 + pred_educ + exper + expersq", mq2e_df).fit()
 
-```{r}
-#| code-fold: true
-s_ols <- feols(lwage ~ educ + exper + expersq, data = df)
-iv_ols <- feols(lwage ~ exper + expersq | educ ~ fatheduc, data = df)
-stage_1 <- feols(educ ~ exper + expersq + fatheduc, data = df)
-mq2e_df <- df
-mq2e_df$pred_educ <- fitted(stage_1)
-stage_2 <- feols(lwage ~ pred_educ + exper + expersq, data = mq2e_df)
-etable(list(OLS = s_ols, MQ2E = stage_2, VI = iv_ols))
+compare({"OLS": ols_reg, "MQ2E": stage_2, "IV": iv_reg})
 ```
 
 ## Teste de endogeneidade de Hausman
 
-Tanto MQO quanto MQ2E serão consistentes se todas as variáveis forem 
-exógenas. Se os estimadores diferirem de forma significativa, concluímos
-que o regressor era de fato endógeno (qual hipótese estamos fazendo aqui?).
+Tanto MQO quanto MQ2E serão consistentes se todas as variáveis forem exógenas. Se os estimadores diferirem de forma significativa, concluímos que o regressor era de fato endógeno (qual hipótese estamos fazendo aqui?).
 
-Portanto, é sempre uma boa ideia calcular tanto o MQO quanto o MQ2E e 
-compará-los. Para determinar se as estimativas são estatisticamente 
-diferentes, então um teste de regressão é mais adequado. O teste de Hausman
+Portanto, é sempre uma boa ideia calcular tanto o MQO quanto o MQ2E e compará-los. Para determinar se as estimativas são estatisticamente diferentes, então um teste de regressão é mais adequado. O teste de Hausman
 faz esse papel.
 
 O teste é separado em dois passos:
@@ -120,38 +117,58 @@ endogeneidade do regressor caso rejeite-se a hipótese nula.
 
 **Implemente o teste de Hausman**
 
-```{r}
-mq2e_df$resid_educ <- residuals(stage_1)
-hausman <- feols(lwage ~ educ + exper + expersq + resid_educ, data = mq2e_df)
-summary(hausman)
+
+```{python}
+mq2e_df["resid_educ"] = stage_1.resids
+hausman = iv.IV2SLS.from_formula("lwage ~ 1 + educ + exper + expersq + resid_educ", mq2e_df).fit()
+hausman
+```
+
+Existe o teste de Wu-Hausman já implementado na biblioteca [`linearmodels`](https://bashtage.github.io/linearmodels/iv/iv/linearmodels.iv.results.IVResults.wu_hausman.html#linearmodels.iv.results.IVResults.wu_hausman). Vamos usar ele para comparar os resultados.
+
+```{python}
+iv_reg.wu_hausman("educ")
 ```
 
 ## Teste de restrições sobreidentificadoras
 
-Se temos mais instrumentos válidos que variáveis endógenas, a princípio
-pode-se usar qualquer ou todos os instrumentos. Se todos forem de fato 
-válidos, então, usar todos trará ganhos de eficiência no estimador MQ2E.
+Se temos mais instrumentos válidos que variáveis endógenas, a princípio pode-se usar qualquer ou todos os instrumentos. Se todos forem de fato válidos, então, usar todos trará ganhos de eficiência no estimador MQ2E.
 
-1. Estime a equação estrutural por MQ2E, usando mais instrumentos que 
-variáveis endógenas, e salve os resíduos $\hat u_1$
+1. Estime a equação estrutural por MQ2E, usando mais instrumentos que variáveis endógenas, e salve os resíduos $\hat u_1$
 
-2. Regrida $\hat u_1$ em todas as variáveis exógenas e salve o $R^2$ desta 
-regressão
+2. Regrida $\hat u_1$ em todas as variáveis exógenas e salve o $R^2$ desta regressão
 
-3. Sob a hipótese nula de que todas as VI são exógenas, a estatística de teste 
-$n R^2$ é assintoticamente distribuída como uma Qui-quadrado com $q$ graus de
-liberdade, onde $q$ é a diferença entre o número de instrumentos e de 
-variáveis endógenas.
+3. Sob a hipótese nula de que todas as VI são exógenas, a estatística de teste $n R^2$ é assintoticamente distribuída como uma Qui-quadrado com $q$ graus de
+liberdade, onde $q$ é a diferença entre o número de instrumentos e de variáveis endógenas.
 
 **Faça o teste de restrições sobreidentificadoras considerando que a educação da mãe (`motheduc`) também é um instrumento váldio para educação.**
 
-```{r}
-sobre_iv <- feols(lwage ~ exper + expersq | educ ~ fatheduc + motheduc, data = df)
-sobre_df <- df
-sobre_df$resid <- residuals(sobre_iv)
-resid_reg <- feols(resid ~ exper + expersq + fatheduc + motheduc, data = sobre_df)
-n <- nobs(resid_reg)
-r2 <- r2(resid_reg, type = "r2")
-sobre_stat <- n * r2
-pchisq(sobre_stat, df = 1, lower.tail = FALSE)
+```{python}
+sobre_iv = iv.IV2SLS.from_formula(
+    "lwage ~ 1 + exper + expersq [educ ~ fatheduc + motheduc]", df
+).fit()
+sobre_df = df.copy()
+sobre_df["resid"] = sobre_iv.resids
+resid_reg = iv.IV2SLS.from_formula(
+    "resid ~ 1 + exper + expersq + fatheduc + motheduc", sobre_df
+).fit()
+n = resid_reg.nobs
+r2 = resid_reg.rsquared
+sobre_stat = n * r2
+```
+
+```{python}
+# Import the chi2 distribution
+from scipy.stats import chi2
+
+# Calculate the p-value
+p_value = 1 - chi2.cdf(sobre_stat, 1)
+print(f"Estatística de teste: {sobre_stat}")
+print(f"P-valor: {p_value}")
+```
+
+Ou podemos usar o teste de Wooldridge para sobreidentificação.
+
+```{python}
+sobre_iv.wooldridge_overid
 ```

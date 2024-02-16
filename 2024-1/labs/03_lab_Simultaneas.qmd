@@ -1,12 +1,14 @@
 ---
 title: Aula de laboratório - Modelos de Equações Simultâneas
 author: Rafael Bressan
-date: "2023-09-06"
+date: "2024-02-14"
 format: 
   html:
     theme: cosmo
     embed-resources: true
 lang: "pt-BR"
+engine: jupyter
+jupyter: python3
 ---
 
 ## Introdução
@@ -45,41 +47,67 @@ $$
 
 - **Qual ou quais destas equações são identificadas?**
 
-Vamos então estimar as duas equações de forma conjunta, ambas através de MQ2E
-utilizando o pacote `systemfit`.
+Vamos então estimar as duas equações de forma conjunta, ambas através de MQ2E utilizando o pacote `linearmodels`.
 
-```{r}
-#| message: false
-library(systemfit)
-library(wooldridge)
 
-data("mroz")
+```{python}
+import wooldridge as woo
+import numpy as np
+import pandas as pd
+import linearmodels.iv as iv
 
-df <- mroz[!is.na(mroz$wage), ]
+mroz = woo.dataWoo("mroz")
+# restrict to non-missing wage observations:
+mroz = mroz.dropna(subset=["lwage"])
+# 2SLS regressions:
+reg_iv1 = iv.IV2SLS.from_formula(
+    "hours ~ 1 + educ + age + kidslt6 + nwifeinc + [np.log(wage) ~ exper + I(exper**2)]",
+    data=mroz,
+)
+results_iv1 = reg_iv1.fit(cov_type="unadjusted", debiased=True)
+reg_iv2 = iv.IV2SLS.from_formula(
+    "np.log(wage) ~ 1 + educ + exper + I(exper**2) + [hours ~ age + kidslt6 + nwifeinc]",
+    data=mroz,
+)
+results_iv2 = reg_iv2.fit(cov_type="unadjusted", debiased=True)
 
-# Definindo o sistema de equações e os instrumentos
-eq.hrs <- hours ~ lwage + educ + age + kidslt6 + nwifeinc
-eq.wage <- lwage ~ hours + educ + exper + expersq
-eq.system <- list(eq.hrs, eq.wage)
-inst <- ~ educ + age + kidslt6 + nwifeinc + exper + expersq
 
-# Estimando por MQ2E todas as equações conjuntamente
-mq2e <- systemfit(eq.system, inst = inst, data = df, method = "2SLS")
-summary(mq2e)
+# print results:
+def results_tbl(iv_reg):
+    return pd.DataFrame(
+        {
+            "b": round(iv_reg.params, 4),
+            "se": round(iv_reg.std_errors, 4),
+            "t": round(iv_reg.tstats, 4),
+            "pval": round(iv_reg.pvalues, 4),
+        }
+    )
+
+
+table_iv1 = results_tbl(results_iv1)
+print(f"table_iv1: \n{table_iv1}\n")
+table_iv2 = results_tbl(results_iv2)
+print(f"table_iv2: \n{table_iv2}\n")
+# correlation of residuals:
+cor_u1u2 = np.corrcoef(results_iv1.resids, results_iv2.resids)[0, 1]
+print(f"cor_u1u2: {cor_u1u2}\n")
 ```
 
-Um resultado interessante que foi apresentado é a matriz de correlação dos
-resíduos. Os resíduos das duas equações são fortemente correlacionados de 
-forma negativa. O método de estimação de **Mínimos Quadrados em 3 Estágios**
-(MQ3E) pode ser utilizado para levar em consideração esta correlação e obter
-um estimador mais eficiente que o MQ2E.
+Um resultado interessante que foi apresentado é a matriz de correlação dos resíduos. Os resíduos das duas equações são fortemente correlacionados de forma negativa. O método de estimação de **Mínimos Quadrados em 3 Estágios** (MQ3E) pode ser utilizado para levar em consideração esta correlação e obter um estimador mais eficiente que o MQ2E.
 
-Usar MQ3E com o `systemfit` é tão fácil quanto simplesmente trocar o 
-argumento "method" da função.
+Usar MQ3E com o `linearmodels` é simples. A função [`IV3SLS`](https://bashtage.github.io/linearmodels/system/system/linearmodels.system.model.IV3SLS.html) está implementada.
 
-# Estimando por MQ2E todas as equações conjuntamente
+# Estimando por MQ3E todas as equações conjuntamente
 
-```{r}
-mq3e <- systemfit(eq.system, inst = inst, data = df, method = "3SLS")
-summary(mq3e)
+
+```{python}
+from linearmodels.system import IV3SLS
+
+formula = {
+    "eq1": "hours ~ 1 + educ + age + kidslt6 + nwifeinc + [np.log(wage) ~ exper+I(exper**2)]",
+    "eq2": "np.log(wage) ~ 1 + educ + exper + I(exper**2) + [hours ~ age + kidslt6 + nwifeinc]",
+}
+reg_3sls = IV3SLS.from_formula(formula, data=mroz)
+results_3sls = reg_3sls.fit(cov_type="unadjusted", debiased=True)
+results_3sls
 ```

@@ -1,12 +1,14 @@
 ---
 title: Aula de laboratório - Efeitos Fixos
 author: Rafael Bressan
-date: "2023-10-04"
+date: "2024-02-14"
 format: 
   html:
     theme: cosmo
     embed-resources: true
 lang: "pt-BR"
+# engine: jupyter
+# jupyter: python3
 ---
 
 ## Organizando dados em painel 
@@ -14,142 +16,167 @@ lang: "pt-BR"
 $y_{it}=\beta_0+\beta_1 x_{it}+v_{it};$ com $t=1,\ldots , T$ e 
 $i=1,\ldots , n$. Denotamos $nT=N$, o número total de observações do painel.
 
-Dados em painel são melhor organizados no formato "longo" onde cada linha
-corresponde a uma combinação de $i$ e $t$. Nós temos de definir qual das
-variáveis corresponde a $i$ e qual será representante de $t$. Podemos fazer
-isso com o pacote `plm`.
+Dados em painel são melhor organizados no formato "longo" onde cada linha corresponde a uma combinação de $i$ e $t$. Nós temos de definir qual das variáveis corresponde a $i$ e qual será representante de $t$. Podemos fazer isso com a biblioteca `linearmodels`.
 
-```{r}
-library(plm)
-library(fixest)
-library(wooldridge)
 
-data(crime4)
+```{python}
+import linearmodels as lm
+import wooldridge as woo
+
+crime4 = woo.dataWoo('crime4')
 ```
-Os dados `crime4` já estão organizados no formato longo, e possui as
-variáveis indicando o indivíduo (`county`) e o tempo (`year`). O painel é 
-balanceado. Neste caso podemos transformar os dados em painel indicando 
-estas colunas para o argumento index. 
 
-```{r}
-crime4_p <- pdata.frame(crime4, index = c("county", "year"))
-pdim(crime4_p)
+Os dados `crime4` já estão organizados no formato longo, e possui as variáveis indicando o indivíduo (`county`) e o tempo (`year`). O painel é balanceado. Neste caso podemos transformar os dados em painel indicando estas colunas para o método `set_index` de um Data Frame do pandas. 
+
+
+```{python}
+crime4_p = crime4.set_index(["county", "year"])
+crime4_p.head()
 ```
 
 ## Cálculos típicos de painel
 
-Uma vez com os dados organizados em painel, o pacote `plm` fornece uma série
-de funções úteis para fazer as transformações que são típicas em econometria 
-de dados em painel: _lag_, diferença, _between_ e _within_.
+Uma vez com os dados no formato de um **Data Frame** do pandas e organizados em painel, podemos fazer as transformações que são típicas em econometria de dados em painel: _lag_, diferença, _between_ e _within_.
 
-```{r}
-crime4_p$cr_l <- plm::lag(crime4_p$crmrte) # Vários pacotes possuem `lag`
-crime4_p$cr_d <- diff(crime4_p$crmrte) # Diff usa base
-crime4_p$cr_B <- plm::Between(crime4_p$crmrte)
-crime4_p$cr_W <- plm::Within(crime4_p$crmrte)
 
-head(crime4_p[, c("county", "year", "crmrte", "cr_l", "cr_d", "cr_B", "cr_W")])
+```{python}
+# Operações within (agrupadas por county)
+crime4_pc = crime4_p.groupby("county")
+
+crime4_p["cr_l"] = crime4_pc["crmrte"].shift(1) # Lag
+crime4_p["cr_d"] = crime4_pc["crmrte"].diff() # Diff
+crime4_p["cr_W"] = crime4_p["crmrte"] - crime4_pc["crmrte"].mean() # Within
+
+# Between agrupado por year
+crime4_p["cr_B"] = crime4_p["crmrte"] - crime4_p.groupby("year")["crmrte"].mean()
+
+crime4_p[["crmrte", "cr_l", "cr_d", "cr_B", "cr_W"]].head()
 ```
-
 
 ## Modelo em primeira diferença
 
-Agora que temos um painel de dados devidamente organizados, podemos fazer
-uso destes dados para rodas as regressões. Começaremos com um modelo do 
-efeito do desemprego na taxa de crimes.
+Agora que temos um painel de dados devidamente organizados, podemos fazer uso destes dados para rodas as regressões. Começaremos com um modelo do efeito do desemprego na taxa de crimes. Suponha que nosso modelo seja: 
+
+$$crmrte_{it}=\beta_0+\beta_1 unem_{it}+c_i+u_{it}, \qquad t\in \{0,1\}.$$
+
+Portanto, o modelo em PD será $\Delta crmrte_{i}=\beta_1 \Delta unem_{i}+\Delta u_{i}$. (Note que $c_i$ e $\beta_0$ são eliminados pela diferença, **assim como a dependência temporal**, por quê?).
 
 
-```{r}
-data(crime2)
-crime2_p <- pdata.frame(crime2, index = 46) # Balanceado com n=46, T=2
-# Manualmente calcular as diferenças e fazer a regressão
-crime2_p$dcrmrte <- diff(crime2_p$crmrte)
-crime2_p$dunem <- diff(crime2_p$unem)
-manual_reg <- lm(dcrmrte ~ dunem, data = crime2_p)
-# Especificar um modelo em PD no `plm`
-fd_reg <- plm(crmrte ~ unem, data = crime2_p, model = "fd")
+```{python}
+import numpy as np
+from linearmodels.panel.data import PanelData
+
+crime2 = woo.dataWoo("crime2")
+# Data frame sem índices. Organizado em painel com n=46, T=2
+crime2["t"] = (crime2["year"] == 87).astype(int)  # t = 0 ou 1
+crime2["id"] = np.repeat(range(46), 2)
+
+crime2_p = crime2.set_index(["id", "year"])
+crime2_P = PanelData(crime2_p)  # Painel de dados com atributos
+
+print(f"Número de entidades: {crime2_P.nentity}, Número de períodos: {crime2_P.nobs}")
+```
+
+```{python}
+# Modelo em primeira diferença manual
+crime2_diff = crime2_p.groupby("id").diff()
+manual_fd_reg = lm.PooledOLS.from_formula("crmrte ~ -1 + unem", data=crime2_diff).fit()
+# Modelo em primeira diferença com `linearmodels`
+fd_reg = lm.FirstDifferenceOLS.from_formula("crmrte ~ unem", data=crime2_p).fit()
 ```
 
 Apresentando os resultados das regressões
 
+```{python}
+from linearmodels.panel.results import compare
 
-```{r}
-modelsummary::msummary(list(manual_reg, fd_reg),
-    gof_map = c("nobs", "r.squared")
-)
+compare({"Manual": manual_fd_reg, "linearmodels": fd_reg}, precision="std_errors")
 ```
+
 
 ## Efeitos Fixos
 
-O estimador de efeito fixo estima os parâmetros através da transformação
-within e então faz uma regressão _pooled_ sobre estes dados transformados.
-O pacote `plm` pode fazer a transformação e a regressão de uma só vez, ou 
+O estimador de efeito fixo estima os parâmetros através da transformação within e então faz uma regressão _pooled_ sobre estes dados transformados. A bibliotecca `linearmodels` pode fazer a transformação e a regressão de uma só vez, ou 
 podemos fazer manualmente.
 
-```{r}
-data("wagepan")
-wagepan_p <- pdata.frame(wagepan, index = c("nr", "year"))
-pdim(wagepan_p)
-# Usando plm
-fe_plm <- plm(lwage ~ married + union + educ,
-    data = wagepan_p,
-    model = "within"
-)
-summary(fe_plm)
+```{python, eval=FALSE}
+wagepan = woo.dataWoo("wagepan")
+wagepan_p = wagepan.set_index(["nr", "year"])
+# Usando linearmodels
+fe_lm = lm.PanelOLS.from_formula(
+    "lwage ~ married + union + educ + EntityEffects", data=wagepan_p
+).fit()
+```
+
+**Erro!** O que aconteceu aqui? Leia a mensagem de erro e tente entender o que aconteceu.
+
+```{python, warning=FALSE}
+wagepan = woo.dataWoo("wagepan")
+wagepan_p = wagepan.set_index(["nr", "year"])
+# Usando linearmodels
+fe_lm = lm.PanelOLS.from_formula(
+    "lwage ~ married + union + educ + EntityEffects", data=wagepan_p, drop_absorbed=True
+).fit()
+```
+
+
+```{python}
 # Manualmente
-wagepan_p$wi_lwage <- Within(wagepan_p$lwage)
-wagepan_p$wi_married <- Within(wagepan_p$married)
-wagepan_p$wi_union <- Within(wagepan_p$union)
-wagepan_p$wi_educ <- Within(wagepan_p$educ)
+wagepan_p["wi_lwage"] = wagepan_p.groupby("nr")["lwage"].transform(lambda x: x - x.mean())
+wagepan_p["wi_married"] = wagepan_p.groupby("nr")["married"].transform(lambda x: x - x.mean())
+wagepan_p["wi_union"] = wagepan_p.groupby("nr")["union"].transform(lambda x: x - x.mean())
 
-fe_lm <- lm(wi_lwage ~ wi_married + wi_union - 1,
-    data = wagepan_p
-)
-summary(fe_lm)
+fe_manual = lm.PooledOLS.from_formula("wi_lwage ~ wi_married + wi_union", data=wagepan_p).fit()
 ```
 
-### Efeitos fixos com fixest
-
-```{r}
-fe_fix <- feols(lwage ~ married + union + educ | nr, data = wagepan)
-summary(fe_fix)
+```{python}
+compare({"Manual": fe_manual, "linearmodels": fe_lm}, precision="std_errors")
 ```
 
-O [fixest](https://lrberge.github.io/fixest/) é muito útil pois pode fazer 
-regressões com múltiplos efeitos fixos.
-Por exemplo, se quisermos utilizar um modelo para investigar a mudança dos
-retornos de educação no salário ao longo do tempo, supondo que exista
-heterogeneidade não-observada tanto no indivíduo, quanto no ano, podemos fazer
-a seguinte regressão.
-
-```{r}
-fe_many <- feols(lwage ~ married + union + i(year, educ, ref = "1980") | nr + year,
-    data = wagepan
-)
-summary(fe_many)
-```
-
-O pacote também produz gráficos para estas regressões com interações.
-
-```{r}
-iplot(fe_many)
-```
 
 ## Comparando diversos modelos
 
-Vamos usar os dados de salários para checar as variáveis constantes no 
-tempo e constantes no indivíduo para o painel. Após, estimaremos modelos de
-MQO, Efeitos Aleatórios e Efeitos Fixos e investigar o modelo mais adequado.
+Vamos usar os dados de salários para checar as variáveis constantes no tempo e constantes no indivíduo para o painel. Após, estimaremos modelos de MQO, Efeitos Aleatórios e Efeitos Fixos e investigar o modelo mais adequado.
+
+```{python}
+# Cria coluna ano a partir de year
+wagepan_p["ano"] = wagepan_p.index.get_level_values("year")
+
+reg_ols = lm.PooledOLS.from_formula(
+    "lwage ~ educ + black + hisp + exper + I(exper**2) + married + union + C(ano)",
+    data=wagepan_p,
+).fit()
+
+reg_re = lm.RandomEffects.from_formula(
+    "lwage ~ educ + black + hisp + exper + I(exper**2) + married + union + C(ano)",
+    data=wagepan_p,
+).fit()
+
+reg_fe = lm.PanelOLS.from_formula(
+    "lwage ~ educ + black + hisp + exper + I(exper**2) + married + union + C(ano) + EntityEffects",
+    data=wagepan_p,
+    drop_absorbed=True,
+).fit()
+
+compare({"MQO": reg_ols, "EA": reg_re, "EF": reg_fe}, precision="std_errors")
+```
+
+### Teste de Hausman
+
+Para escolher qual modelo utilizar é importante entender as hipóteses que  cada um assume sobre a heterogeneidade não observada. O _Pooled_ MQO assume inexistência de  heterogeneidade, enquanto que o modelo de Efeitos Aleatórios
+assume que este heterogeneidade não está correlacionada com nenhum regressor. Ambas as hipóteses são pouco factíveis em inúmeros casos práticos e, portanto, o **estimador de Efeito Fixo é muito utilizado pelos econometristas** empíricos.
+
+Ainda assim, se o pesquisador achar necessário, existe o teste formal de Haussman para decidir entre EA ou EF. **Não encontrei uma implementação em Python** deste teste.
+
+O pacote [`plm`](https://cran.r-project.org/package=plm) do R implementa este teste com a função `phtest`.
 
 ```{r}
-pvar(wagepan_p)
-# Converte year para factor
-wagepan_p$year <- factor(wagepan_p$year)
-# Faz as regressões
-reg_ols <- plm(lwage ~ educ + black + hisp + exper + I(exper^2) + married + union + year,
-    data = wagepan_p,
-    model = "pooling"
-)
+library(plm)
+library(wooldridge)
+
+data("wagepan")
+wagepan_p <- pdata.frame(wagepan, index = c("nr", "year"))
+
 reg_re <- plm(lwage ~ educ + black + hisp + exper + I(exper^2) + married + union + year,
     data = wagepan_p,
     model = "random"
@@ -158,33 +185,8 @@ reg_fe <- plm(lwage ~ exper + I(exper^2) + married + union + year,
     data = wagepan_p,
     model = "within"
 )
-# Show results
-modelsummary::msummary(list(OLS = reg_ols, EA = reg_re, EF = reg_fe),
-    coef_map = c(
-        "educ", "black", "hisp", "exper",
-        "I(exper^2)", "married", "union"
-    )
-)
-```
 
-### Teste de Hausman
-
-Para escolher qual modelo utilizar é importante entender as hipóteses que 
-cada um assume sobre a heterogeneidade não observada. O _Pooled_ MQO assume 
-inexistência de heterogeneidade, enquanto que o modelo de Efeitos Aleatórios
-assume que este heterogeneidade não está correlacionada com nenhum regressor.
-Ambas as hipóteses são pouco factíveis em inúmeros casos práticos e, portanto,
-o estimador de Efeito Fixo é muito utilizado pelos econometristas empíricos.
-
-Ainda assim, se o pesquisador achar necessário, existe o teste formal de 
-Haussman para decidir entre EA ou EF. O pacote plm implementa este teste 
-com a função `phtest`.
-
-```{r}
 phtest(reg_fe, reg_re)
 ```
 
-Neste caso rejeitamos a H0 que ambos os modelos são consitentes. Como EF
-é sempre consistente dada a correta especificação, é o caso de rejeitarmos
-a hipótese de consistência do modelo EA. Portanto, neste caso, devemos
-utilizar o modelo de efeitos fixos.
+Neste caso rejeitamos a H0 que ambos os modelos são consitentes. Como EF é sempre consistente dada a correta especificação, é o caso de rejeitarmos a hipótese de consistência do modelo EA. Portanto, neste caso, devemos utilizar o modelo de efeitos fixos.
