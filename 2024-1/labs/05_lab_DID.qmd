@@ -1,36 +1,38 @@
 ---
 title: Aula de laboratório - Diferenças em diferenças
 author: Rafael Bressan
-date: "2023-08-07"
+date: "2024-02-16"
 format: 
   html:
     theme: cosmo
     embed-resources: true
 lang: "pt-BR"
 from: markdown+emoji
+# engine: jupyter
+# jupyter: python3
 ---
 
-```{r}
-#| message: false
-#| warning: false
+```{python}
+import wooldridge as woo
+import statsmodels.formula.api as smf
+import numpy as np
+import pandas as pd
+```
 
+```{r}
+#| warning: false
 library(wooldridge)
-library(bacondecomp)
-library(did)
-library(haven)
-library(ggplot2)
-library(tidyverse)
-library(modelsummary)
-library(fixest)
 library(lfe)
+library(fixest)
+library(haven)
+library(modelsummary)
+library(did)
+library(tidyverse)
 ```
 
 ## Diferenças em diferenças (DID)
 
-Modelos DID são atualmente os mais utilizados em estudos observacionais
-para investigar os efeitos de alguma política em uma variável de interesse.
-Este tipo de _design_ faz uso das variações tanto entre grupo de indivíduos
-quanto no tempo para obter o **efeito médio do tratamento sobre os tratados**
+Modelos DID são atualmente os mais utilizados em estudos observacionais para investigar os efeitos de alguma política em uma variável de interesse. Este tipo de _design_ faz uso das variações tanto entre grupo de indivíduos quanto no tempo para obter o **efeito médio do tratamento sobre os tratados**
 - ATT.
 
 $$
@@ -40,91 +42,102 @@ DID &= \underbrace{\mathbb{E}[Y_{ist}|s = \text{NJ}, t = \text{Nov}] - \mathbb{E
 \end{align}
 $$
 
-onde estamos fazendo uso do exemplo Card e Krueger (1994). Pensilvânia (PA) 
-é o estado de controle e Nova Jersey (NJ) o grupo tratado.
+onde estamos fazendo uso do exemplo Card e Krueger (1994). Pensilvânia (PA) é o estado de controle e Nova Jersey (NJ) o grupo tratado.
 
-Em um formato de regressão, o estimador DID é obtido regredindo a variável
-de interesse em uma _dummy_ para o grupo tratamento, uma outra _dummy_
-para o período após a intervenção e um termo de interação entre os dois, que 
-denota o efetivo tratamento.
+Em um formato de regressão, o estimador DID é obtido regredindo a variável de interesse em uma _dummy_ para o grupo tratamento, uma outra _dummy_ para o período após a intervenção e um termo de interação entre os dois, que denota o efetivo tratamento.
 
 $$Y_{st} = \alpha + \beta TRAT_s + \gamma POS_t + \delta(TRAT_s \times POS_t) + \varepsilon_{st}$$
 
-Nesta especificação $\hat\delta = \text{DID}$ e a vantagem de fazer a 
-regressão é que podemos fazer inferência sobre o parâmetro estimado 
-diretamente.
+Nesta especificação $\hat\delta = \text{DID}$ e a vantagem de fazer a regressão é que podemos fazer inferência sobre o parâmetro estimado diretamente.
 
-Vamos fazer um exemplo encontrado no livro-texto do Wooldridge, exemplo 13.3
-os efeitos de um incinerador de lixo no preço das moradias.
+Vamos fazer um exemplo encontrado no livro-texto do Wooldridge, exemplo 13.3 os efeitos de um incinerador de lixo no preço das moradias.
 
-```{r}
-data("kielmc")
+```{python}
+kielmc = woo.dataWoo("kielmc")
 # DID manual
-tratados <- kielmc[kielmc$nearinc == 1, ]
-controles <- kielmc[kielmc$nearinc == 0, ]
+tratados = kielmc[kielmc["nearinc"] == 1]
+controles = kielmc[kielmc["nearinc"] == 0]
 
-delta_t <- mean(tratados[tratados$year == 1981, "rprice"]) -
-    mean(tratados[tratados$year == 1978, "rprice"])
-delta_c <- mean(controles[controles$year == 1981, "rprice"]) -
-    mean(controles[controles$year == 1978, "rprice"])
+delta_t = (
+    tratados[tratados["year"] == 1981]["rprice"].mean()
+    - tratados[tratados["year"] == 1978]["rprice"].mean()
+)
+delta_c = (
+    controles[controles["year"] == 1981]["rprice"].mean()
+    - controles[controles["year"] == 1978]["rprice"].mean()
+)
 
-did_manual <- delta_t - delta_c
+did_manual = delta_t - delta_c
+did_manual
 ```
 
 **Estime o efeito com um DID em forma de regressão**
 
-```{r}
-#| code-fold: true
-did_reg <- feols(price ~ nearinc * y81,
-    data = kielmc,
-    vcov = "HC1"
-)
-etable(did_reg)
+```{python}
+did_reg = smf.ols("rprice ~ nearinc * y81", data=kielmc).fit(cov_type="HC1")
+did_reg.summary()
 ```
 
-Digamos que a hipótese de tendências paralelas seja válida somente após
-controlar pela idade do imóvel e idade ao quadrado, distância para uma 
-rodovia, área do terreno e da moradia, número de quartos e banheiros. 
-Gostaríamos também que o modelo fosse especificado em logarítimos, para ter
-uma ideia de variação percentual do preço da moradia em relação a presença 
-do incinerador.
+Digamos que a hipótese de tendências paralelas seja válida somente após controlar pela idade do imóvel e idade ao quadrado, distância para uma rodovia, área do terreno e da moradia, número de quartos e banheiros. 
+
+Gostaríamos também que o modelo fosse especificado em logarítimos, para ter uma ideia de variação percentual do preço da moradia em relação a presença do incinerador.
 
 **Calcule o efeito no cenário acima descrito**
 
-```{r}
-#| code-fold: true
-did_ctr <- feols(log(rprice) ~ nearinc * y81 + sw0(age + agesq + lintst + log(land) + log(area) + rooms + baths),
-    data = kielmc,
-    vcov = "HC1"
-)
 
-etable(did_ctr)
+```{python}
+#| code-fold: true
+did_ctr = smf.ols(
+    "np.log(rprice) ~ nearinc * y81 + age + agesq + lintst + np.log(land) + np.log(area) + rooms + baths",
+    data=kielmc
+).fit(cov_type="HC1")
+did_ctr.summary()
 ```
+
+# Efeito dos eventos climáticos costeiros nos preços das casas
+
+Especificamente, analisaremos o efeito da temporada de furacões no Atlântico de 2005, que foi a temporada de furacões mais ativa registrada na história até 2020. Construiremos uma regressão simples de Diferença em Diferenças para estudar o efeito da temporada de furacões de 2005 na mudança no Índice de Preços de Imóveis, também conhecido como inflação de preços de imóveis nos estados costeiros. 
+
+Na nossa pequena experiência, o “tratamento” significará ser submetido a todo o impacto da temporada de furacões de 2005. A ‘unidade’ submetida (ou não) ao tratamento é um estado dos EUA com costa marítima. Existem 24 destes estados.
+
+Decidiremos se um estado se enquadra no grupo de tratamento examinando as ações tomadas pela Agência Federal de Gestão de Emergências dos EUA (FEMA) naquele estado durante a temporada de furacões no Atlântico de 2005. Tentaremos resolver esta questão traçando a reta na mediana das contagens de condados que obtiveram auxílio. Qualquer estado com contagem maior ou igual à mediana (14) cairá no grupo de tratamento. O restante fará parte do grupo controle. Esta é a aparência do mapa do grupo:
+
+![](https://miro.medium.com/v2/resize:fit:828/format:webp/1*JU3G6EKmVLXWDIVdWf-SiQ.png)
+
+Vamos carregar os dados:
+
+```{python}
+df = pd.read_csv("data/us_fred_coastal_us_states.csv", header=0)
+df.head()
+```
+
+Nossa variável dependente será `HPI_CHG`, que é a variação percentual no índice de preços de imóveis. Nossos regressores serão as _dummies_ `Time_Period` e `Disaster_Affected`, onde a primeira reflete o período de intempéries e a última indica se o estado foi afetado por desastres naturais em 2005 acima da mediana de condados que obtiveram auxílio.
+
+**Especifique e estime a regressão DID**
+```{python}
+# | code-fold: true
+did_reg = smf.ols("HPI_CHG ~ Time_Period * Disaster_Affected", data=df).fit(
+    cov_type="HC1"
+)
+did_reg.summary()
+```
+
+O efeito do tratamento é **positivo** e estatisticamente significativo (i.e. 1,97 p.p). Isso significa que a inflação dos preços das casas foi maior nos estados costeiros que foram afetados por desastres naturais em 2005 em relação aos estados também costeiros mas que não foram tão fortemente impactados.
+
+- Qual a racionalização econômica que você daria para este resultado?
 
 
 # Replicando Cheng and Hoekstra (2013), quase :smile:
 
-Cheng e Hoekstra (2013) avaliaram o impacto que uma reforma de armas teve 
-sobre a violência e para ilustrar vários princípios e práticas em relação ao 
-timing diferencial. Vamos discutir esses princípios no contexto deste artigo. 
+Cheng e Hoekstra (2013) avaliaram o impacto que uma reforma de armas teve  sobre a violência e para ilustrar vários princípios e práticas em relação ao timing diferencial. Vamos discutir esses princípios no contexto deste artigo. 
 
-Considerando que antes a autodefesa letal era legal apenas dentro de casa, 
-uma nova lei, “Stand Your Ground”, estendeu esse direito a outros locais 
-públicos. Entre 2000 e 2010, vinte e um estados expandiram explicitamente o 
-estatuto da doutrina do castelo, estendendo os locais fora de casa onde a 
-força letal poderia ser usada legalmente.
+Considerando que antes a autodefesa letal era legal apenas dentro de casa, uma nova lei, “Stand Your Ground”, estendeu esse direito a outros locais públicos. Entre 2000 e 2010, vinte e um estados expandiram explicitamente o estatuto da doutrina do castelo, estendendo os locais fora de casa onde a força letal poderia ser usada legalmente.
 
-Cheng e Hoekstra (2013) escolheram um projeto de diferença em diferenças para 
-seu projeto, onde a lei da doutrina do castelo era o tratamento e o tempo era 
-diferenciado entre os estados. Sua equação de estimativa foi
+Cheng e Hoekstra (2013) escolheram um projeto de diferença em diferenças para seu projeto, onde a lei da doutrina do castelo era o tratamento e o tempo era diferenciado entre os estados. Sua equação de estimativa foi:
 
 $$Y_{it}=\alpha+\delta D_{it}+\gamma X_{it}+\sigma_i+\tau_t+\varepsilon_{it}$$
 
-Cheng e Hoekstra (2013) não encontraram evidências de que as leis da doutrina 
-do castelo dissuadissem ofensas violentas, mas descobriram que isso aumentava 
-os homicídios. Um aumento líquido de 8% nas taxas de homicídios se traduz em 
-cerca de seiscentos homicídios adicionais por ano nos vinte e um estados que 
-o adotaram.
+Cheng e Hoekstra (2013) não encontraram evidências de que as leis da doutrina do castelo dissuadissem ofensas violentas, mas descobriram que isso aumentava os homicídios. Um aumento líquido de 8% nas taxas de homicídios se traduz em cerca de seiscentos homicídios adicionais por ano nos vinte e um estados que o adotaram.
 
 ```{r}
 read_data <- function(df) {
@@ -184,8 +197,7 @@ xvar <- c(
 law <- c("cdl")
 ```
 
-Por exemplo, vamos conferir a evolução dos homicídios na Florida (sid = 10) 
-contra a Califórnia (sid = 5)
+Por exemplo, vamos conferir a evolução dos homicídios na Florida (sid = 10) contra a Califórnia (sid = 5)
 
 ```{r}
 fl_ca <- castle |>
@@ -230,9 +242,7 @@ kableExtra::kbl(cdl_states[, c("state", "year")],
     kableExtra::kable_classic(full_width = FALSE)
 ```
 
-Este tipo de design é o que chama-se de adoção escalonada ao tratamento
-(_staggered adoption_). Existem diversas coortes que aderem ao tratamento em
-momentos distintos
+Este tipo de design é o que chama-se de adoção escalonada ao tratamento (_staggered adoption_). Existem diversas coortes que aderem ao tratamento em momentos distintos
 
 ```{r}
 dd_formula <- as.formula(
@@ -259,12 +269,7 @@ msummary(dd_reg,
     kableExtra::kable_classic()
 ```
 
-Agora, vamos ir além do estudo deles e implementar um **estudo de evento**. 
-Para fazer isso, usamos uma variável “time_til”, que é o número de anos até 
-ou depois que o estado recebeu o tratamento. Usando essa variável, criamos os 
-leads (que serão os anos anteriores ao tratamento) e os 
-lags (os anos pós-tratamento). Felizmente o dataset providenciado já possui
-estas dummies.
+Agora, vamos ir além do estudo deles e implementar um **estudo de evento**. Para fazer isso, usamos uma variável “time_til”, que é o número de anos até ou depois que o estado recebeu o tratamento. Usando essa variável, criamos os leads (que serão os anos anteriores ao tratamento) e os lags (os anos pós-tratamento). Felizmente o dataset providenciado já possui estas dummies.
 
 ```{r}
 event_study_formula <- as.formula(
@@ -291,8 +296,7 @@ msummary(event_study_reg,
 ```
 
 É comum plotar esses estudos de eventos. Utiliza-se gráficos tipo
-point-range, onde a estimativa pontual e o intervalo de confiança são 
-mostrados. Vamos fazer isso agora.
+point-range, onde a estimativa pontual e o intervalo de confiança são mostrados. Vamos fazer isso agora.
 
 ```{r}
 # order of the coefficients for the plot
@@ -363,11 +367,7 @@ leadslags_plot %>%
 ```
 
 
-Uma literatura recente tem demonstrado que esta especificação pode ser viesda
-para o efeito do tratamento sobre os tratados, ou seja, TWFE com adocação 
-escalonada pode não ser equivalente ao estimador de DID. Vamos utilizar a
-mesma especificação, porém utilizando o estimador de Callaway & Sant'anna 
-encontrado no pacote `did`.
+Uma literatura recente tem demonstrado que esta especificação pode ser viesada para o efeito do tratamento sobre os tratados, ou seja, TWFE com adocação escalonada pode não ser equivalente ao estimador de DID. Vamos utilizar a mesma especificação, porém utilizando o estimador de Callaway & Sant'anna encontrado no pacote `did`.
 
 ```{r}
 #| warning: false
@@ -388,10 +388,6 @@ did_es <- aggte(did_gt, type = "dynamic")
 
 ggdid(did_es) +
     scale_x_continuous(n.breaks = 10) +
-    geom_hline(
-        yintercept = coef(dd_reg)["post"],
-        color = "red"
-    ) +
     labs(
         x = "Anos antes e depois da expansão da lei doutrina do castelo",
         y = "Log homicídios por 100K hab."
@@ -399,17 +395,4 @@ ggdid(did_es) +
 ```
 
 
-Vejam que as estimativas mudaram ligeiramente apenas. Muito embora a 
-especificação TWFE deva ser viesada em teoria, este viés aparentemente é
-pequeno. Podemos averiguar esta situação através da decomposição de 
-Goodman-Bacon. Se nenhum dos pesos atribuídos as estimativas for negativo,
-então o viés do TWFE tende a ser pequeno (pesos negativos exacerbam o viés 
-além de prejudicar uma interpretação causal do estimador TWFE).
-
-```{r}
-bacon_d <- bacon(l_homicide ~ post,
-    data = castle,
-    id_var = "sid",
-    time_var = "year"
-)
-```
+Vejam que as estimativas mudaram ligeiramente apenas. Muito embora a especificação TWFE deva ser viesada em teoria, este viés aparentemente é pequeno. 
