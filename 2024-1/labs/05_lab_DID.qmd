@@ -19,12 +19,11 @@ import numpy as np
 import pandas as pd
 ```
 
+Nesta aula vamos fazer uso do `R`, além de `Python`. Não encontrei nenhuma maneira razoavelmente simples de fazer **estudos de eventos** em Python, portanto, para esta parte da aula iremos recorrer ao `R`. 
+
 ```{r}
 #| warning: false
-library(wooldridge)
 library(lfe)
-library(fixest)
-library(haven)
 library(modelsummary)
 library(did)
 library(tidyverse)
@@ -145,7 +144,7 @@ read_data <- function(df) {
         df,
         sep = ""
     )
-    df <- read_dta(full_path)
+    df <- haven::read_dta(full_path)
     return(df)
 }
 
