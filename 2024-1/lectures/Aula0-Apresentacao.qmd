@@ -12,10 +12,11 @@ format:
   revealjs:
     theme: [default, udesc.scss] 
     code-fold: true
-    chalkboard: true
+    # chalkboard: true
     incremental: true
     width: 1600
     height: 900
+    embed-resources: true
 from: markdown+emoji # list of emojis: https://gist.github.com/rxaviers/7360908
 fontsize: "2.2em"
 editor: source
@@ -131,9 +132,9 @@ jupyter: python3
     + A replicaçao dos resultados de um artigo científico a sua escolha, ou;
     + Os resultados obtidos a partir de dados de acesso público
 
-- Na segunda semana de aula deve ser preenchida uma [planilha](https://docs.google.com/spreadsheets/d/1opdo6CtDe2exBjh8zA7BtEaoXTaFh800Exa7O91cXEE/edit?usp=sharing) com o nome do artigo a ser replicado ou a fonte dos dados e objetivo do trabalho
+- Até a segunda semana de aula (11/03) deve ser preenchida uma [planilha](https://docs.google.com/spreadsheets/d/1opdo6CtDe2exBjh8zA7BtEaoXTaFh800Exa7O91cXEE/edit?usp=sharing) com o nome do artigo a ser replicado ou a fonte dos dados e objetivo do trabalho
 
-- Haverá uma **entrega parcial** com resultados preliminares a ser marcada pelo professor no cronograma da disciplina
+- Haverá uma **entrega parcial valendo nota** com resultados preliminares a ser marcada pelo professor no cronograma da disciplina
 
 - O trabalho deve ser apresentado através de um relatório seguindo as normas da ABNT (artigo científico)
     + Juntamente com o relatório, o código fonte deve ser apresentado
