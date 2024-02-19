@@ -1,7 +1,7 @@
 ---
-title: "Github Copilot"
+title: "Github Copilot e Python no VSCode"
 author: "Rafael Bressan"
-date: "2023-07-26"
+date: "2024-02-19"
 format:
   html:
     theme: cosmo
@@ -41,7 +41,7 @@ Para também utilizar o **Copilot Chat** é necessário se inscrever na [_waitli
 
 # Usando o VSCode com o GitHub Copilot
 
-Durante nossas aulas de laboratório faremos uso da linguagem R (e eventualmente Python). Para isso, utilizaremos o VSCode como IDE. O VSCode é uma IDE gratuita e open source desenvolvida pela Microsoft. Ela é muito utilizada por desenvolvedores de software e cientistas de dados. Para instalar o VSCode, acesse o site [VSCode](https://code.visualstudio.com/) e clique em **Download**. Siga as instruções de instalação^[Nos laboratórios da UDESC o VSCode já está instalado]. 
+Durante nossas aulas de laboratório faremos uso da linguagem `Pytho` (e eventualmente R). Para isso, utilizaremos o VSCode como IDE. O VSCode é uma IDE gratuita e open source desenvolvida pela Microsoft. Ela é muito utilizada por desenvolvedores de software e cientistas de dados. Para instalar o VSCode, acesse o site [VSCode](https://code.visualstudio.com/) e clique em **Download**. Siga as instruções de instalação^[Nos laboratórios da UDESC o VSCode já está instalado]. 
 
 ![VSCode](img/vsCodePage.png)
 
@@ -50,17 +50,24 @@ Durante nossas aulas de laboratório faremos uso da linguagem R (e eventualmente
 Para utilizar as linguagens de programação R e Python no VSCode, além do próprio Copilot, é necessário instalar algumas extensões. Para isso, clique no ícone de extensões no menu lateral esquerdo do VSCode. ![](img/extensoes.png)
 
 Vamos instalar as seguintes extensões:
-- R
+
 - Python
+- R
 - GitHub Copilot
 - GitHub Copilot Chat
+- Black Formatter
+- Jupyter
 
-Para a extensão **R** funcionar adequadamente é necessário instalar o pacote R chamado `languageserver`. Para isso, abra um console do R e execute o seguinte comando:
 
-```{r}
-#| eval: false
+
+:::{.callout-note }
+## Opcional
+Para a extensão **R** funcionar adequadamente é necessário instalar o pacote R 
+chamado `languageserver`. Para isso, abra um console do R e execute o seguinte 
+comando:
+
 install.packages("languageserver")
-```
+:::
 
 Para o **Copilot** ficar integrado ao VSCode é necessário que você logue com sua conta do GitHub no VSCode. Para isso, clique no ícone de contas no menu lateral esquerdo do VSCode. ![](img/contas.png)
 
@@ -69,3 +76,26 @@ Para o **Copilot** ficar integrado ao VSCode é necessário que você logue com 
 No canal do Youtube do VSCode existem alguns vídeos tutoriais sobre o GitHub Copilot. Segue o link do canal, procure pela _playlist_ **GitHub Copilot Series**.
 
 [VSCode - YouTube](https://www.youtube.com/@code)
+
+# Python no VSCode
+
+Agora que você já tem o VSCode instalado e as extensões necessárias, vamos instalar as principais bibliotecas de Python que utilizaremos durante as aulas de laboratório. Abra um terminal no VSCode e execute os seguintes comandos:
+
+```{bash}
+pip install numpy pandas matplotlib seaborn statsmodels linearmodels
+```
+
+Vamos criar um arquivo Python para testar se tudo está funcionando corretamente. Crie um arquivo chamado `teste.py` e insira o seguinte código:
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(subplot_kw={"projection": "polar"})
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
