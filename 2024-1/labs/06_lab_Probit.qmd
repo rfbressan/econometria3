@@ -1,7 +1,7 @@
 ---
 title: Aula de laboratório - Escolha Qualitativa
 author: Rafael Bressan
-date: "2023-08-07"
+date: "2024-02-19"
 format: 
     # pdf:
     #   documentclass: scrartcl
@@ -15,17 +15,15 @@ format:
       embed-resources: true
 lang: pt-BR
 from: markdown+emoji
-# logo: "img/UdescEsag.jpeg"
-# bibliography: references.bib
+engine: jupyter
+jupyter: python3
 ---
 
-```{r}
-#| echo: true
-library(wooldridge)
-library(fixest)
-library(modelsummary)
-library(ggplot2)
-data("mroz")
+```{python}
+import numpy as np
+import pandas as pd
+import wooldridge as woo
+import statsmodels.formula.api as smf
 ```
 
 
@@ -53,11 +51,16 @@ robustos.
 |-|-----|
 | ![Copilot](img/copilot-logo.png){width=100%} | `crie uma tabela de estatísticas descritivas para todas as variáveis do conjunto de dados mroz utilizando a função datasummary do pacote modelsummary. As estatísticas devem ser número de observações, número de valores únicos, média e desvio padrão.`|
 
-```{r}
-#| echo: true
-#| code-fold: true
 
-datasummary(All(mroz) ~ Ncol + NUnique + Mean + SD, data = mroz)
+```{python}
+# | code-fold: true
+mroz = woo.dataWoo("mroz")
+stats = mroz.describe().transpose()[["count", "mean", "std"]]
+# Get unique values
+unique_values = mroz.nunique()
+unique_values.name = "NUnique"
+df = stats.join(unique_values)
+df
 ```
 
 **Agora faça a regressão da _dummy_ de presença na força de trabalho em relação as seguintes variáveis: nwifeinc, educ, exper, exper^2, age, kidslt6, kidsge6.**
@@ -67,26 +70,16 @@ datasummary(All(mroz) ~ Ncol + NUnique + Mean + SD, data = mroz)
 | ![Copilot](img/copilot-logo.png){width=100%} | `faça uma regressão linear da variável inlf em relação as variáveis nwifeinc, educ, exper, exper^2, age, kidslt6, kidsge6. Os erros padrão reportados devem ser robustos. Utilize o pacote fixest.` |
 
 
-```{r}
-#| echo: true
-#| code-fold: true
-
-fml <- inlf~nwifeinc + educ + exper + I(exper^2) + age + kidslt6 + kidsge6
-mpl <- feols(fml,
-    data = mroz,
-    vcov = "HC1"
-)
-msummary(mpl)
+```{python}
+# | code-fold: true
+fml = "inlf ~ nwifeinc + educ + exper + I(exper**2) + age + kidslt6 + kidsge6"
+mpl = smf.ols(fml, data=mroz).fit(cov_type="HC1")
+mpl.summary()
 ```
 
-Por construção, um modelo MPL pode render previsão de probabilidade fora do
-intervalo $\left[0,1\right]$ para uma certa combinação de regressores (que
-pode ser realista ou não).
+Por construção, um modelo MPL pode render previsão de probabilidade fora do intervalo $\left[0,1\right]$ para uma certa combinação de regressores (que pode ser realista ou não).
 
-Como exemplo, supomos duas mulheres, a primeira com 20 anos, sem experiência,
-5 anos de educação, 2 crianças com menos de 6 anos e renda de $ 100
-(em milhares). A segunda mulher possui 52 anos, 30 anos de experiência e
-17 de educação, sem crianças e renda.
+Como exemplo, supomos duas mulheres, a primeira com 20 anos, sem experiência, 5 anos de educação, 2 crianças com menos de 6 anos e renda de $ 100 (em milhares). A segunda mulher possui 52 anos, 30 anos de experiência e 17 de educação, sem crianças e renda.
 
 **Faça a previsão de probabilidade de estarem no mercado de trabalho para ambas hipotéticas mulheres.**
 
@@ -94,118 +87,111 @@ Como exemplo, supomos duas mulheres, a primeira com 20 anos, sem experiência,
 |-|-----|
 | ![Copilot](img/copilot-logo.png){width=100%} | `com base na regressão anterior, faça a previsão de probabilidade de estarem no mercado de trabalho para duas mulheres hipotéticas. A primeira com 20 anos, sem experiência, 5 anos de educação, 2 crianças com menos de 6 anos e renda de $ 100 (em milhares). A segunda mulher possui 52 anos, 30 anos de experiência e 17 de educação, sem crianças e renda.` |
 
-```{r}
-#| echo: true
-xpred <- data.frame(
-    nwifeinc = c(100, 0),
-    educ = c(5, 17),
-    exper = c(0, 30),
-    age = c(20, 52),
-    kidslt6 = c(2, 0),
-    kidsge6 = c(0, 0)
-)
-predict(mpl, newdata = xpred)
+
+```{python}
+xpred = pd.DataFrame({
+    "nwifeinc": [100, 0],
+    "educ": [5, 17],
+    "exper": [0, 30],
+    "age": [20, 52],
+    "kidslt6": [2, 0],
+    "kidsge6": [0, 0]
+})
+mpl.predict(xpred)
 ```
 
 ## Modelos Logit e Probit
 
-Estes são modelos especializados em variáveis dependentes binárias e,
-portanto, não sofrem do problema de predição de probabilidade fora do
-intervalo $\left[0,1\right]$. A um indexador linear, estes modelos aplicam
-uma função (não-linear) que garante $y\in \left[0,1\right]$. Esta é chamada
-de função _link_.
+Estes são modelos especializados em variáveis dependentes binárias e, portanto, não sofrem do problema de predição de probabilidade fora do intervalo $\left[0,1\right]$. A um indexador linear, estes modelos aplicam uma função (não-linear) que garante $y\in \left[0,1\right]$. Esta é chamada de função de ligação.
 
-* no modelo **probit** a função link é $G(z)=\Phi(z)$, a função de
-distribuição da Normal, e;
+* no modelo **probit** a função link é $G(z)=\Phi(z)$, a função de distribuição da Normal, e;
 
-* no modelo **logit** a função link é $G(z)=\Lambda(z)=\frac{\exp(z)}{1+\exp(z)}$,
-a função de distribuição Logística.
+* no modelo **logit** a função link é $G(z)=\Lambda(z)=\frac{\exp(z)}{1+\exp(z)}$, a função de distribuição Logística.
 
 Desta forma, a probabilidade do evento é definida como:
 
 $$P(y=1|x)=G(\beta_0 + \beta_1 x)$$
 
-No `R` estimamos esses modelos através da função `glm`, de _Generalized
-Linear Models_, especificando o argumento `family`. Vejamos um exemplo.
+No `Python` estimamos esses modelos através da função `glm`, de _Generalized Linear Models_, especificando o argumento `family`. OU, através das funções específicas, `probit` e `logit`. Vejamos um exemplo.
 
-```{r}
-logit <- glm(fml,
-    data = mroz,
-    family = binomial(link = logit)
-)
 
-probit <- glm(fml,
-    data = mroz,
-    family = binomial(link = probit)
-)
+```{python}
+# Extract parameters
+def extract_parameters(models, model_names):
+    param_dict = {}
+    for model in models:
+        params = model.params
+        std_errors = model.bse
+        parameters = []
+        for param, std_error in zip(params, std_errors):
+            parameters.append(f"{param:.4f}")
+            parameters.append(f"({std_error:.4f})")
 
-msummary(list(Logit = logit, Probit = probit))
+        param_dict[model_names.pop(0)] = parameters
+
+    df_index = []
+    for i in models[0].params.index:
+        df_index.append(i)
+        df_index.append("")
+
+    df = pd.DataFrame(param_dict, index=df_index)
+    return df
+
+
+logit = smf.logit(fml, data=mroz).fit()
+probit = smf.probit(fml, data=mroz).fit()
+
+extract_parameters([logit, probit], ["Logit", "Probit"])
 ```
 
-Uma forma visual de apresentar os resultados de uma regressão é através de
-um gráfico de coeficientes (coefficients plot). Este gráfico mostra a estimativa
-pontual acompanhada de uma barra denotando o intervalo de confiança (e.g. 90%).
-É muito utilizado em apresentações sobre a pesquisa ou estudo sendo realizada.
+Uma forma visual de apresentar os resultados de uma regressão é através de um gráfico de coeficientes (coefficients plot). Este gráfico mostra a estimativa
+pontual acompanhada de uma barra denotando o intervalo de confiança (e.g. 90%). É muito utilizado em apresentações sobre a pesquisa ou estudo sendo realizada.
 
-```{r}
-modelplot(list(Logit = logit, Probit = probit),
-    conf_level = 0.9
-)
+
+```{python}
+import matplotlib.pyplot as plt
+
+# Calculate the standard errors for logit and probit models
+logit_ci = 1.96 * logit.bse
+probit_ci = 1.96 * probit.bse
+
+x_axis = np.array(range(len(logit.params)))
+# Create the error bar plot
+fig, ax = plt.subplots()
+ax.errorbar(x_axis, logit.params, yerr=logit_ci, fmt="o", label="Logit")
+ax.errorbar(x_axis + 0.2, probit.params, yerr=probit_ci, fmt="o", label="Probit")
+# Hack the x-axis to show the parameter names
+x_axis_labels = [" "] + logit.params.index.to_list()
+ax.set_xticklabels(x_axis_labels)
+ax.set_ylabel("Coeficiente")
+ax.set_xlabel("Parâmetro")
+ax.legend()
+plt.show()
 ```
 
-Podemos fazer a previsão da probabilidade das mesmas mulheres anteriores estarem no
-mercado de trabalho.
+Podemos fazer a previsão da probabilidade das mesmas mulheres anteriores estarem no mercado de trabalho.
 
-```{r}
-predict(logit, newdata = xpred, type = "response")
-predict(probit, newdata = xpred, type = "response")
+```{python}
+pd.DataFrame({
+    "Logit": logit.predict(xpred),
+    "Probit": probit.predict(xpred)
+})
 ```
 
-As previsões de logit e probit são semelhantes, mas especialmente nas caudas
-elas podem diferirem de forma significativa. O comando `predict` também
-pode retornar o valor do índice linear ($\hat\beta_0 + \hat\beta_1 x_i$)
-quando o argumento for type = "link"
 
-```{r}
-predict(logit, newdata = xpred, type = "link")
-predict(probit, newdata = xpred, type = "link")
-```
+As previsões de logit e probit são semelhantes, mas especialmente nas caudas elas podem diferirem de forma significativa. O comando `predict` também pode retornar o valor do índice linear ($\hat\beta_0 + \hat\beta_1 x_i$) quando o argumento for `which = linear`.
 
-**Simule valores para o índice linear entre -5 e 5 e plote qual seriam as respostas em probabilidades dos modelos logit e probit.**
 
-| | *Prompt* |
-|-|-----|
-| ![Copilot](img/copilot-logo.png){width=100%} | `simule a resposta de um modelo logit e outro probit para valores do índice linear entre -5 e 5 e plote as respostas em probabilidades dos modelos utilizando o ggplot.` |
-
-```{r}
-#| echo: true
-#| code-fold: true
-
-index <- seq(-5, 5, by = 0.5)
-logit_response <- plogis(index)
-probit_response <- pnorm(index)
-df <- data.frame(index, logit_response, probit_response)
-
-ggplot(df, aes(x = index)) +
-    geom_line(aes(y = logit_response, color = "Logit")) +
-    geom_line(aes(y = probit_response, color = "Probit")) +
-    guides(color = guide_legend(title = "Modelo")) +
-    labs(
-        x = "Índice linear",
-        y = "Probabilidade",
-        title = "Resposta em Probabilidade"
-    ) +
-    theme_classic()
+```{python}
+pd.DataFrame({
+    "Logit": logit.predict(xpred, which="linear"),
+    "Probit": probit.predict(xpred, which="linear")
+})
 ```
 
 ## Efeitos Parciais
 
-Os parâmetros de modelos não-lineares como logit e probit não possuem uma
-interpretação direta dos efeitos _ceteris paribus_ do regressor sobre a
-variável dependente. Uma medida utilizada é o efeito parcial (ou efeito
-marginal) que é dependente do ponto $x_i$ em que se faz a análise. Este
-efeito marginal é equivalente a inclinação da curva de resposta do modelo
-em um determinado ponto.
+Os parâmetros de modelos não-lineares como logit e probit não possuem uma interpretação direta dos efeitos _ceteris paribus_ do regressor sobre a variável dependente. Uma medida utilizada é o efeito parcial (ou efeito marginal) que é dependente do ponto $x_i$ em que se faz a análise. Este efeito marginal é equivalente a inclinação da curva de resposta do modelo em um determinado ponto.
 
 $$
 \begin{align}
@@ -214,46 +200,46 @@ $$
 \end{align}
 $$
 
-Onde é possível verificar que o efeito marginal depende tanto do valor
-estimado $\hat\beta$ quanto do ponto onde se faz a análise, $x$. O fato
-de este efeito diferir por valor do regressor faz com que seja difícil
-apresentar os resultados de uma maneira concisa. Adota-se, em geral, duas
-medidas de efeito parcial:
+Onde é possível verificar que o efeito marginal depende tanto do valor estimado $\hat\beta$ quanto do ponto onde se faz a análise, $x$. O fato
+de este efeito diferir por valor do regressor faz com que seja difícil apresentar os resultados de uma maneira concisa. Adota-se, em geral, duas medidas de efeito parcial:
 
-* Efeito Parcial na Média (PEA): $PEA(X_j)=g(\bar{x} \beta) \beta_j$
+* Efeito Parcial na Média (PEA): $PEA(X_j)=\beta_j\cdot g(\bar{x} \beta)$
 
-* Efeito Parcial Médio (APE): $APE(X_j)=\frac{1}{n} \sum_{i=1}^N g(x_i \beta) \beta_j$
+* Efeito Parcial Médio (APE): $APE(X_j)=\beta_j\cdot\frac{1}{n} \sum_{i=1}^N g(x_i \beta)$
 
 **Calcule manualmente o PEA do modelo logit**
 
-```{r}
-#| echo: true
-# Ponto médio dos regressores
-regressors <- c("nwifeinc", "educ", "exper", "age", "kidslt6", "kidsge6")
-x_mean <- mroz[, regressors] |>
-    colMeans()
-betas <- coef(logit)
-# x_mean deve conter 1 na primeira posicao e exper^2 na quinta
-x_mean <- c(1, x_mean[1:3], mean(mroz[, "exper"]^2), x_mean[4:6])
-# xb
-index_mean <- sum(x_mean * betas)
-# Agora o PEA
-print("PEA de cada regressor é:")
-dlogis(index_mean) * betas
+```{python}
+from scipy.stats import logistic
 
-# usando o pacote mfx
-mfx::logitmfx(fml, data = mroz, atmean = TRUE)
+regressors = ["nwifeinc", "educ", "exper", "age", "kidslt6", "kidsge6"]
+x_mean = mroz.loc[:, regressors].mean()
+betas = logit.params
+df = pd.concat([betas, x_mean], axis=1, keys=["betas", "x_mean"])
+df.loc["I(exper ** 2)", "x_mean"] = (mroz["exper"] ** 2).mean()
+df.loc["Intercept", "x_mean"] = 1
+lin_index = (df["betas"] * df["x_mean"]).sum()
+logit_pea = logistic.pdf(lin_index) * betas
+print(f"PEA manual: \n{logit_pea}")
+```
+
+```{python}
+# PEA using get_margeff
+logit_margeff = logit.get_margeff(at="mean")
+logit_margeff.summary()
 ```
 
 **Calcule manualmente o APE do modelo logit**
 
-```{r}
-#| echo: true
-g_mean <- predict(logit) |>
-    dlogis() |>
-    mean()
-print("APE de cada regressor é:")
-betas * g_mean
-# usando o pacote mfx
-mfx::logitmfx(fml, data = mroz, atmean = FALSE)
+```{python}
+# Manualmente
+pdf = logistic.pdf(logit.predict(which='linear'))
+logit_ape = betas * pdf.mean()
+print(f"APE manual: \n{logit_ape}")
+```
+
+```{python}
+# Usando get_margeff
+logit_margeff = logit.get_margeff()
+logit_margeff.summary()
 ```
