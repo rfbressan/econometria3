@@ -99,7 +99,7 @@ $$y=\beta_0 +\beta_1 x + \varepsilon$$
 - Com **dados observacionais** é fácil imaginar que omitimos diversas variáveis que ajudam a explicar $y$ e são correlacionadas com $x$. $E[\varepsilon\mid x]\neq 0$.
     + :warning: **Endogeneidade**
 
-- Quando realizamos um experimento aleatorizado, $x$ para a ser uma variável atribuída de forma **independente** de qualquer outro possível regressor omitido. $E[\varepsilon\mid x]=0$.
+- Quando realizamos um experimento aleatorizado, $x$ passa a ser uma variável atribuída de forma **independente** de qualquer outro possível regressor omitido. $E[\varepsilon\mid x]=0$.
     + $x$ passou a ser um regressor **exógeno**
     + $\beta_1$ pode ser interpretado como efeito causal de $x$ em $y$
 
@@ -280,7 +280,7 @@ E[c_i | z_i = 1] - E[c_i | z_i = 0] &= \delta \left\{ E[w_i | z_i = 1] - E[w_i |
 
     * Introduzimos uma extensão chamada ***Mínimos Quadrados em 2 Estágios***.
 
-    * Usaremos `R` para calcular as estimativas.
+    * Usaremos `Python` para calcular as estimativas.
 
     * Finalmente falaremos sobre instrumentos *fracos*.
 

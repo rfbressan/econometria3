@@ -129,6 +129,18 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 * [Causal ML Book](https://causalml-book.org/) por Chernozhukov et al.
 
+## Replicação de Artigos
+
+- [Angrist Dataverse](https://dataverse.harvard.edu/dataverse/JAngrist)
+
+- [Replication Wiki](https://replication.uni-goettingen.de/wiki/index.php/Main_Page)
+
+- [openICPSR](https://www.openicpsr.org/openicpsr/)
+
+- [American Economic Association](https://www.aeaweb.org/journals)
+
+- [Base dos Dados](https://www.basedosdados.org/)
+
 ## Avaliação
 
 O sistema de avaliação da disciplina se dará da seguinte maneira:

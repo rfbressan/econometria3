@@ -155,6 +155,7 @@ jupyter: python3
     + [AEA](https://www.aeaweb.org/journals)
     + [JAE](https://journaldata.zbw.eu/journals/jae)
     + [Replication Wiki](http://replication.uni-goettingen.de/wiki/index.php/Category:Article_methods_and_estimation)
+    + [Angrist Dataverse](https://dataverse.harvard.edu/dataverse/JAngrist)
 
 ## :books: Bibliografia Recomendada
 
