@@ -438,7 +438,7 @@ E por hipótese: $ATE = \mathop{\mathbb{E}}(\delta_i) = \mathop{\mathbb{E}}(\del
 * ***Experimentos aleatorizados***: você atribui ***aleatoriamente*** pessoas a um tratamento e a um grupo de controle.
 
 * Nesse caso, a atribuição do tratamento é **independente** dos resultados potenciais. 
-
+    + $Y_i^1, Y_i^0 \perp D_i$
 
 * Em particular, não há razão para $\mathop{\mathbb{E}}(Y_i^0 | D_i = 1)$ ser diferente de $\mathop{\mathbb{E}}(Y_i^0 | D_i = 0)$
 
@@ -462,7 +462,7 @@ $$ DSR = \mathop{\mathbb{E}}(Y_i^1|D_i=1) - \mathop{\mathbb{E}}(Y_i^0|D_i=0) = A
 
 - No início do século XX foram popularizados por estatísticos famosos como **J. Neyman** ou **R.A. Fisher**.
 
-- Desde então, eles tiveram uma influência crescente e se tornaram progressivamente uma confiável [ferramenta para avaliação de políticas públicas](https://www.povertyactionlab.org/fr).
+- Desde então, eles tiveram uma influência crescente e se tornaram progressivamente uma confiável [ferramenta para avaliação de políticas públicas](https://www.povertyactionlab.org/?lang=en).
 
 - Quanto à economia, o **Prêmio Nobel de Economia de 2019** foi concedido a três expoentes dos RCTs, [Abhijit Banerjee, Esther Duflo e Michael Kremer](https://www.economist.com/finance-and-economics/ 2019/10/17/a-nobel-economics-prêmio-vai-para-pioneiros-na-compreensão-da-pobreza), "por sua abordagem experimental para aliviar a pobreza global".
 
@@ -1204,6 +1204,8 @@ plt.show()
 
 * CUNNINGHAM, Scott. Causal Inference: The Mixtape, New Haven: Yale University Press, 2021. URL: https://mixtape.scunning.com/
 
+* PEIXOTO, Betânia et al. Avaliação econômica de projetos sociais. Fundação Itaú Social, 3ª ed, 2017. URL: https://www.itau.com.br/_arquivosestaticos/itau-social/pdf/avaliacao-economica-de-projetos-sociais.pdf
+
 * ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mastering'metrics: The path from cause to effect. Princeton university press, 2014. URL: http://www.masteringmetrics.com/
 
 * ANGRIST, Joshua D.; PISCHKE, Jörn-Steffen. Mostly harmless econometrics: An empiricist's companion. Princeton university press, 2009.
@@ -1266,7 +1268,7 @@ The ATU measures the ***average treatment effect conditional on being in the con
 
 Let's now relax the assumption that the treatment effect is constant among all individuals.
 
-After [some tedious calculations](https://mixtape.scunning.com/potential-outcomes.html#simple-difference-in-means-decomposition) that we skip, the SDO can now be decomposed as: 
+After [some tedious calculations](https://mixtape.scunning.com/04-potential_outcomes#simple-difference-in-means-decomposition) that we skip, the SDO can now be decomposed as: 
 
 \begin{align}
   SDO &= ATE + \underbrace{\mathop{\mathbb{E}}(Y_i^0 | D_i = 1) - \mathop{\mathbb{E}}(Y_i^0 | D_i = 0)}_\text{Selection bias} \\
