@@ -41,7 +41,7 @@ Para também utilizar o **Copilot Chat** é necessário se inscrever na [_waitli
 
 # Usando o VSCode com o GitHub Copilot
 
-Durante nossas aulas de laboratório faremos uso da linguagem `Pytho` (e eventualmente R). Para isso, utilizaremos o VSCode como IDE. O VSCode é uma IDE gratuita e open source desenvolvida pela Microsoft. Ela é muito utilizada por desenvolvedores de software e cientistas de dados. Para instalar o VSCode, acesse o site [VSCode](https://code.visualstudio.com/) e clique em **Download**. Siga as instruções de instalação^[Nos laboratórios da UDESC o VSCode já está instalado]. 
+Durante nossas aulas de laboratório faremos uso da linguagem `Python` (e eventualmente R). Para isso, utilizaremos o VSCode como IDE. O VSCode é uma IDE gratuita e open source desenvolvida pela Microsoft. Ela é muito utilizada por desenvolvedores de software e cientistas de dados. Para instalar o VSCode, acesse o site [VSCode](https://code.visualstudio.com/) e clique em **Download**. Siga as instruções de instalação^[Nos laboratórios da UDESC o VSCode já está instalado]. 
 
 ![VSCode](img/vsCodePage.png)
 

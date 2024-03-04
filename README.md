@@ -87,7 +87,7 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 * [Python for Econometrics](https://pyecon.org/down/pyecon.pdf)
 * [QuantEcon Lectures](https://quantecon.org/lectures/)
 * [Introduction to Python for Econometrics, Statistics and Data Analysis](https://www.kevinsheppard.com/teaching/python/notes/)
-* [A First Look at Using Python for Econometrics](https://www.youtube.com/watch?v=kltX6XofxG0)
+* [Using Python for Introductory Econometrics](http://urfie.net/)
 
 **LaTeX**
 
@@ -104,6 +104,8 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 * [Carreira e Aplicações de Econometria](https://www.youtube.com/watch?v=VKZe49nNtxw&list=PLSMHA74lM-x2VglhXkdbHEH80T2a_XgRr&index=3&t=2182s) Carreira e Aplicações de Econometria com Luiz A. Esteves (Economista chefe do Banco do Nordeste)
 
 * [VSCode](https://www.youtube.com/@code)
+
+* [A First Look at Using Python for Econometrics](https://www.youtube.com/watch?v=kltX6XofxG0)
 
 ## Outros Recursos
 
@@ -125,6 +127,7 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 * [Mathematics for Economics](https://www.economicsnetwork.ac.uk/maths_refresher/)
 
+* [Causal ML Book](https://causalml-book.org/) por Chernozhukov et al.
 
 ## Avaliação
 
