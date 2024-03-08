@@ -102,30 +102,40 @@ dag <- create_graph() |>
     add_edge("W", "Y") |>
     add_edge("Y", "Z") |>
     add_edge("M", "Y")
-
-# Set node attributes
-# dag <- dag |>
-#     set_node_attrs("shape", "circle") |>
-#     set_node_attrs("style", "filled") |>
-#     set_node_attrs("fillcolor", "#9b9b9b") |>
-#     set_node_attrs("fontname", "helvetica") |>
-#     set_node_attrs("fontsize", 12) |>
-#     # Set edge attributes
-#     set_edge_attrs("arrowhead", "normal") |>
-#     set_edge_attrs("arrowsize", 0.7) |>
-#     set_edge_attrs("color", "#555555") |>
-#     set_edge_attrs("penwidth", 2)
-
 # Render the graph
-render_graph(dag)
-
+# render_graph(dag)
+# Save graph to png file
+export_graph(dag, "Figs/dag1.png")
 ```
+
+![DAG](Figs/dag1.png)
 
 a) Considerando que deseja-se estimar o efeito causal de X em Y, então descreva quem são as variáveis de confusão, os mecanismos e os colisores.
 
 b) Se desejamos o efeito total de X em Y, então devemos controlar para W somente. Explique porque.
 
 c) Explique por que a variável Z não pode ser utilizada como instrumento de X para recuperar o efeito causal de X em Y.
+
+## Questão 3
+
+Muitas vezes é difícil para um pesquisador motivar uma forma funcional específica (ou seja, linear com inclinação constante) de resposta ao tratamento. Às vezes, tudo o que temos é o formato das funções de resposta, como **monotonicidade**. A suposição de resposta monótona ao tratamento (MTR) é a seguinte, [@manski2000]:
+
+> MTR: para todas as unidades $i\in \{1, \ldots, N\}$ e um tratamento binário $D_i$, temos que $Y_i(1) \geq Y_i(0)$.
+
+A suposição do MTR permite que cada unidade tenha uma resposta diferente, embora exija monotonicidade de todas as respostas. Esta suposição pode ser combinada com a **seleção ao tratamento monótono** (MTS) para fornecer limites nítidos no efeito do tratamento.
+
+> MTS: para cada $d\in D=\{0,1\}$, temos que $E[Y_i(d)\mid z_i=1] \geq E[Y_i(d)\mid z_i=0]$.
+
+onde $d$ denota o status de tratamento **potencial** e $z$ denota o status de **efetivo** tratamento.
+
+Considere o exemplo da variação dos salários com a escolaridade. O pressuposto do MTS afirma que as pessoas que escolhem níveis de escolaridade mais elevados têm funções salariais médias fracamente mais elevadas do que aquelas que escolhem níveis de escolaridade mais baixos. A interpretação da MTR é que a função salário de cada pessoa fracamente crescente nos anos de escolaridade. Essas interpretações não são mutuamente excludentes.
+
+Nas demonstrações abaixo faça uso da probabilidade de ser designado ao tratamento $P(z_i=1)=\pi$ e da decomposição de valor esperado. Exemplo: $E[Y_i]=E[Y_i\mid z=1]P(z=1)+E[Y_i\mid z=0]P(z=0)$. 
+
+a. Mostre que dada a suposição MTR, o limite inferior para o efeito médio do tratamento (ATE) é zero. (1 ponto) DICA: $ATE=E[Y_i(1)-Y_i(0)]\geq 0$
+
+b. Mostre que dada a suposição MTS, o limite superior para o efeito médio do tratamento (ATE) é igual a diferença entre as médias dos ramos de tratamento. $ATE\leq E[Y_i\mid z=1]- E[Y_i\mid z=0]$. (1 ponto)
+
 
 # Variáveis Instrumentais
 
