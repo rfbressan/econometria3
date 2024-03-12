@@ -419,4 +419,93 @@ c) Agora, use o seguinte procedimento de duas etapas, que geralmente produz esti
 
 
 
+## Questão 10
+
+Considere o sistema de equações
+
+$$
+\begin{aligned}
+Y_i &= \beta_0 + \beta_1X_i + u_i,\\
+X_i &= Y_i + Z_i
+\end{aligned}
+$$
+
+onde assumimos que $\beta_1 \neq 1$ e $cov(Z_i, u_i)=0$ para cada i. É fácil mostrar (como fizemos durante a aula) que as equações de forma reduzida para este sistema são dadas por:
+
+$$
+\begin{aligned}
+Y_i &= \pi_0 + \pi_1Z_i + v_i,\\
+X_i &= \pi_0 + \pi_2Z_i + v_i
+\end{aligned}
+$$
+
+onde 
+
+$$\pi_0 = \frac{\beta_0}{1 − \beta_1}
+, \pi_1 = \frac{\beta_1}{1 − \beta_1}
+, \pi_2 = \frac{1}{1 − \beta_1}
+\text{ e } v_i = \frac{u_i}{1 − \beta_1}
+$$
+
+Agora, considere estimar as equações em forma reduzida por mínimos quadrados ordinários (MQO). Seja $\hat\pi_1$ o estimador MQO de $\pi_1$ e $\hat\pi_2$ o estimador MQO de $\pi_2$. Mostre que o estimador
+
+$$\hat\beta_1 = \frac{\hat\pi_1}{\hat\pi_2}$$
+
+é idêntico ao estimador de mínimos quadrados de dois estágios (MQ2E) de $\beta_1$.
+
+## Questão 11
+
+Considere o modelo
+
+$$Y_i = \beta X_i + u_i,$$
+
+onde $Y_i$ denota a pontuação média do teste de desempenho Padrão 9 para o distrito escolar $i$ e $X_i$ denota a proporção média aluno-professor para o distrito escolar $i$ e onde os dados para este modelo são para distritos escolares K-8 da Califórnia para o ano de 1998. Devido a vários possíveis problemas de variáveis omitidas, suspeitamos que a equação não pode
+ser estimada consistentemente por mínimos quadrados ordinários (MQO). Suponhamos ainda que existam dados sobre a ocorrência de terremotos nestes distritos em 1998, de forma que possamos definir a variável binária
+
+$$
+Zi =
+\begin{equation*}
+\begin{cases}
+1, \quad\text{se o distrito i foi atingido por um terremoto em 1998}\\
+0 \quad\text{caso contrário}
+\end{cases}
+\end{equation*}
+$$
+
+a. Discuta por que $Z_i$ pode ser considerado plausivelmente um instrumento válido para fins de estimativa de $\beta$ usando o método de variável instrumental.
+
+b. Agora, suponha que $Z_i$ seja um instrumento válido e que possamos definir a regressão do primeiro estágio
+
+$$Xi = \pi Z_i + v_i,$$
+
+onde $\pi \neq 0$. Mostre que o estimador de mínimos quadrados em dois estágios (MQ2E) neste caso é dado pela fórmula
+
+$$\hat{\beta}=\frac{\bar{Y}_1}{\bar{X}_1},$$
+
+onde $Y_1$ denota a média amostral dos $Y_i$ apenas nos distritos que foram atingidos por um terremoto em 1998, enquanto $X_1$ é a média amostral dos $X_i$ novamente apenas nos distritos que foram atingidos por um terremoto em 1998.
+
+## Questão 12
+
+Considere a simples regressão de variável instrumental
+
+$$
+\begin{aligned}
+Y_i &= \beta X_i + u_i,\\
+X_i &= \pi Z_i + v_i.
+\end{aligned}
+$$
+
+Onde $(Y_i, X_i, Z_i)$ são i.i.d.; $Cov(u_i, v_i) = 0$; $\pi = 0$; e, com probabilidade um, $E[u_i|Z_i] = 0$ e $E[v_i|Z_i] = 0$. Seja
+
+$$\hat{u}_i = Y_i − \beta^{mq2e} X_i,$$
+
+onde $\beta^{mq2e}$ denota o estimador de mínimos quadrados de dois estágios (MQ2E), de modo que $\hat{u}_i$ é o resíduo de MQ2E. Agora, considere a regressão
+
+$$\hat{u}_i = \gamma Z_i + \eta_i$$
+
+
+a. Mostre que $\hat{\gamma}^{mqo} = 0$, onde $\hat{\gamma}^{mqo}$ denota o estimador de mínimos quadrados ordinários (MQO) de $\gamma$ na regressão acima.
+
+
+
 ## Referências

@@ -356,6 +356,42 @@ e) Como os resultados do item anterior se comparam a estimação do MQO agrupado
 phtest(mqo_fe, mqo_pool)
 ```
 
+# Questão 12
+
+O artigo de @mattos2022diferencial analisa o **diferencial salarial** entre os setores público e privado no Brasil, usando dados da **PNAD Contínua** entre 2016 e 2019.
+O artigo utiliza um modelo de **efeitos fixos** para estimar o prêmio salarial do setor público, controlando por características individuais e ocupacionais dos trabalhadores. O artigo também compara os resultados com os de outros estudos anteriores.
+
+A seção 3 do artigo apresenta os dados utilizados na análise do diferencial salarial público-privado. Os dados são provenientes da PNAD Contínua, uma pesquisa domiciliar realizada pelo IBGE que abrange todo o território nacional. Nesta pesquisa cada domicílio que pertence à amostra é visitado 5 vezes, respeitando o intervalo de três meses. Os autores também descrevem as variáveis utilizadas nas regressões salariais, tais como sexo, idade, escolaridade, raça, região, setor de atividade e ocupação. Os autores distinguem entre trabalhadores **estatutários**, **públicos CLT** (servidores públicos) e **privados CLT** (trabalhadores do setor privado). O painel é bastante granular, tendo como unidade observacional os indivíduos e o trimestre-ano.
+
+Além disso, os autores também informam em um trecho do artigo:
+
+_"A avaliação será feita utilizando as metodologias tradicionais, como efeitos fixos, aleatórios e MQO empilhado. A decisão do melhor modelo para análise do diferencial salarial dos regimes públicos e privados será dada pelo teste de Hausmann, que avalia a consistência dos coeficientes. Assim, a tabela 45 permite observar os coeficientes para cada um dos três mode-los, respectivamente. Importante ressaltar que estamos utilizando o log do salário como variável dependente.O teste de Hausmann não aceita a hipótese nula"_
+
+Analise a tabela de resultados abaixo e responda as seguintes questões:
+
+![](Figs/MattosWinkJr2022.png)
+
+a. Escolha o modelo mais adequado (FE, RE ou OLS Pool) e analise. Qual o prêmio salarial do setor privado em relação ao setor público estatutário? Qual o prêmio para o setor público CLT em relação ao estatutário? (1,0 ponto)
+
+a. Sabendo que os microdados são provenientes da PNAD Contínua, os dados coletados pelos autores são um painel de dados (balanceado ou não) ou uma seção transversal repetida? Explique. (1,0 ponto)
+
+a. Escreva a equação do modelo estimado pelos autores (você pode agrupar variáveis de controle em um único vetor) e critique esta especificação com relação a interpretação causal dos efeitos de ser um empregado celetista no salário. Os regressores são exógenos? Podem ainda existir outros fatores de confusão causando endogeneidade no modelo? Dê exemplos. (1,0 ponto)
+
+
+# Questão 13
+
+Considere a regressão de dados em painel
+
+$$y_{it} = \alpha_i + \beta x_{it} + u_{it},\qquad i = 1, \ldots, n; \quad t = 1, 2.$$
+
+Suponha que $n$ seja muito maior que 2.
+
+a. Aplique a transformação intragrupo ( _within_ ) e mostre que a estimativa de $\beta$ é dada por $\hat\beta^w = \frac{\sum_i\sum_t\ddot{y}_{it}\ddot{x}_{it}}{\sum_i\sum_t\ddot{x}_{it}^2}$.
+
+b. Defina as variáveis em primeira diferença e mostre que a estimativa de $\beta$ é dada por $\hat\beta^{pd} = \frac{\sum_i\Delta y_{i}\Delta x_{i}}{\sum_i\Delta x_{i}^2}$.
+
+c. Mostre que $\hat\beta^w = \hat\beta^{pd}$.
+
 
 # Referências
 

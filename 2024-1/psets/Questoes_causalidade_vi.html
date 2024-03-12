@@ -113,7 +113,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">8 de março de 2024</p>
+      <p class="date">12 de março de 2024</p>
     </div>
   </div>
   
@@ -401,6 +401,72 @@ y_2&amp;=\pi_2 z + v_2
 <ol start="2" type="a">
 <li><p>Agora, execute manualmente o MQ2E. Ou seja, primeiro faça a regressão de <span class="math inline">\(educ_i\)</span> em <span class="math inline">\(sibs_i\)</span>, <span class="math inline">\(exper_i\)</span>, <span class="math inline">\(tenure_i\)</span> e <span class="math inline">\(black_i\)</span> e obtenha os valores ajustados, <span class="math inline">\(\widehat{educ}_i\)</span> <span class="math inline">\(i = 1, \ldots , n\)</span>. Em seguida, execute a regressão de segundo estágio <span class="math inline">\(\log(wage_i)\)</span> em <span class="math inline">\(\widehat{educ}_i\)</span>, <span class="math inline">\(exper_i\)</span>, <span class="math inline">\(tenure_i\)</span> e <span class="math inline">\(black_i\)</span>. Verifique se os <span class="math inline">\(\beta_j\)</span> são idênticos aos obtidos no item a) e os erros padrão são um pouco diferentes. Os erros padrão obtidos da regressão do segundo estágio ao realizar manualmente MQ2E são inadequados.</p></li>
 <li><p>Agora, use o seguinte procedimento de duas etapas, que geralmente produz estimativas inconsistentes de <span class="math inline">\(\beta_j\)</span>, e não apenas erros padrão incorretos. Na etapa um, regresse <span class="math inline">\(educ_i\)</span> em <span class="math inline">\(sibs_i\)</span> apenas e obtenha os valores ajustados, digamos <span class="math inline">\(\widetilde{educ}_i\)</span>. (Observe que esta é uma regressão de primeiro estágio incorreta). Em seguida, na segunda etapa, execute a regressão de <span class="math inline">\(\log(wage)\)</span> em <span class="math inline">\(\widetilde{educ}_i\)</span>, <span class="math inline">\(exper_i\)</span> , <span class="math inline">\(tenure_i\)</span> e <span class="math inline">\(black_i\)</span>. Como a estimativa desse procedimento incorreto de duas etapas se compara à estimativa correta de MQ2E do retorno à educação?</p></li>
+</ol>
+</section>
+<section id="questão-10" class="level2">
+<h2 class="anchored" data-anchor-id="questão-10">Questão 10</h2>
+<p>Considere o sistema de equações</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_i &amp;= \beta_0 + \beta_1X_i + u_i,\\
+X_i &amp;= Y_i + Z_i
+\end{aligned}
+\]</span></p>
+<p>onde assumimos que <span class="math inline">\(\beta_1 \neq 1\)</span> e <span class="math inline">\(cov(Z_i, u_i)=0\)</span> para cada i. É fácil mostrar (como fizemos durante a aula) que as equações de forma reduzida para este sistema são dadas por:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_i &amp;= \pi_0 + \pi_1Z_i + v_i,\\
+X_i &amp;= \pi_0 + \pi_2Z_i + v_i
+\end{aligned}
+\]</span></p>
+<p>onde</p>
+<p><span class="math display">\[\pi_0 = \frac{\beta_0}{1 − \beta_1}
+, \pi_1 = \frac{\beta_1}{1 − \beta_1}
+, \pi_2 = \frac{1}{1 − \beta_1}
+\text{ e } v_i = \frac{u_i}{1 − \beta_1}
+\]</span></p>
+<p>Agora, considere estimar as equações em forma reduzida por mínimos quadrados ordinários (MQO). Seja <span class="math inline">\(\hat\pi_1\)</span> o estimador MQO de <span class="math inline">\(\pi_1\)</span> e <span class="math inline">\(\hat\pi_2\)</span> o estimador MQO de <span class="math inline">\(\pi_2\)</span>. Mostre que o estimador</p>
+<p><span class="math display">\[\hat\beta_1 = \frac{\hat\pi_1}{\hat\pi_2}\]</span></p>
+<p>é idêntico ao estimador de mínimos quadrados de dois estágios (MQ2E) de <span class="math inline">\(\beta_1\)</span>.</p>
+</section>
+<section id="questão-11" class="level2">
+<h2 class="anchored" data-anchor-id="questão-11">Questão 11</h2>
+<p>Considere o modelo</p>
+<p><span class="math display">\[Y_i = \beta X_i + u_i,\]</span></p>
+<p>onde <span class="math inline">\(Y_i\)</span> denota a pontuação média do teste de desempenho Padrão 9 para o distrito escolar <span class="math inline">\(i\)</span> e <span class="math inline">\(X_i\)</span> denota a proporção média aluno-professor para o distrito escolar <span class="math inline">\(i\)</span> e onde os dados para este modelo são para distritos escolares K-8 da Califórnia para o ano de 1998. Devido a vários possíveis problemas de variáveis omitidas, suspeitamos que a equação não pode ser estimada consistentemente por mínimos quadrados ordinários (MQO). Suponhamos ainda que existam dados sobre a ocorrência de terremotos nestes distritos em 1998, de forma que possamos definir a variável binária</p>
+<p><span class="math display">\[
+Zi =
+\begin{equation*}
+\begin{cases}
+1, \quad\text{se o distrito i foi atingido por um terremoto em 1998}\\
+0 \quad\text{caso contrário}
+\end{cases}
+\end{equation*}
+\]</span></p>
+<ol type="a">
+<li><p>Discuta por que <span class="math inline">\(Z_i\)</span> pode ser considerado plausivelmente um instrumento válido para fins de estimativa de <span class="math inline">\(\beta\)</span> usando o método de variável instrumental.</p></li>
+<li><p>Agora, suponha que <span class="math inline">\(Z_i\)</span> seja um instrumento válido e que possamos definir a regressão do primeiro estágio</p></li>
+</ol>
+<p><span class="math display">\[Xi = \pi Z_i + v_i,\]</span></p>
+<p>onde <span class="math inline">\(\pi \neq 0\)</span>. Mostre que o estimador de mínimos quadrados em dois estágios (MQ2E) neste caso é dado pela fórmula</p>
+<p><span class="math display">\[\hat{\beta}=\frac{\bar{Y}_1}{\bar{X}_1},\]</span></p>
+<p>onde <span class="math inline">\(Y_1\)</span> denota a média amostral dos <span class="math inline">\(Y_i\)</span> apenas nos distritos que foram atingidos por um terremoto em 1998, enquanto <span class="math inline">\(X_1\)</span> é a média amostral dos <span class="math inline">\(X_i\)</span> novamente apenas nos distritos que foram atingidos por um terremoto em 1998.</p>
+</section>
+<section id="questão-12" class="level2">
+<h2 class="anchored" data-anchor-id="questão-12">Questão 12</h2>
+<p>Considere a simples regressão de variável instrumental</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_i &amp;= \beta X_i + u_i,\\
+X_i &amp;= \pi Z_i + v_i.
+\end{aligned}
+\]</span></p>
+<p>Onde <span class="math inline">\((Y_i, X_i, Z_i)\)</span> são i.i.d.; <span class="math inline">\(Cov(u_i, v_i) = 0\)</span>; <span class="math inline">\(\pi = 0\)</span>; e, com probabilidade um, <span class="math inline">\(E[u_i|Z_i] = 0\)</span> e <span class="math inline">\(E[v_i|Z_i] = 0\)</span>. Seja</p>
+<p><span class="math display">\[\hat{u}_i = Y_i − \beta^{mq2e} X_i,\]</span></p>
+<p>onde <span class="math inline">\(\beta^{mq2e}\)</span> denota o estimador de mínimos quadrados de dois estágios (MQ2E), de modo que <span class="math inline">\(\hat{u}_i\)</span> é o resíduo de MQ2E. Agora, considere a regressão</p>
+<p><span class="math display">\[\hat{u}_i = \gamma Z_i + \eta_i\]</span></p>
+<ol type="a">
+<li>Mostre que <span class="math inline">\(\hat{\gamma}^{mqo} = 0\)</span>, onde <span class="math inline">\(\hat{\gamma}^{mqo}\)</span> denota o estimador de mínimos quadrados ordinários (MQO) de <span class="math inline">\(\gamma\)</span> na regressão acima.</li>
 </ol>
 </section>
 <section id="referências" class="level2 unnumbered">

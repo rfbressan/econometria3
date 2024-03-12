@@ -117,6 +117,8 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 * [Econometrics Course](https://www.youtube.com/playlist?list=PLOQU3c_3DSpLTBa0vqPFVwDCqXlXiu49j)
 
+* [ECON407](https://econ.pages.code.wm.edu/407/notes/docs/index.html)
+
 * [Microsoft's Experimentation](https://www.microsoft.com/en-us/research/group/experimentation-platform-exp/)
 
 * [Booking.datasience](https://booking.ai)
@@ -128,6 +130,8 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 * [Mathematics for Economics](https://www.economicsnetwork.ac.uk/maths_refresher/)
 
 * [Causal ML Book](https://causalml-book.org/) por Chernozhukov et al.
+
+* [Machine Learning & Causal Inference: A Short Course](https://www.gsb.stanford.edu/faculty-research/labs-initiatives/sil/research/methods/ai-machine-learning/short-course)
 
 ## Replicação de Artigos
 

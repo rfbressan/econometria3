@@ -107,3 +107,21 @@ b) Tome a equação de demanda e explique em detalhes porque não é possível e
 
 c) A serra catarinense é um grande produtor de maçãs para o mercado brasileiro. As macieiras são mais produtivas quanto maior o número de dias com temperatura abaixo de zero. Você tem acesso a informação de temperaturas mínimas diárias para esta região. Descreva como esta informação é útil para estimar o modelo acima. Quais parâmetros serão identificados? Qual método pode ser utilizado para a estimação? Considere que o consumo de maçãs não é afetado por dias frios.
 
+# Questão 5
+
+Considere o modelo de equações simultâneas
+
+$$
+\begin{aligned}
+Y_i &= \beta_0 + \beta_1X_i + u_i\\
+X_i &= \pi_0 + \pi_1Z1_i + \pi_2Z2_i + v_i
+\end{aligned}
+$$
+
+Suponha que $cov(u_i, v_i) = 0$. Suponha também que $E(u_i|Z1_i, Z2_i) = 0$ e $E(v_i|Z1_i, Z2_i) = 0$, de modo que, em particular, $Z1_i$ e $Z2_i$ são exógenos. Aqui, $\beta_0$ e $\pi_0$ são parâmetros de intercepto; e $\beta_1$, $\pi_1$ e $\pi_2$ são parâmetros de coeficiente.
+
+a. Suponha que $\pi_0 = \pi_1 = \pi_2 = 0$. Neste caso, é possível estimar $\beta_1$ consistentemente? Além disso, é possível estimar $\beta_0$ de forma consistente? Explique suas respostas com cuidado.
+
+b. Suponha que $\pi_2 = 0$, mas $\pi_0 \neq 0$ e $\pi_1 \neq 0$. Agora, o parâmetro do coeficiente $\beta_1$ é subidentificado, exatamente identificado ou superidentificado. É possível estimar $\beta_1$ consistentemente. Se sim, escreva a fórmula para um estimador tão consistente. Se não, explique o por quê.
+
+c. Suponha que $\pi_0 \neq 0$, $\pi_1 \neq 0$ e $\pi_2 \neq 0$. Agora, o parâmetro do coeficiente $\beta_1$ é subidentificado, exatamente identificado ou superidentificado. Explique resumidamente se é possível estimar $\beta_1$ de forma consistente.
