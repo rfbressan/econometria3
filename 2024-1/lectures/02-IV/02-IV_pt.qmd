@@ -575,7 +575,7 @@ $$
 
 ## Inferência com Variáveis Instrumentais
 
-Assumindo $E(u^2|z) = \sigma^2$ a variância do estimador de VI é:
+Assumindo $E(u^2|x,z) = \sigma^2$ a variância do estimador de VI é:
 
 $$Var(\hat{\beta}_{1,IV}) = \frac{\sigma^2}{n \sigma_x^2 \rho_{x,z}^2}$$
 
@@ -595,9 +595,11 @@ $$Var(\hat{\beta}_{1,IV}) = \frac{\sigma^2}{n \sigma_x^2 \rho_{x,z}^2}$$
 
 ## Variância de VI é sempre maior que MQO
 
-- Compare os estimadores de variância de MQO e VI:
+Compare as variâncias de MQO e VI:
+
 
 ::::{.columns}
+
 :::{.column width="50%"}
 - $Var(\hat{\beta}_{1}) = \frac{\sigma^2}{n \sigma_x^2}$
 :::
@@ -605,6 +607,7 @@ $$Var(\hat{\beta}_{1,IV}) = \frac{\sigma^2}{n \sigma_x^2 \rho_{x,z}^2}$$
 :::{.column width="50%"}
 - $Var(\hat{\beta}_{1,IV}) = \frac{\sigma^2}{n \sigma_x^2 \rho_{x,z}^2}$
 :::
+
 ::::
 
 1. Dado $\rho_{x,z}^2 < 1$ na maioria das situações da vida real, temos que $Var(\hat{\beta}_{1,IV}) > Var(\hat{\beta}_ {1})$ quase certamente.
@@ -625,13 +628,17 @@ Se tiverermos um regressor exógeno válido $x$, **não** devemos usar VI $z$ pa
 
 Novamente utilizamos os análogos amostrais
 
-* $n\sigma_x^2$ é a $SQT_x$
+* $n\sigma_x^2$ é a $SQT_x=\sum_i (x_i - \bar{x})^2$
 * $\rho_{x,z}^2$ é estimado via $R_{x,z}^2$. R2 de uma regressão simples de $x$ em $z$
 * a variância de $u$ é obtida através do estimador:
 $$\hat{\sigma}^2=\frac{1}{n-2}\sum_{i=1}^{n}\hat{u}_i^2$$
 onde $\hat{u}_i=y_i-\hat\beta_0-\hat\beta_{1, IV} x_i$
 
+* Portanto, $\widehat{Var}(\hat{\beta}_{1,IV}) = \frac{\hat\sigma^2}{\sum_i (x_i - \bar{x})^2 R_{x,z}^2}$
+
 ## Como Saber se a VI é Válida?
+
+Sempre avaliamos uma candidata a VI através das 2 condições:
 
 - **Condições para VI**
 
