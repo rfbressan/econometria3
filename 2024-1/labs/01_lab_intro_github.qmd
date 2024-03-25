@@ -82,7 +82,7 @@ No canal do Youtube do VSCode existem alguns vídeos tutoriais sobre o GitHub Co
 Agora que você já tem o VSCode instalado e as extensões necessárias, vamos instalar as principais bibliotecas de Python que utilizaremos durante as aulas de laboratório. Abra um terminal no VSCode e execute os seguintes comandos:
 
 ```{bash}
-pip install numpy pandas matplotlib seaborn statsmodels linearmodels
+pip install numpy pandas matplotlib seaborn statsmodels linearmodels wooldridge
 ```
 
 Vamos criar um arquivo Python para testar se tudo está funcionando corretamente. Crie um arquivo chamado `teste.py` e insira o seguinte código:
@@ -99,3 +99,9 @@ ax.set_rticks([0.5, 1, 1.5, 2])
 ax.grid(True)
 plt.show()
 ```
+
+## Configurações VSCode
+
+Para executar um bloco de códigos Python no VSCode, você pode utilizar o atalho `Shift + Enter`. Para isso, você deve ter o Jupyter instalado e a extensão do Jupyter no VSCode. Também é necessário **habilitar a configuração** `Run Code` no VSCode. Para isso, clique no ícone de engrenagem no canto inferior esquerdo do VSCode e selecione **Settings**. Na barra de busca, digite `execute selection` e habilite a opção **Jupyter › Interactive Window › Text Editor: Execute Selection**.
+
+![](img/execute_selection.png){.lightbox}
