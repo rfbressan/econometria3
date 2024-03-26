@@ -164,6 +164,9 @@ Assinale **V**erdadeiro ou **F**also, com relação a Variáveis Instrumentais. 
 - ($\phantom{X}$) Considere a equação de regressão $y_i = \alpha + \beta x_i + z_{1i} + u_i$, onde $E[u_i|x_i]\neq 0$ e $z_{1i}$ é exógena. Se $z_{2i}$ e $z_{3i}$ são instrumentos válidos para $x_i$, então um estimador de Mínimos Quadrados em Dois Estágios (MQ2E) utilizará como instrumento uma projeção linear de $x_i$ no espaço gerado por $z_{2i}$ e $z_{3i}$.
 
 
+- ($\phantom{X}$) Em uma regressão MQ2E podemos fazer cada estágio separadamente e interpretar diretamente os resultados da regressão de segundo estágio.
+
+
 ## Questão 2 
 
 No artigo de @mattos2011, os autores examinam a relação entre emprego público e redistribuição de renda nos municípios brasileiros. Eles utilizam os requisitos estabelecidos pela **Lei de Responsabilidade Fiscal como instrumento** para a variação do emprego público entre os municípios.
