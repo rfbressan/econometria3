@@ -127,7 +127,7 @@ hausman
 Existe o teste de Wu-Hausman já implementado na biblioteca [`linearmodels`](https://bashtage.github.io/linearmodels/iv/iv/linearmodels.iv.results.IVResults.wu_hausman.html#linearmodels.iv.results.IVResults.wu_hausman). Vamos usar ele para comparar os resultados.
 
 ```{python}
-iv_reg.wu_hausman("educ")
+iv_reg.wu_hausman(["educ"])
 ```
 
 ## Teste de restrições sobreidentificadoras
