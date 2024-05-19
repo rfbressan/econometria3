@@ -1222,6 +1222,10 @@ iplot(est_did,
 
 * CUNNINGHAM, Scott. Causal Inference: The Mixtape, New Haven: Yale University Press, 2021. URL: https://mixtape.scunning.com/. Chapter 9 Difference-in-differences
 
+* SUN, Liyang; ABRAHAM, Sarah. Estimating dynamic treatment effects in event studies with heterogeneous treatment effects. Journal of econometrics, v. 225, n. 2, p. 175-199, 2021.
+
+* CALLAWAY, Brantly; SANT’ANNA, Pedro HC. Difference-in-differences with multiple time periods. Journal of econometrics, v. 225, n. 2, p. 200-230, 2021.
+
 
 ## ATÉ A PRÓXIMA AULA!
 
