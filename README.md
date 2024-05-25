@@ -135,6 +135,8 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 ## Replicação de Artigos
 
+- [Como acessar o Portal de Periódicos CAPES](https://www.youtube.com/watch?v=MXtNSpS-3Cc)
+
 - [Angrist Dataverse](https://dataverse.harvard.edu/dataverse/JAngrist)
 
 - [Replication Wiki](https://replication.uni-goettingen.de/wiki/index.php/Main_Page)
