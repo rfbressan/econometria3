@@ -1,0 +1,51 @@
+---
+title: "Econometria III"
+subtitle: |
+    | Lista Extra - Replicação de estudo econométrico
+# author: "Rafael Bressan"
+date: "2024-06-24"
+format: 
+    # pdf:
+    #   documentclass: scrartcl
+    #   toc: false
+    #   number-sections: false
+    #   keep-tex: true
+    #   papersize: a4
+    #   include-in-header: exam_preamble.tex
+    html: 
+      theme: cosmo
+      embed-resources: true
+lang: pt-BR
+# logo: "img/UdescEsag.jpeg"
+bibliography: references.bib
+---
+
+Nesta lista de exercício você terá a oportunidade de replicar o artigo de @enache_demand_2023. O texto do artigo está disponível no Moodle (arquivo `Enacheetal2023-Demand for in-app purchases.pdf`), assim como os dados utilizados (arquivo `ijio_replication_didapps.dta`).
+
+O artigo original está disponível no site do [International Journal of Industrial Organization](https://www.sciencedirect.com/science/article/pii/S0167718723000279).
+
+O arquivo `ijio_replication_didapps.dta` contém os dados necessários para a produção dos principais resultados de estimação relatados nas Tabelas 4 (painel A), 5 e 6, bem como as Figuras associadas 1 e 7. Estes se baseiam em **observações normalizadas** do número de usuários, taxa de conversão (número de compras no aplicativo/número de usuários) e vídeos (número de vídeos recompensados assistidos/número de usuários) para 5 jogos de quebra-cabeça de palavras em 6 mercados nacionais, conforme explicado no artigo. As observações estão no nível $\text{país}\times \text{jogo}\times \text{plataforma}$ (Apple ou Google). Os dados abrangem um período de 120 dias antes e depois das mudanças de preços, conforme explicado no artigo. Observe que, por motivos de confidencialidade, o pacote de replicação não inclui todos os dados usados no artigo, por exemplo, não os dados de preço (mas as mudanças médias de preço em porcentagem são relatadas no artigo) ou dados em níveis que fornecem algumas das estatísticas descritivas.
+
+## Compreendendo o artigo
+
+Leia com atenção o artigo e responda as questões abaixo.
+
+1. Faça um resumo do artigo, destacando os principais pontos do artigo e os resultados encontrados. (máximo 10 linhas)
+
+2. Explique a hipótese de identificação utilizada no artigo. É utilizada alguma variação exógena para identificação da elasticidade? (máximo 10 linhas)
+
+3. O artigo utiliza um modelo de diferença-em-diferenças para estimar a elasticidade-preço da demanda por compras no aplicativo. Explique o que é um modelo de diferença-em-diferenças e como ele é utilizado no artigo. (máximo 10 linhas)
+
+## Replicação de resultados
+
+Agora passaremos a replicar alguns resultados obtidos no artigo. Para isso, você deve utilizar o arquivo `ijio_replication_didapps.dta` disponível no Moodle. Este arquivo contém todos os dados utilizados no artigo.
+
+1. Recrie a Fig.1 do artigo. Ela mostra _"O número de usuários por dia do W1 em seis países europeus em torno de mudanças de preços na Apple. A figura mostra o número diário de usuários para janelas de 120 dias em ambos os lados de uma queda de preço na Apple em seis países europeus. O tempo de diminuição de preço ilustrado por barras verticais e número de usuários por dia e plataforma são médias móveis de sete dias, normalizadas de modo que o número de usuários para 30 dias antes da mudança de preço definido como 1."_ O número de usuários normalizados está na variável `userssmooth`.
+
+2. Faça a tabela de estatísticas descritivas do conjunto de dados a semelhança da Tabela 1 do artigo. Entranto, além de incluir as médias dos jogos por país, inclua também o desvio padrão de cada uma das variáveis: `norm_users`, `norm_purch_users` e `norm_videos`.
+
+
+3. Recrie a Fig. 7 do artigo. Ela mostra a _"Taxa de conversão por dia em W1 em seis países europeus em torno de mudanças de preços na Apple A figura mostra o número diário de compras no aplicativo / número de usuários para janelas de 120 dias em ambos os lados de uma mudança de preços na Apple em seis países europeus. O momento das mudanças de preço é ilustrado por barras verticais e o número de usuários por dia e plataforma são médias móveis de sete dias, normalizadas para que o número diário de compras no aplicativo / número de usuários para 30 dias antes da mudança de preço seja definido como 1."_ A taxa de conversão normalizada está na variável `purchsmooth`.
+
+
+4. Recrie a Tabela 4 painel A do artigo. Você deve inferir quais são as variáveis utilizadas na regressão dos autores, entretanto, a interação entre `country` e `game` é representada pela variável `cgn`. Além disso, os dados não nos fornecem a variação de preços ponderada, portanto não conseguimos computar a linha `Price change`. Se tomarem aqueles valores das variações de preço como dados, calculem a linha `Elasticity`.
