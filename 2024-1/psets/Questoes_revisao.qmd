@@ -1,0 +1,152 @@
+---
+title: "Econometria III"
+subtitle: |
+    | Questões - Revisão de Econometria I
+# author: "Rafael Bressan"
+# date: "`r Sys.Date()`"
+format: 
+    # pdf:
+    #     latex_engine: xelatex
+    #     keep_tex: true
+    #     includes: 
+    #       in_header: exam_preamble.tex
+    html: 
+      theme: cosmo
+      embed-resources: true
+lang: pt-BR
+bibliography: references.bib
+---
+
+
+
+## Questão 1 
+
+Seja $X$ e $Y$ duas variáveis estocásticas e considere as realizações $(x_i, y_i)$, $i=1,2,\ldots,n$. Seja $\bar{x}=\frac{1}{n}\sum_{i=1}^n x_i$ e $\bar{y}=\frac{1}{n}\sum_{i=1}^n y_i$. Mostre que as seguintes relações são válidas:
+
+a. $\sum_{i=1}^n (x_i-\bar{x}) = 0$
+
+b. $\sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y}) = \sum_{i=1}^n (x_i-\bar{x})y_i = \sum_{i=1}^n x_i(y_i-\bar{y})$
+
+c. $\sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y}) = \sum_{i=1}^n x_iy_i - n\bar{x}\bar{y}$
+
+
+## Questão 2
+
+Sejam $X$ e $Y$ duas variáveis estocásticas. 
+
+a. Mostre que se pelo menos uma das variáveis tem valor espera igual a zero, então a covariância entre $X$ e $Y$ é dada por $\text{Cov}(X,Y) = E[XY]$.
+
+b. Use a definicão de covariância para mostrar que $\text{Cov}(AX+a,BY+b) = AB\text{Cov}(X,Y)$, onde $A$, $B$, $a$ e $b$ são constantes.
+
+c. Use a definição de variância para mostrar que $\text{Var}(X+Y) = \text{Var}(X) + \text{Var}(Y) + 2\text{Cov}(X,Y)$ e que $\text{Var}(X-Y) = \text{Var}(X) + \text{Var}(Y) - 2\text{Cov}(X,Y)$.
+
+
+## Questão 3
+
+Considere o seguinte modelo de regressão linear simples:
+
+$Y_i=\beta X_i + u_i$, $i=1,2,\ldots,n$ e o termo de erro $u_i$ é tal que $E[u_i]=0$ e $\text{Var}(u_i)=\sigma^2$.
+
+a. Mostre que os seguintes estimadores são não viesados para $\beta$:
+
+$$\hat{\beta}= \frac{\sum_{i=1}^n X_iY_i}{\sum_{i=1}^n X_i^2}$$
+
+$$\tilde{\beta}= \frac{\sum_{i=1}^n Y_i}{\sum_{i=1}^n X_i}$$
+
+$\hat{\beta}$ é o estimador de mínimos quadrados ordinários enquanto que $\tilde{\beta}$ é apenas um estimador linear que também é não viesado. Isto fere o teorema de Gauss-Markov?
+
+b. Mostre que $\text{Var}(\hat{\beta}) \leq \text{Var}(\tilde{\beta})$. DICA: use a desigualdade de Cauchy-Schwarz.
+
+
+## Questão 4
+
+Considere o seguinte modelo de regressão linear em forma matricial:
+
+$$Y = X\beta + u,$$
+
+onde $Y$ é um vetor $n\times 1$, $X$ é uma matriz $n\times k$ com sua primeira coluna composta por elementos unitários, $\beta$ é um vetor $k\times 1$ e $u$ é um vetor $n\times 1$.
+
+Também considere que as hipóteses de Gauss-Markov são válidas, ou seja, $E[u|X]=0$ e $\text{Var}(u)=\sigma^2I_n$.
+
+a. Mostre que o estimador de mínimos quadrados ordinários de $\beta$ é dado por $\hat{\beta} = (X'X)^{-1}X'Y$.
+
+b. Mostre que este estimador é não viesado.
+
+c. Mostre que a variância do estimador é dada por $\text{Var}(\hat{\beta}) = \sigma^2(X'X)^{-1}$.
+
+d. Caso o termo de erro $u$ não fosse homocedástico, ou seja, $\text{Var}(u)=\Sigma$, onde $\Sigma$ é uma matriz $n\times n$ positiva definida. Como seria a variância do estimador de mínimos quadrados ordinários?
+
+
+## Questão 5
+
+Nesta questão vamos generalizar a questão 3 anterior, vamos provar o Teorema de Gauss-Markov. Dadas as hipóteses de Gauss-Markov (em especial $E[u|X]=0$ e $\text{Var}(u|X)=\sigma^2 I_n$), mostre que o estimador de mínimos quadrados ordinários de $\beta$ é o melhor estimador linear não viesado de $\beta$ na regressão $Y = X\beta + u$ (forma matricial).
+
+Para tanto, suponha um estimador linear da forma $\tilde{\beta}=CY$ tal que $E[\tilde{\beta}]=\beta$. Onde $C$ é uma matriz $k\times n$.
+
+a. Suponha, sem perda de generalidade que $C=(X'X)^{-1}X'+D$, onde $D$ é uma matriz $k\times n$ não nula qualquer, $D\neq 0$. Para que $\tilde{\beta}$ seja não viesado, qual deve ser a relação entre $D$ e $X$?
+
+b. Partindo do resultado que, sob as hipóteses de Gauss-Markov, $\text{Var}(\tilde{\beta}) = \sigma^2 CC'$, mostre que $\text{Var}(\tilde{\beta}) \geq \text{Var}(\hat{\beta})$. DICA: o produto de uma matriz não nula pela sua transposta é sempre uma matriz positiva semi-definida.
+
+## Questão 6
+
+Considere um modelo de regressão linear em sua forma matricial, $Y = X\beta + u$, onde $Y$ é um vetor $n\times 1$, $X$ é uma matriz $n\times k$ com sua primeira coluna composta por elementos unitários, $\beta$ é um vetor $k\times 1$ e $u$ é um vetor $n\times 1$.
+
+O estimador de MQO de $\beta$ é dado por $\hat{\beta} = (X'X)^{-1}X'Y$ e, portanto, $Y$ é decomposto em duas componentes: $\hat{Y} = X\hat{\beta}$ que é o valor esperado de $Y$ dado $X$ e $\hat{u} = Y - \hat{Y}$, que são os resíduos.
+
+Definimos duas matrizes importantes: a matriz de projeção $P = X(X'X)^{-1}X'$ e a matriz complementar $M = I_n - P$ (também conhecida como _residual maker_).
+
+a. Mostre que a matriz de projeção é simétrica e idempotente, ou seja, $P' = P$ e $PP = P$.
+
+b. Mostre que $M = I_n - P$ também é simétrica e idempotente.
+
+c. Mostre que $P$ e $M$ são ortogonais, ou seja, $PM = MP = 0$.
+
+d. Mostre que $\hat{Y} = PY$ e $\hat{u} = MY$.
+
+e. Mostre que $\hat{Y}$ e $\hat{u}$ são ortogonais, ou seja, $\hat{Y}'\hat{u} = 0$.
+
+## Questão 7
+
+**Regressão Particionada.** Considere um modelo de regressão linear em sua forma matricial, $Y = X\beta + u$. Suponha que a matriz $X$ é particionada em duas matrizes $X_1$ e $X_2$, de dimensões $n\times k_1$ e $n\times k_2$, respectivamente, onde $k_1 + k_2 = k$. Sem perda de generalidade, suponha que $X_1$ contém a coluna do intercepto. Logicamente, podemos também particionar o vetor de coeficientes $\beta$ em $\beta_1$ e $\beta_2$, onde $\beta_1$ é o vetor de coeficientes associados a matriz $X_1$ e $\beta_2$ é o vetor de coeficientes associados a matriz $X_2$. Obtemos a mesma regressão linear, mas agora apresentada de forma particionada:
+
+$$
+Y=
+\begin{bmatrix}
+X_1 & X_2
+\end{bmatrix}
+\begin{bmatrix}
+\beta_1 \\
+\beta_2
+\end{bmatrix} + u.
+$$
+
+Desejamos estimar somente $\beta_2$ através de MQO. Para tanto, vamos utilizar a matriz _residual maker_ associada a matriz $X_1$, $M_1 = I_n - X_1(X_1'X_1)^{-1}X_1'$.
+
+a. Faça uma regressão de $Y$ em $X_1$ e obtenha os resíduos chamando-os de $\tilde{Y} = M_1Y$.
+
+b. Faça uma regressão de $X_2$ em $X_1$ e obtenha os resíduos chamando-os de $\tilde{X}_2 = M_1X_2$.
+
+c. A partir da equação de regressão particionada, mostre que $\tilde{Y}=\tilde{X}_2\beta_2+\tilde{u}$.
+
+d. Mostre que o estimador de MQO de $\beta_2$ na equação acima é dado por $\hat{\beta}_2 = (\tilde{X}_2'\tilde{X}_2)^{-1}\tilde{X}_2'\tilde{Y}$.
+
+Ou seja, em uma regressão múltipla, podemos obter os coeficientes associados a uma submatriz de variáveis explicativas através de um procedimento em duas etapas: primeiro, obtemos os resíduos da regressão de $Y$ em **todos os outros regressores, inclusive intercepto** e também os resíduos da regressão de $X_2$ nestes mesmos regressores. Na segunda etapa, obtemos o estimador de MQO de $\beta_2$ através da regressão dos resíduos de $Y$ nos resíduos de $X_2$.
+
+**Este é o famoso teorema de [Frisch-Waugh-Lovell](https://en.wikipedia.org/wiki/Frisch%E2%80%93Waugh%E2%80%93Lovell_theorem).**
+
+e. É claro que para mostrar que este resultado é equivalente ao MQO da regressão particionada, ainda temos de mostrar qual é o estimador de MQO para $\beta_2$! Vocês podem fazê-lo resolvendo o seguinte sistema de equações, onde $b_2$ será o estimador desejado.
+
+$$
+\begin{bmatrix}
+X_1'X_1 & X_1'X_2 \\
+X_2'X_1 & X_2'X_2
+\end{bmatrix}
+\begin{bmatrix}
+b_1 \\
+b_2
+\end{bmatrix} =
+\begin{bmatrix}
+X_1'Y \\
+X_2'Y
+\end{bmatrix}.
+$$

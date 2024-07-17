@@ -151,9 +151,11 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 O sistema de avaliação da disciplina se dará da seguinte maneira:
 
+- 1 Lista de exercícios de revisão valendo 10% da nota final.
+
 - 2 Provas escritas, presenciais, com os seguintes pesos: 30% e 30%.
 
-- 1 Trabalho econométrico individual de cunho prático.
+- 1 Trabalho econométrico individual de cunho prático com 30% de peso.
 
 - É obrigatória a frequência em no mínimo 75% das aulas para aprovação.
 
