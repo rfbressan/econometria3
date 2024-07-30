@@ -1,7 +1,7 @@
 ---
 title: Aula de laboratório - Modelos de Equações Simultâneas
 author: Rafael Bressan
-date: "2024-02-14"
+date: "2024-09-16"
 format: 
   html:
     theme: cosmo

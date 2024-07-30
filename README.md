@@ -25,7 +25,7 @@ Observe que várias dessas aulas se estendem por duas ou mais sessões.
 
 | Tópico | Slides | Lista | Laboratório |
 |--------|--------|-------|-------------|
-| Apresentação da Disciplina | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/Aula0-Apresentacao.html) |  |  |
+| Apresentação da Disciplina | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/Aula0-Apresentacao.html) | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/psets/Questoes_revisao.html)  |  |
 | Aula 1: Causalidade | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/01-causalidade/01-causality_pt.html) |  | [Github Copilot](https://raw.githack.com/rfbressan/econometria3/main/2024-1/labs/01_lab_intro_github.html) |
 | Aula 2: Variáveis Instrumentais | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/02-IV/02-IV_pt.html) | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/psets/Questoes_causalidade_vi.html) | [Variáveis Instrumentais](https://raw.githack.com/rfbressan/econometria3/main/2024-1/labs/02_lab_VI.html)               |
 | Aula 3: Modelos de Equações Simultâneas | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/lectures/03-simultaneas/03-simultaneas_pt.html) | [HTML](https://raw.githack.com/rfbressan/econometria3/main/2024-1/psets/Questoes_Simultaneas.html)    | [Equações Simultâneas](https://raw.githack.com/rfbressan/econometria3/main/2024-1/labs/03_lab_Simultaneas.html) |

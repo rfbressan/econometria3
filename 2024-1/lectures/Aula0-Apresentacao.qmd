@@ -64,7 +64,7 @@ jupyter: python3
 - Você também aprenderá a fazer econometria **na prática**
 - Usaremos as linguagens de programação R e Python nos exemplos e laboratórios
 
-- :warning: Vocês podem **escolher** a linguagem que preferirem, inclusive outras que não R ou Python (e.g., Stata, SAS, Julia, etc.)
+- :warning: Vocês podem **escolher** a linguagem que preferirem, inclusive outras que não R ou Python (e.g., Stata, SAS, Julia, Matlab, etc.)
 
 - :warning: Este não é um curso de R ou Python. Vocês são encorajados a aprenderem a prática econométrica utilizando as aulas de laboratório e **o seu próprio esforço**.
 
@@ -85,7 +85,7 @@ jupyter: python3
 
 ## Conteúdo Programático
 
-- **Parte I** – Causalidade e o framework de Resultados Potenciais de Rubin. Gráficos Direcionados Acíclicos (DAGs).
+- **Parte I** – ***Causalidade*** e o framework de Resultados Potenciais de Rubin. Gráficos Direcionados Acíclicos (DAGs).
 
 - **Parte II** – Modelos de equações simultâneas, o problema da identificação, revisão dos principais tipos de viés de estimação. Condição de Classificação e de Ordem. Mínimos Quadrados Indiretos. Variável Instrumental. Estimação de VI no modelo de regressão múltipla. Mínimos Quadrados em 2 Estágios. Teste de endogeneidade e de sobreidentificação.
 
@@ -99,11 +99,14 @@ jupyter: python3
 
 - Os alunos poderão tirar suas dúvidas em conversa com o professor após o término da aula ou via e-mail.
 
-- O meio de comunicação preferencial do professor com os alunos será através dos avisos do Moodle. Avisos importantes sobre o cronograma da disciplina também serão feitos através do Moodle.
+- O meio de comunicação preferencial do professor com os alunos será através de e-mail institucional. Avisos importantes sobre a disciplina (e.g. alterações de cronograma) também serão feitos através dos Avisos do Moodle.
 
-- Todo o material necessário para o acompanhamento da disciplina será disponibilizado pelo professor, na página da disciplina no Moodle. Assim, não haverá necessidade de o aluno ter os livros de forma física, muito embora a biblioteca possua os livros texto indicados em seu acervo.
+- Todo o material necessário para o acompanhamento da disciplina será disponibilizado pelo professor, **na página da disciplina no Moodle**. Assim, não haverá necessidade de o aluno ter os livros de forma física, muito embora a biblioteca possua os livros texto indicados em seu acervo.
 
-- Listas de exercícios estarão disponíveis para os alunos estudarem para as provas.
+- **Listas de exercícios** estão disponíveis para os alunos estudarem para as provas.
+
+- A **presença** do estudante é obrigatória em 75% das aulas ministradas.
+    + A chamada é realizada utilizando uma estratégia mista em jogos repetidos :smiley:
 
 
 ## Aulas e sistema de avaliação
@@ -114,33 +117,32 @@ jupyter: python3
 -   Os tópicos do programa serão apresentados em aulas expositivas,
     destinadas à apresentação de conceitos, modelos e suas aplicações.
 
--   Embora importantes, **as aulas não podem jamais ser vistas como substitutas da leitura regular e cuidadosa dos textos indicados e da resolução dos exercícios propostos.**
+-   **As aulas não são substitutas da leitura regular e cuidadosa dos textos indicados e da resolução das listas de exercícios propostos.**
+    + Os capítulos dos livros texto a serem lidos para cada aula estão indicados no cronograma da disciplina.
 
 - O sistema de **avaliação** da disciplina se dará da seguinte maneira:
 
-    - **2 Provas escritas**, presenciais, com os seguintes pesos: 30% e 30%.
+    - **1 lista de exercícios de revisão** com peso de 10%.
+
+    - **2 Provas escritas**, presenciais, com pesos de 30%.
 
     - **1 Trabalho econométrico individual** de cunho prático.
-
-- É obrigatória a frequência em no mínimo 75% das aulas para aprovação.
 
 - As provas de segunda chamada serão realizadas apenas mediante o que consta na resolução no 039/2015-CONSEPE.
 
 ## Trabalho individual
 
 - Ao final do semestre vocês devem apresentar um trabalho econométrico individual que será:
-    + A replicaçao dos resultados de um artigo científico a sua escolha, ou;
-    + Os resultados obtidos a partir de dados de acesso público
+    + A **replicaçao dos resultados de um artigo científico** a sua escolha
 
-- Até a segunda semana de aula (11/03) deve ser preenchida uma [planilha](https://docs.google.com/spreadsheets/d/1opdo6CtDe2exBjh8zA7BtEaoXTaFh800Exa7O91cXEE/edit?usp=sharing) com o nome do artigo a ser replicado ou a fonte dos dados e objetivo do trabalho
+- Até **12/09/2024** deve ser preenchida uma [planilha](https://docs.google.com/spreadsheets/d/128UaKZhaYb2aO0BQgDtCzigCte4foU1tUv1Rw2jT76k/edit?usp=sharing) com o nome do artigo a ser replicado, a fonte dos dados e o objetivo do trabalho
 
-- Haverá uma **entrega parcial valendo nota** com resultados preliminares a ser marcada pelo professor no cronograma da disciplina
+- Haverá uma **entrega parcial** com resultados preliminares a ser marcada pelo professor no cronograma da disciplina
 
 - O trabalho deve ser apresentado através de um relatório seguindo as normas da ABNT (artigo científico)
     + Juntamente com o relatório, o código fonte deve ser apresentado
+    + Maiores detalhes da formatação, estrutura e conteúdo do relatório estão dispostos na página da disciplina no Moodle
 
-- O trabalho deve conter **no mínimo** uma tabela de estatísticas descritivas, uma tabela de resultados com estimação de mais de um modelo e uma figura descritiva dos dados ou de resultado
-    + A formulação teórica ou apresentação da metodologia de estimação também deve constar no trabalho
 
 - No final do semestre, os trabalhos serão apresentados em sala de aula
 
