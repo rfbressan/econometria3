@@ -17,7 +17,7 @@ lang: pt-BR
 bibliography: references.bib
 ---
 
-
+Esta é uma lista de exercícios de revisão de Econometria I. Os estudantes que sentirem dificuldade em álgebra linear e estatística, podem consultar o apêndice do livro do Wooldridge para revisar os conceitos necessários. O material está disponível no Moodle na seção de _Livros Gratuitos_.
 
 ## Questão 1 
 
@@ -45,7 +45,7 @@ c. Use a definição de variância para mostrar que $\text{Var}(X+Y) = \text{Var
 
 Considere o seguinte modelo de regressão linear simples:
 
-$Y_i=\beta X_i + u_i$, $i=1,2,\ldots,n$ e o termo de erro $u_i$ é tal que $E[u_i]=0$ e $\text{Var}(u_i)=\sigma^2$.
+$Y_i=\beta X_i + u_i$, $i=1,2,\ldots,n$ e o termo de erro $u_i$ é tal que $E[u_i|X_i]=0$ e $\text{Var}(u_i)=\sigma^2$.
 
 a. Mostre que os seguintes estimadores são não viesados para $\beta$:
 
@@ -66,7 +66,7 @@ $$Y = X\beta + u,$$
 
 onde $Y$ é um vetor $n\times 1$, $X$ é uma matriz $n\times k$ com sua primeira coluna composta por elementos unitários, $\beta$ é um vetor $k\times 1$ e $u$ é um vetor $n\times 1$.
 
-Também considere que as hipóteses de Gauss-Markov são válidas, ou seja, $E[u|X]=0$ e $\text{Var}(u)=\sigma^2I_n$.
+Também considere que as hipóteses de Gauss-Markov (Wooldridge cap. 3, pp. 100-101) são válidas, ou seja, $E[u|X]=0$ e $\text{Var}(u|X)=\sigma^2I_n$.
 
 a. Mostre que o estimador de mínimos quadrados ordinários de $\beta$ é dado por $\hat{\beta} = (X'X)^{-1}X'Y$.
 
@@ -101,9 +101,11 @@ b. Mostre que $M = I_n - P$ também é simétrica e idempotente.
 
 c. Mostre que $P$ e $M$ são ortogonais, ou seja, $PM = MP = 0$.
 
-d. Mostre que $\hat{Y} = PY$ e $\hat{u} = MY$.
+d. Mostre que $PX=X$ e $MX=0$.
 
-e. Mostre que $\hat{Y}$ e $\hat{u}$ são ortogonais, ou seja, $\hat{Y}'\hat{u} = 0$.
+e. Mostre que $\hat{Y} = PY$ e $\hat{u} = MY$.
+
+f. Mostre que $\hat{Y}$ e $\hat{u}$ são ortogonais, ou seja, $\hat{Y}'\hat{u} = 0$.
 
 ## Questão 7
 
@@ -122,13 +124,13 @@ $$
 
 Desejamos estimar somente $\beta_2$ através de MQO. Para tanto, vamos utilizar a matriz _residual maker_ associada a matriz $X_1$, $M_1 = I_n - X_1(X_1'X_1)^{-1}X_1'$.
 
-a. Faça uma regressão de $Y$ em $X_1$ e obtenha os resíduos chamando-os de $\tilde{Y} = M_1Y$.
+a. Faça uma regressão de $Y$ em $X_1$ e obtenha os resíduos chamando-os de $\tilde{Y}$. DICA: Utilize a matriz _residual maker_ associada a matriz $X_1$.
 
-b. Faça uma regressão de $X_2$ em $X_1$ e obtenha os resíduos chamando-os de $\tilde{X}_2 = M_1X_2$.
+b. Faça uma regressão de $X_2$ em $X_1$ e obtenha os resíduos chamando-os de $\tilde{X}_2$. DICA: Utilize a matriz _residual maker_ associada a matriz $X_1$.
 
-c. A partir da equação de regressão particionada, mostre que $\tilde{Y}=\tilde{X}_2\beta_2+\tilde{u}$.
+c. A partir da equação de regressão particionada acima, mostre que $\tilde{Y}=\tilde{X}_2\beta_2+\tilde{u}$.
 
-d. Mostre que o estimador de MQO de $\beta_2$ na equação acima é dado por $\hat{\beta}_2 = (\tilde{X}_2'\tilde{X}_2)^{-1}\tilde{X}_2'\tilde{Y}$.
+d. Mostre que o estimador de MQO de $\beta_2$ na equação acima é dado por $\tilde{\beta}_2 = (\tilde{X}_2'\tilde{X}_2)^{-1}\tilde{X}_2'\tilde{Y}$.
 
 Ou seja, em uma regressão múltipla, podemos obter os coeficientes associados a uma submatriz de variáveis explicativas através de um procedimento em duas etapas: primeiro, obtemos os resíduos da regressão de $Y$ em **todos os outros regressores, inclusive intercepto** e também os resíduos da regressão de $X_2$ nestes mesmos regressores. Na segunda etapa, obtemos o estimador de MQO de $\beta_2$ através da regressão dos resíduos de $Y$ nos resíduos de $X_2$.
 

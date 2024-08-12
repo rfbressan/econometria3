@@ -3097,6 +3097,7 @@ window.Quarto = {
 </header>
 
 
+<p>Esta é uma lista de exercícios de revisão de Econometria I. Os estudantes que sentirem dificuldade em álgebra linear e estatística, podem consultar o apêndice do livro do Wooldridge para revisar os conceitos necessários. O material está disponível no Moodle na seção de <em>Livros Gratuitos</em>.</p>
 <section id="questão-1" class="level2">
 <h2 class="anchored" data-anchor-id="questão-1">Questão 1</h2>
 <p>Seja <span class="math inline">\(X\)</span> e <span class="math inline">\(Y\)</span> duas variáveis estocásticas e considere as realizações <span class="math inline">\((x_i, y_i)\)</span>, <span class="math inline">\(i=1,2,\ldots,n\)</span>. Seja <span class="math inline">\(\bar{x}=\frac{1}{n}\sum_{i=1}^n x_i\)</span> e <span class="math inline">\(\bar{y}=\frac{1}{n}\sum_{i=1}^n y_i\)</span>. Mostre que as seguintes relações são válidas:</p>
@@ -3118,7 +3119,7 @@ window.Quarto = {
 <section id="questão-3" class="level2">
 <h2 class="anchored" data-anchor-id="questão-3">Questão 3</h2>
 <p>Considere o seguinte modelo de regressão linear simples:</p>
-<p><span class="math inline">\(Y_i=\beta X_i + u_i\)</span>, <span class="math inline">\(i=1,2,\ldots,n\)</span> e o termo de erro <span class="math inline">\(u_i\)</span> é tal que <span class="math inline">\(E[u_i]=0\)</span> e <span class="math inline">\(\text{Var}(u_i)=\sigma^2\)</span>.</p>
+<p><span class="math inline">\(Y_i=\beta X_i + u_i\)</span>, <span class="math inline">\(i=1,2,\ldots,n\)</span> e o termo de erro <span class="math inline">\(u_i\)</span> é tal que <span class="math inline">\(E[u_i|X_i]=0\)</span> e <span class="math inline">\(\text{Var}(u_i)=\sigma^2\)</span>.</p>
 <ol type="a">
 <li>Mostre que os seguintes estimadores são não viesados para <span class="math inline">\(\beta\)</span>:</li>
 </ol>
@@ -3134,7 +3135,7 @@ window.Quarto = {
 <p>Considere o seguinte modelo de regressão linear em forma matricial:</p>
 <p><span class="math display">\[Y = X\beta + u,\]</span></p>
 <p>onde <span class="math inline">\(Y\)</span> é um vetor <span class="math inline">\(n\times 1\)</span>, <span class="math inline">\(X\)</span> é uma matriz <span class="math inline">\(n\times k\)</span> com sua primeira coluna composta por elementos unitários, <span class="math inline">\(\beta\)</span> é um vetor <span class="math inline">\(k\times 1\)</span> e <span class="math inline">\(u\)</span> é um vetor <span class="math inline">\(n\times 1\)</span>.</p>
-<p>Também considere que as hipóteses de Gauss-Markov são válidas, ou seja, <span class="math inline">\(E[u|X]=0\)</span> e <span class="math inline">\(\text{Var}(u)=\sigma^2I_n\)</span>.</p>
+<p>Também considere que as hipóteses de Gauss-Markov (Wooldridge cap. 3, pp. 100-101) são válidas, ou seja, <span class="math inline">\(E[u|X]=0\)</span> e <span class="math inline">\(\text{Var}(u|X)=\sigma^2I_n\)</span>.</p>
 <ol type="a">
 <li><p>Mostre que o estimador de mínimos quadrados ordinários de <span class="math inline">\(\beta\)</span> é dado por <span class="math inline">\(\hat{\beta} = (X&#39;X)^{-1}X&#39;Y\)</span>.</p></li>
 <li><p>Mostre que este estimador é não viesado.</p></li>
@@ -3160,6 +3161,7 @@ window.Quarto = {
 <li><p>Mostre que a matriz de projeção é simétrica e idempotente, ou seja, <span class="math inline">\(P&#39; = P\)</span> e <span class="math inline">\(PP = P\)</span>.</p></li>
 <li><p>Mostre que <span class="math inline">\(M = I_n - P\)</span> também é simétrica e idempotente.</p></li>
 <li><p>Mostre que <span class="math inline">\(P\)</span> e <span class="math inline">\(M\)</span> são ortogonais, ou seja, <span class="math inline">\(PM = MP = 0\)</span>.</p></li>
+<li><p>Mostre que <span class="math inline">\(PX=X\)</span> e <span class="math inline">\(MX=0\)</span>.</p></li>
 <li><p>Mostre que <span class="math inline">\(\hat{Y} = PY\)</span> e <span class="math inline">\(\hat{u} = MY\)</span>.</p></li>
 <li><p>Mostre que <span class="math inline">\(\hat{Y}\)</span> e <span class="math inline">\(\hat{u}\)</span> são ortogonais, ou seja, <span class="math inline">\(\hat{Y}&#39;\hat{u} = 0\)</span>.</p></li>
 </ol>
@@ -3179,10 +3181,10 @@ X_1 &amp; X_2
 \]</span></p>
 <p>Desejamos estimar somente <span class="math inline">\(\beta_2\)</span> através de MQO. Para tanto, vamos utilizar a matriz <em>residual maker</em> associada a matriz <span class="math inline">\(X_1\)</span>, <span class="math inline">\(M_1 = I_n - X_1(X_1&#39;X_1)^{-1}X_1&#39;\)</span>.</p>
 <ol type="a">
-<li><p>Faça uma regressão de <span class="math inline">\(Y\)</span> em <span class="math inline">\(X_1\)</span> e obtenha os resíduos chamando-os de <span class="math inline">\(\tilde{Y} = M_1Y\)</span>.</p></li>
-<li><p>Faça uma regressão de <span class="math inline">\(X_2\)</span> em <span class="math inline">\(X_1\)</span> e obtenha os resíduos chamando-os de <span class="math inline">\(\tilde{X}_2 = M_1X_2\)</span>.</p></li>
-<li><p>A partir da equação de regressão particionada, mostre que <span class="math inline">\(\tilde{Y}=\tilde{X}_2\beta_2+\tilde{u}\)</span>.</p></li>
-<li><p>Mostre que o estimador de MQO de <span class="math inline">\(\beta_2\)</span> na equação acima é dado por <span class="math inline">\(\hat{\beta}_2 = (\tilde{X}_2&#39;\tilde{X}_2)^{-1}\tilde{X}_2&#39;\tilde{Y}\)</span>.</p></li>
+<li><p>Faça uma regressão de <span class="math inline">\(Y\)</span> em <span class="math inline">\(X_1\)</span> e obtenha os resíduos chamando-os de <span class="math inline">\(\tilde{Y}\)</span>. DICA: Utilize a matriz <em>residual maker</em> associada a matriz <span class="math inline">\(X_1\)</span>.</p></li>
+<li><p>Faça uma regressão de <span class="math inline">\(X_2\)</span> em <span class="math inline">\(X_1\)</span> e obtenha os resíduos chamando-os de <span class="math inline">\(\tilde{X}_2\)</span>. DICA: Utilize a matriz <em>residual maker</em> associada a matriz <span class="math inline">\(X_1\)</span>.</p></li>
+<li><p>A partir da equação de regressão particionada acima, mostre que <span class="math inline">\(\tilde{Y}=\tilde{X}_2\beta_2+\tilde{u}\)</span>.</p></li>
+<li><p>Mostre que o estimador de MQO de <span class="math inline">\(\beta_2\)</span> na equação acima é dado por <span class="math inline">\(\tilde{\beta}_2 = (\tilde{X}_2&#39;\tilde{X}_2)^{-1}\tilde{X}_2&#39;\tilde{Y}\)</span>.</p></li>
 </ol>
 <p>Ou seja, em uma regressão múltipla, podemos obter os coeficientes associados a uma submatriz de variáveis explicativas através de um procedimento em duas etapas: primeiro, obtemos os resíduos da regressão de <span class="math inline">\(Y\)</span> em <strong>todos os outros regressores, inclusive intercepto</strong> e também os resíduos da regressão de <span class="math inline">\(X_2\)</span> nestes mesmos regressores. Na segunda etapa, obtemos o estimador de MQO de <span class="math inline">\(\beta_2\)</span> através da regressão dos resíduos de <span class="math inline">\(Y\)</span> nos resíduos de <span class="math inline">\(X_2\)</span>.</p>
 <p><strong>Este é o famoso teorema de <a href="https://en.wikipedia.org/wiki/Frisch%E2%80%93Waugh%E2%80%93Lovell_theorem">Frisch-Waugh-Lovell</a>.</strong></p>
