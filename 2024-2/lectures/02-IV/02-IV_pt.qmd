@@ -1271,6 +1271,150 @@ compare_df(
 :::
 ::::
 
+# Teorema LATE
+
+## Heterogeneidade e Efeito Médio Local
+
+- Suponha que os retornos de escolaridade são heterogêneos. VI será uma média destes retornos. Mas **que média** :question:
+
+- **Efeito Médio do Tratamento Local** (local average treatment effect - LATE) é a média do efeito do tratamento para os indivíduos que são _"compliers"_ (ou seja, que mudam seu comportamento quando induzidos pelo instrumento).
+
+- Focaremos no caso mais simples: um tratamento binário e um instrumento binário. (estimador de Wald para MQ2E)
+
+## Notação de Resultados Potenciais
+
+- Escolaridade para indivíduo $i$ (tratamento) será $D_i = \{0,1\}$. Exemplo, $D_i=1$ se o indivíduo completou o ensino médio.
+
+- Renda é denotada por $Y_i$.
+
+- Renda **potencial** de $i$ para um nível de escolaridade $d$ é $Y_i(d)$.
+
+- Tudo isso já sabíamos. Mas agora vamos adicionar um **instrumento** $Z_i = \{0,1\}$ que afeta a escolaridade $D_i$.
+
+## Notação de Resultados Potenciais
+
+- Escolarida agora para a ser ***"tratada"*** pelo instrumento $Z_i$. Recebe também uma notação potencial.
+  + $D_i(Z_i)$
+
+- Renda pode ser indexada como resultado de escolaridade e instrumento.
+  + $Y_i(D_i, Z_i)$. Existem 4 possíveis resultados potenciais.
+
+:::{.fragment}
+\begin{aligned}
+\begin{cases}
+Y_i(0,0) & \text{se } D_i=0, Z_i=0 \\
+Y_i(1,0) & \text{se } D_i=1, Z_i=0 \\
+Y_i(0,1) & \text{se } D_i=0, Z_i=1 \\
+Y_i(1,1) & \text{se } D_i=1, Z_i=1 \\
+\end{cases}
+\end{aligned}
+:::
+
+## Hipóteses do Teorema LATE
+
+Serão necessárias **quatro** hipóteses para que o LATE seja identificado:
+
+1. **Independência**: $\{Y_i(0, 0), Y_i(1, 0), Y_i(0, 1), Y_i(1, 1), D_i(0), D_i(1)\} \perp Z_i$
+
+2. **Exclusão**: $Y_i(d, 0) = Y_i(d, 1)$ para $d\in\{0,1\}$
+
+3. **Relevância**: $E[D_i(1)-D_i(0)]\neq 0$
+
+4. **Monotonicidade**: $D_i(1)\geq D_i(0)$, para todo $i$
+
+- Destas, somente a hipótese **4** é nova.
+  + Na prática ela exclui a presença de ***desafiantes*** (_defiers_) na população.
+
+## Status de _Compliance_ do Instrumento
+
+- Dado que o instrumento assume um valor, o efetivo tratamento pode ou não ser influenciado por este instrumento. 
+
+- No caso 2x2 que estamos tratando, existem quatro possíveis status de $D_i(Z_i)$:
+
+:::{.fragment}
+\begin{cases}
+D_i(0)=D_i(1)=0, \text{ never taker},\\
+D_i(0)=D_i(1)=1, \text{ always taker},\\
+D_i(0)=0, D_i(1)=1, \text{ complier},\\
+D_i(0)=1, D_i(1)=0, \text{ defier},
+\end{cases}
+:::
+
+- Veja que a hipótese de **monotonicidade implica na ausência de desafiantes** (_defiers_)
+  + Para um desafiante, $D_i(1) < D_i(0)$
+
+## Teorema LATE
+
+:::{#thm-late}
+## LATE
+
+Sob as hipóteses 1-4, o estimador MQ2E é dado por:
+
+$$
+\frac{E[Y_i|Z_i=1]-E[Y_i|Z_i=0]}{E[D_i|Z_i=1]-E[D_i|Z_i=0]}=E[Y_i(1)-Y_i(0)|D_i(1)>D_i(0)]
+$$
+:::
+
+- O LATE é a média do efeito do tratamento para os indivíduos que são _"compliers"_ (ou seja, que mudam seu comportamento quando induzidos pelo instrumento).
+
+:::{.fragment}
+:::{.center}
+:warning: **Método de VI sob as hipóteses 1-4 é um estimador de LATE**
+:::
+:::
+
+## Teorema LATE - Prova
+
+:::{.proof}
+## Prova
+Podemos escrever o numerador como:
+
+$$
+\begin{aligned}
+E[Y_i|Z_i=1]-E[Y_i|Z_i=0]&=E[Y_i(D_i(1),1)-Y_i(D_i(0),0)]\\
+&=\sum_{g\in\{co, nt, at, df\}}E[Y_i(D_i(1),1)-Y_i(D_i(0),0)|G_i=g]\cdot P[G_i=g]\\
+\end{aligned}
+$$
+
+onde $g$ é o status de compliance (complier, never taker, always taker, defier).
+
+- O efeito médio para os grupos _"never taker"_ e _"always taker"_ é zero pela restrição de exclusão.
+
+- A probabilidade de haver um _"defier"_ é zero pela hipótese de monotonicidade.
+
+:::{.fragment}
+Portanto:
+
+$$E[Y_i|Z_i=1]-E[Y_i|Z_i=0]=E[Y_i(1)-Y_i(0)|D_i(1)>D_i(0)]\cdot P[D_i(1)>D_i(0)]$$
+:::
+
+:::
+
+## Teorema LATE - Prova
+
+:::{.proof}
+## Prova
+Agora, o denominador:
+
+$$
+\begin{aligned}
+E[D_i|Z_i=1]-E[D_i|Z_i=0]&=E[D_i(1)-D_i(0)]\\
+&=P[D_i(1)>D_i(0)].\\
+\end{aligned}
+$$
+
+:::{.fragment}
+Portanto:
+
+$$
+\begin{aligned}
+\frac{E[Y_i|Z_i=1]-E[Y_i|Z_i=0]}{E[D_i|Z_i=1]-E[D_i|Z_i=0]}&=\frac{E[Y_i(1)-Y_i(0)|D_i(1)>D_i(0)]\cdot P[D_i(1)>D_i(0)]}{P[D_i(1)>D_i(0)]}\\
+\text{LATE}&=E[Y_i(1)-Y_i(0)|D_i(1)>D_i(0)]
+\end{aligned}
+$$
+:::
+
+:::
 
 # Tópicos Especiais VI
 
@@ -1354,7 +1498,9 @@ $$y_l=\rho+\beta_1x_l+\epsilon_l$$
 
 * IMBENS, Guido W.; RUBIN, Donald B. Causal inference in statistics, social, and biomedical sciences. Cambridge University Press, 2015.
 
-* GOLDSMITH-PINKHAM, Paul; SORKIN, Isaac; SWIFT, Henry. Bartik instruments: What, when, why, and how. American Economic Review, v. 110, n. 8, p. 2586-2624, 2020.
+* GOLDSMITH-PINKHAM, Paul; SORKIN, Isaac; SWIFT, Henry. Bartik instruments: What, when, why, and how. American Economic Review, v. 110, n. 8, p. 2586-2624, 2020. DOI: [10.1257/aer.20181047](https://doi.org/10.1257/aer.20181047)
+
+* GREWAL, Rajdeep; ORHUN, Yesim. Unpacking the Instrumental Variables Approach. Impact at JMR, Journal of Marketing Research (August 23). Url: [https://www.ama.org/marketing-news/unpacking-the-instrumental-variables-approach/](https://www.ama.org/marketing-news/unpacking-the-instrumental-variables-approach/)
 
 ## ATÉ A PRÓXIMA AULA!
 
