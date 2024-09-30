@@ -432,7 +432,7 @@ Se tivermos apenas dois períodos, $T=2$, poderíamos apenas ***diferenciar*** o
     
 $$\begin{align}
 y_{i1} &= \beta_1 x_{i1} + c_i + u_{i1} \\y_{i2} &= \beta_1 x_{i2} + c_i + u_{i2} \\& \Rightarrow \\
-y_{i1}-y_{i2} &= \beta_1 (x_{i1} - x_{i2}) + c_i-c_i + u_{i1}-u_{i2} \\\Delta y_{i} &= \beta_1 \Delta x_{i} + \Delta u_{i}
+y_{i2}-y_{i1} &= \beta_1 (x_{i2} - x_{i1}) + c_i-c_i + u_{i2}-u_{i1} \\\Delta y_{i} &= \beta_1 \Delta x_{i} + \Delta u_{i}
 \end{align}
 $$
 
@@ -442,7 +442,7 @@ E para recuperar o parâmetro de interesse $\beta_1$ rodamos
 #| eval: false
 #| echo: true
 #| code-fold: show
-smf.ols(deltay ~ deltax, diff_data).fit() 
+smf.ols(deltay ~ -1 + deltax, diff_data).fit() 
 ```
     
     
