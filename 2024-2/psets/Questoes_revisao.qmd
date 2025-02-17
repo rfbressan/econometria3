@@ -19,6 +19,8 @@ bibliography: references.bib
 
 Esta é uma lista de exercícios de revisão de Econometria I. Os estudantes que sentirem dificuldade em álgebra linear e estatística, podem consultar o apêndice do livro do Wooldridge para revisar os conceitos necessários. O material está disponível no Moodle na seção de _Livros Gratuitos_.
 
+**A resolução desta lista vale até 10% da nota do semestre.**
+
 ## Questão 1 
 
 Seja $X$ e $Y$ duas variáveis estocásticas e considere as realizações $(x_i, y_i)$, $i=1,2,\ldots,n$. Seja $\bar{x}=\frac{1}{n}\sum_{i=1}^n x_i$ e $\bar{y}=\frac{1}{n}\sum_{i=1}^n y_i$. Mostre que as seguintes relações são válidas:
@@ -34,7 +36,7 @@ c. $\sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y}) = \sum_{i=1}^n x_iy_i - n\bar{x}\bar
 
 Sejam $X$ e $Y$ duas variáveis estocásticas. 
 
-a. Mostre que se pelo menos uma das variáveis tem valor espera igual a zero, então a covariância entre $X$ e $Y$ é dada por $\text{Cov}(X,Y) = E[XY]$.
+a. Mostre que se pelo menos uma das variáveis tem valor esperado igual a zero, então a covariância entre $X$ e $Y$ é dada por $\text{Cov}(X,Y) = E[XY]$.
 
 b. Use a definicão de covariância para mostrar que $\text{Cov}(AX+a,BY+b) = AB\text{Cov}(X,Y)$, onde $A$, $B$, $a$ e $b$ são constantes.
 
@@ -60,7 +62,7 @@ b. Mostre que $\text{Var}(\hat{\beta}) \leq \text{Var}(\tilde{\beta})$. DICA: us
 
 ## Questão 4
 
-Considere o seguinte modelo de regressão linear em forma matricial:
+Considere o seguinte modelo de regressão linear em **forma matricial**:
 
 $$Y = X\beta + u,$$
 
