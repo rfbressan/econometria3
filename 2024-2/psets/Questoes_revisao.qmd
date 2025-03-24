@@ -47,7 +47,7 @@ c. Use a definição de variância para mostrar que $\text{Var}(X+Y) = \text{Var
 
 Considere o seguinte modelo de regressão linear simples:
 
-$Y_i=\beta X_i + u_i$, $i=1,2,\ldots,n$ e o termo de erro $u_i$ é tal que $E[u_i|X_i]=0$ e $\text{Var}(u_i)=\sigma^2$.
+$Y_i=\beta X_i + u_i$, $i=1,2,\ldots,n$ com amostra _iid_ e o termo de erro $u_i$ é tal que $E[u_i|X_i]=0$ e $\text{Var}(u_i|X_i)=\sigma^2$.
 
 a. Mostre que os seguintes estimadores são não viesados para $\beta$:
 
